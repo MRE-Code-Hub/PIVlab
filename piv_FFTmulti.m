@@ -51,6 +51,8 @@ end
 
 
 %% MAINLOOP
+fprintf('\tMemory used: %4.1f GB\n', memory().MemUsedMATLAB / 1e9);
+fprintf('Start multipass\n');
 max_repetitions=6; %maximum amount of repetitions of the last pass
 repetition=0;
 %repeat_last_pass=0; %set in GUI: enable repetition of last pass
@@ -227,6 +229,8 @@ for multipass = 1:passes
 			% Do 2D FFT
 			result_conv(:,:,batch_offset+(1:batch_len)) = do_correlations(image1_cut, image2_cut, do_pad, interrogationarea);
 		end
+
+		fprintf('\tMemory used: %4.1f GB\n', memory().MemUsedMATLAB / 1e9);
 
 		%% repeated correlation
 		if repeat == 1 && multipass==passes
@@ -429,7 +433,8 @@ for multipass = 1:passes
 			break
 		end
 	end
-	
+	fprintf('Pass %d done\n', multipass);
+	fprintf('\tMemory used: %4.1f GB\n', memory().MemUsedMATLAB / 1e9);
 end
 
 
@@ -517,7 +522,7 @@ figure(getappdata(0,'hgui'))
 
 %gg=100;figure;imagesc(multiplied_images(:,:,gg));figure;imagesc(image1_cut(:,:,gg));figure;imagesc(image2_cut(:,:,gg));figure;imagesc(multiplied_images_binary(:,:,gg))
 %}
-
+fprintf('\tMemory used: %4.1f GB\n', memory().MemUsedMATLAB / 1e9);
 
 % Output correlation matrices
 if do_correlation_matrices==1
