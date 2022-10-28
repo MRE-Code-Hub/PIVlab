@@ -203,7 +203,6 @@ for multipass = 1:passes
 
 		N = numelementsx * numelementsy;
 		result_conv = zeros([interrogationarea, interrogationarea, N], convert_image_class_type);
-		correlation_map = zeros([numelementsy, numelementsx], convert_image_class_type);
 
 		BATCHSIZE = 200;
 		image1_cut = zeros([interrogationarea interrogationarea BATCHSIZE], convert_image_class_type);
@@ -221,10 +220,6 @@ for multipass = 1:passes
 				ys = (1:interrogationarea) + (y-1) * step;
 				image1_cut(:,:,i) = image1_roi(miniy-1+ys, minix-1+xs);
 				image2_cut(:,:,i) = image2_crop_i1(ys, xs);
-			end
-			% Calculate correlation strength on the last pass
-			if multipass == passes
-				correlation_map(batch_offset+(1:batch_len)) = calculate_correlation_map(image1_cut, image2_cut);
 			end
 			% Do 2D FFT
 			result_conv(:,:,batch_offset+(1:batch_len)) = do_correlations(image1_cut, image2_cut, do_pad, interrogationarea);
@@ -384,9 +379,6 @@ for multipass = 1:passes
 		masked_ys = (miniy:step:maxiy) + round(interrogationarea/2);
 		typevector(mask(masked_ys, masked_xs)) = 0;
 		result_conv(:, :, mask(masked_ys, masked_xs)) = 0;
-		if multipass == passes
-			correlation_map(mask(masked_ys, masked_xs)) = 0;
-		end
 
 		[y, x, z] = ind2sub(size(result_conv), find(result_conv==255));
 
@@ -412,6 +404,28 @@ for multipass = 1:passes
 
 		utable = utable + vector(:,:,1);
 		vtable = vtable + vector(:,:,2);
+
+		% Calculate correlation strength on the last pass
+		if multipass == passes
+			U = padarray(utable, [1,1], 'replicate');
+			V = padarray(vtable, [1,1], 'replicate');
+			X2 = interp2(X,Y,U,X1,Y1,'*linear') + repmat(X1,size(Y1, 1),1);
+			Y2 = interp2(X,Y,V,X1,Y1,'*linear') + repmat(Y1,1,size(X1, 2));
+			image2_crop_i1 = interp2(image_roi_xs, image_roi_ys, image2_roi, X2, Y2, imdeform);
+			correlation_map = zeros([numelementsy numelementsx], convert_image_class_type);
+			image1_cut = zeros([interrogationarea interrogationarea numelementsy], convert_image_class_type);
+			image2_cut = zeros([interrogationarea interrogationarea numelementsy], convert_image_class_type);
+			for x = 1:numelementsx
+				for y = 1:numelementsy
+					xs = (1:interrogationarea) + (x-1) * step;
+					ys = (1:interrogationarea) + (y-1) * step;
+					image1_cut(:,:,y) = image1_roi(miniy-1+ys, minix-1+xs);
+					image2_cut(:,:,y) = image2_crop_i1(ys, xs);
+				end
+				correlation_map(:,x) = calculate_correlation_map(image1_cut, image2_cut);
+			end
+			correlation_map(mask(masked_ys, masked_xs)) = 0;
+		end
 
 		%compare result to previous pass, do extra passes when delta is not around zero.
 		if repetition > 1 %only then we'll have an utable with the same dimension
