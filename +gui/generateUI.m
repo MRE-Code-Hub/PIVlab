@@ -572,18 +572,24 @@ handles.mask_combine = uicontrol(handles.uipanel25_9,'Style','pushbutton','Strin
 %panel mask operations
 item=[0 0 0 0];
 parentitem=get(handles.multip25, 'Position');
-item=[0 27 parentitem(3) 6.5];
+item=[0 27 parentitem(3) 7.5];
 handles.uipanel25_6 = uipanel(handles.multip25, 'Units','characters', 'Position', [item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'title','Mask operations','fontweight','bold');
 
 item=[0 0 0 0];
 parentitem=get(handles.uipanel25_6, 'Position');
-item=[0 item(2)+item(4) parentitem(3) 1.5];
-handles.mask_apply_to_current = uicontrol(handles.uipanel25_6,'Style','pushbutton','String','Copy mask to all frames','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @mask.copy_to_all_Callback,'TooltipString','Apply masks from current frame to all frames');
+item=[0 item(2)+item(4) parentitem(3)*0.6 1.5];
+handles.mask_apply_to_current = uicontrol(handles.uipanel25_6,'Style','pushbutton','String','Copy mask to frames','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @mask.copy_to_all_Callback,'TooltipString','Copy masks from the current frame to the selected frames');
 
-item=[0 item(2)+item(4) parentitem(3) 1.5];
-handles.mask_delete_all = uicontrol(handles.uipanel25_6,'Style','pushbutton','String','Clear all masks','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @mask.delete_all_Callback,'TooltipString','Delete all masks');
+item=[parentitem(3)*0.6 item(2) parentitem(3)*0.4 1.5];
+handles.mask_copy_frames = uicontrol(handles.uipanel25_6,'Style','edit','String','1:end','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','mask_copy_frames','TooltipString','Select which frames this operation applies to. E.g. "1:end", "1,4,7" or "10:15". "end" = last frame.');
 
-item=[0 item(2)+item(4) parentitem(3)/2 1.5];
+item=[0 item(2)+item(4)+0.5 parentitem(3)*0.6 1.5];
+handles.mask_delete_all = uicontrol(handles.uipanel25_6,'Style','pushbutton','String','Clear masks in frames','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @mask.delete_all_Callback,'TooltipString','Delete masks in the selected frames');
+
+item=[parentitem(3)*0.6 item(2) parentitem(3)*0.4 1.5];
+handles.mask_clear_frames = uicontrol(handles.uipanel25_6,'Style','edit','String','1:end','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','mask_clear_frames','TooltipString','Select which frames this operation applies to. E.g. "1:end", "1,4,7" or "10:15". "end" = last frame.');
+
+item=[0 item(2)+item(4)+0.5 parentitem(3)/2 1.5];
 handles.mask_save = uicontrol(handles.uipanel25_6,'Style','pushbutton','String','Save all masks','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @mask.save_Callback,'TooltipString','Save all masks to Matlab file for reuse');
 
 item=[parentitem(3)/2 item(2) parentitem(3)/2 1.5];

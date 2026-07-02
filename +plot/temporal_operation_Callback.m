@@ -39,38 +39,23 @@ if isempty(resultslist)==0
 			gui.put('ismean',[]);
 			gui.sliderrange(1)
 		end
-		str = get(handles.selectedFramesMean,'string');
-		str = strrep(str,'-',':');
-		endinside=strfind(str, 'end');
-		if isempty(endinside)==0 %#ok<*STREMP>
-			str = strrep(str,'end',num2str(max(find(ismean==0)))); %#ok<MXFND>
-		end
-
-		% Split the (optionally bracketed) input into rows separated by ';'.
+		% Parse the (optionally bracketed) input into rows separated by ';'.
 		% Each row is an independent frame selection that produces one averaged
 		% result frame. A single row reproduces the original single-average
 		% behaviour exactly. Multiple rows enable e.g. time-resolved phase
 		% averages such as "[1:10:end;2:10:end;3:10:end]".
-		str_clean = strrep(strrep(str,'[',''),']','');
-		str_rows = strtrim(strsplit(str_clean, ';'));
-		str_rows = str_rows(~cellfun(@isempty, str_rows));
+		% 'end' resolves to the last non-mean frame.
+		[frames_rows, str_rows, selectionok] = misc.parse_frame_selection(get(handles.selectedFramesMean,'string'), max(find(ismean==0))); %#ok<MXFND>
 		multi_row = numel(str_rows) > 1;
 
-		selectionok=1;
-		% validate each row's syntax (decimals are not allowed)
-		for r=1:numel(str_rows)
-			strnum_row=str2num(str_rows{r}); %#ok<ST2NM>
-			if isempty(strnum_row)==1 || isempty(strfind(str_rows{r},'.'))==0
-				gui.custom_msgbox('error',getappdata(0,'hgui'),'Error',['Error in frame selection syntax. Please use the following syntax (examples):' sprintf('\n') '1:3' sprintf('\n') '1,3,7,9' sprintf('\n') '1:3,7,8,9,11:13' sprintf('\n') 'For multiple averages (e.g. phase average) use rows: [1:10:end;2:10:end]'],'modal');
-				selectionok=0;
-				break
-			end
+		if selectionok==0
+			gui.custom_msgbox('error',getappdata(0,'hgui'),'Error',['Error in frame selection syntax. Please use the following syntax (examples):' sprintf('\n') '1:3' sprintf('\n') '1,3,7,9' sprintf('\n') '1:3,7,8,9,11:13' sprintf('\n') 'For multiple averages (e.g. phase average) use rows: [1:10:end;2:10:end]'],'modal');
 		end
 		if selectionok==1
 			% global minimum frame across all rows (start of the stack)
 			mincount=inf;
-			for r=1:numel(str_rows)
-				mincount=min(mincount,min(str2num(str_rows{r}))); %#ok<ST2NM>
+			for r=1:numel(frames_rows)
+				mincount=min(mincount,min(frames_rows{r}));
 			end
 			for count=mincount:size(resultslist,2)
 				if size(resultslist,2)>=count && numel(resultslist{1,count})>0
@@ -132,7 +117,7 @@ if isempty(resultslist)==0
 				% appends happen inside this loop.
 				for r=1:numel(str_rows)
 					this_str=str_rows{r};
-					strnum=str2num(this_str); %#ok<ST2NM>
+					strnum=frames_rows{r};
 					for i=1:size(strnum,2)
 						if size(resultslist,2)>=strnum(i) %dann ok
 							x_tmp=resultslist{1,strnum(i)};
