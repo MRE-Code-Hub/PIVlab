@@ -12,14 +12,15 @@ if (get (handles.uniform_vector_scale,'Value'))==1
 end
 if (get (handles.power_vector_scale,'Value'))==1
     exponent_1=str2double(get(handles.power_vector_scale_factor,'String'));
-    signs_u=sign(u);
-    signs_v=sign(v);
-    mean_old=mean(abs(u(:)),'omitnan')+mean(abs(v(:)),'omitnan');
-    u=(abs(u).^exponent_1).*signs_u;
-    v=(abs(v).^exponent_1).*signs_v;
-    mean_new=mean(abs(u(:)),'omitnan')+mean(abs(v(:)),'omitnan');
-    u=u*mean_old/mean_new;
-    v=v*mean_old/mean_new;
+    mag_old = sqrt(u.^2 + v.^2);                 % original vector lengths
+    mag_new = mag_old.^exponent_1;               % compressed lengths
+    % preserve the overall mean length so the plot scale stays comparable
+    scale = mean(mag_old(:),'omitnan') / mean(mag_new(:),'omitnan');
+    mag_new = mag_new * scale;
+    ratio = mag_new ./ mag_old;                  % per-vector length change
+    ratio(mag_old==0) = 0;                       % avoid 0/0 -> NaN at zero vectors
+    u = u .* ratio;                              % keep direction, change length only
+    v = v .* ratio;
 end
 if vecskip==1
     q=quiver(x(typevector==1),y(typevector==1),...
