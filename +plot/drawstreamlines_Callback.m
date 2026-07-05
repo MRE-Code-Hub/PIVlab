@@ -7,6 +7,7 @@ resultslist=gui.retr('resultslist');
 currentframe=floor(get(handles.fileselector, 'value'));
 if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 	gui.toolsavailable(0);
+	gui.put('streamslice_active', false);
 	x=resultslist{1,currentframe};
 	y=resultslist{2,currentframe};
 	typevector=resultslist{5,currentframe};
@@ -64,7 +65,7 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 	figure(ancestor(target_axis,'figure')); % ensure ginput captures from the correct window
 	while button == 1
 		[rawx,rawy,button] = ginput(1);
-		if button~=1
+		if isempty(button) || button~=1
 			break
 		end
 		xposition(i)=rawx;

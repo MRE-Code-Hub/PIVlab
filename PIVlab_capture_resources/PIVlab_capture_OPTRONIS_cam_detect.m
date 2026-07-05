@@ -10,6 +10,7 @@ try
     warning on
     warning('off','imaq:gentl:hardwareTriggerTriggerModeOff'); %trigger property of OPTRONIS cannot be set in Matlab.
     warning('off','MATLAB:JavaEDTAutoDelegation'); %strange warning
+    warning('off','imaq:gentl:noSupportedPixelFormat')
     imaqreset
 catch
     gui.custom_msgbox('error',getappdata(0,'hgui'),'Error','Error: Image Acquisition Toolbox not available! This camera needs the image acquisition toolbox.','modal');
@@ -43,7 +44,8 @@ try
     end
     OPTRONIS_name = info.DeviceInfo(CamID).DeviceName;
 catch
-    gui.custom_msgbox('error',getappdata(0,'hgui'),'Error','Error: Camera not found! Is it connected?','modal');
+    disp('Euresys grabber has no powered camera attached.')
+    %gui.custom_msgbox('error',getappdata(0,'hgui'),'Error','Error: Camera not found! Is it connected?','modal');
 end
 
 if contains(OPTRONIS_name,'Cyclone-2-2000-M')
@@ -54,7 +56,7 @@ elseif contains (OPTRONIS_name,'Cyclone-25-150-M')
     camera_sub_type='Cyclone-25-150-M';
 else
     disp (OPTRONIS_name)
-    disp('--> camera type unknown!')
+    disp('--> No cam detected on Euresys grabber')
     camera_sub_type='unknown';
 end
 disp(['Found camera: ' camera_sub_type])
@@ -68,5 +70,6 @@ for k=1:size(Kinder,1)
     end
 end
 if contains(OPTRONIS_name,'Cyclone-2-2000-M') || contains (OPTRONIS_name,'Cyclone-1HS-3500-M') || contains (OPTRONIS_name,'Cyclone-25-150-M')
-    text(img_size2*0.75,img_size1*0.95,['Connected to: '  camera_sub_type],'tag','cam_info_box','Color','black','BackgroundColor','green','VerticalAlignment','bottom','interpreter','none');
+    text(img_size2*0.75,img_size1*0.95,['Connected to: '  camera_sub_type ' via Euresys grabber.'],'tag','cam_info_box','Color','black','BackgroundColor','green','VerticalAlignment','bottom','interpreter','none');
+    drawnow;
 end

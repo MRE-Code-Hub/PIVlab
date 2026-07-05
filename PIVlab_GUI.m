@@ -43,7 +43,7 @@ if isempty(fh)
     handles = guihandles; %alle handles mit tag laden und ansprechbar machen
     guidata(MainWindow,handles)
     setappdata(0,'hgui',MainWindow);
-    version = '3.13';
+    version = '3.14';
     isbeta=1;
     gui.put('PIVver', version);
     gui.put('isbeta', isbeta);
@@ -95,6 +95,7 @@ if isempty(fh)
     gui.put('quickheight',3.5);
     gui.put('quickvisible',1);
     gui.put('alreadydisplayed',0);
+	gui.put('alreadydisplayed_warning_uncertainty',0);
     gui.put('video_selection_done',0);
     if ~verLessThan('Matlab','25') %#ok<*VERLESSMATLAB>
         if ispref('PIVlab_ad','dark_mode_theme')
@@ -115,6 +116,7 @@ if isempty(fh)
     end
     %% check write access
     disp(['-> User path is ' userpath]);
+    disp(['-> Executable directory is ' ctfroot])
     try
         temp=rand(3,3);
         save(fullfile(userpath,'temp.mat' ),'temp');
@@ -180,8 +182,11 @@ if isempty(fh)
     %%
     gui.generateUI
     gui.generateMenu
+    %% Snapshot factory-default visibility of every tagged element (single
+    %% source of truth for restoring elements when switching to Advanced mode)
+    gui.put('ui_default_visibility', gui.capture_default_visibility);
     %% Prepare axes
-    gui.switchui('multip01');
+    
     pivlab_axis=axes('units','characters','parent',MainWindow);
     axis image;
     set(pivlab_axis,'ActivePositionProperty','outerposition');%,'Box','off','DataAspectRatioMode','auto','Layer','bottom','Units','normalized');
@@ -303,6 +308,24 @@ if isempty(fh)
         end
     catch
     end
+    %% Register bitflow IMAQ adaptor
+    if isdeployed
+        try
+            bit_flow_DLL = fullfile(ctfroot,'PIVlab','PIVlab_capture_resources', 'bitflow_resources',matlabRelease.Release,'BitFlow.dll');
+            imaqregister(bit_flow_DLL);
+            imaqreset
+            info=imaqhwinfo;
+            disp('-> Installed IMAQ adaptors:')
+            for i=1:numel(info.InstalledAdaptors)
+                disp(['- ' info.InstalledAdaptors{i}])
+            end
+        catch ME
+            disp('Warning: Could not register the bitflow adaptor.')
+            disp (ME.message)
+            disp (bit_flow_DLL)
+			disp('This warning can be ignored if you are not using a bitflow frame grabber.')
+        end
+    end
 
 
     %% Variable initialization
@@ -334,17 +357,22 @@ if isempty(fh)
             end
         catch %if something goes wrong -> use current dir
             homedir=pwd;
-            pathname=pwd;
-            disp(['-> Start up path: ' pwd])
-        end
-    else
-        if exist(pathname ,'dir') ~= 7 %stored path doesnt exist -> replace with default
-            homedir=pwd;
-            pathname=pwd;
-        end
-        disp(['-> Start up path: ' pathname])
-    end
-    gui.put('homedir',homedir);
+			pathname=pwd;
+			disp(['-> Start up path: ' pwd])
+		end
+	else
+		try
+			if exist(pathname ,'dir') ~= 7 %stored path doesnt exist -> replace with default
+				homedir=pwd;
+				pathname=pwd;
+			end
+		catch
+			homedir=pwd;
+			pathname=pwd;
+		end
+		disp(['-> Start up path: ' pathname])
+	end
+	gui.put('homedir',homedir);
     gui.put('pathname',pathname);
     save('PIVlab_settings_default.mat','homedir','pathname','-append');
     %% Read and apply default settings
@@ -375,6 +403,22 @@ if isempty(fh)
     gui.SetFullScreen
 	drawnow;
     gui.displogo(1);
+    %% Apply remembered Basic/Advanced mode before window becomes visible
+    ui_mode='advanced';   %default when no preference has been stored yet
+    try
+        if ismember('ui_mode',who('-file','PIVlab_settings_default.mat'))
+            loaded=load('PIVlab_settings_default.mat','ui_mode');
+            ui_mode=loaded.ui_mode;
+        end
+    catch
+    end
+    %Force Advanced mode for GUI batch processing (see below), so every control
+    %the automated workflow relies on is available. This only overrides the
+    %in-memory mode; the user's stored preference is left untouched.
+    if exist('batch_session_file','var') && exist(batch_session_file,'file')
+        ui_mode='advanced';
+    end
+    gui.apply_ui_mode(ui_mode);
     %% Apply fix for wrong UI scaling introduced between matlab 2025a prerelease5 and Matlab2025a
     try
         if ~isMATLABReleaseOlderThan("R2025a") && isMATLABReleaseOlderThan("R2025b")
@@ -466,6 +510,7 @@ if isempty(fh)
     gui.MainWindow_ResizeFcn(gcf)
     %disp('vis')
     pause(0.5);	set(MainWindow, 'Visible','on');	pause(0.25);	drawnow;
+    gui.switchui('multip01');
     disp('-> GUI initialization finished.')
     %% Batch session  processing in GUI
     if ~exist('batch_session_file','var') %no input argument --> no GUI batch processing
@@ -492,7 +537,7 @@ if isempty(fh)
             disp(['NOT FOUND: ' batch_session_file])
             gui.put('batchModeActive',0)
         end
-    end
+	end
 else %Figure handle does already exist --> bring PIVlab to foreground.
     disp('Only one instance of PIVlab is allowed to run.')
     figure(fh)

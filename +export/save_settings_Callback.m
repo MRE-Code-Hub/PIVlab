@@ -44,6 +44,7 @@ step3=get(handles.text127, 'string');
 step4=get(handles.text128, 'string');
 holdstream=get(handles.holdstream, 'value');
 streamlamount=get(handles.streamlamount, 'string');
+streamslicedensity=get(handles.streamslicedensity, 'string');
 streamlcolor=get(handles.streamlcolor, 'value');
 streamlcolor=get(handles.streamlwidth, 'value');
 realdist=get(handles.realdist, 'string');
@@ -140,6 +141,11 @@ else
 end
 
 extrapolate_border=get(handles.extrapolate_border,'value');
+
+%data smoothing (popupmenu mode + parameters)
+smooth_mode_val    = get(handles.smooth_mode,     'value'); %#ok<NASGU>
+smooth_param_str   = get(handles.smooth_param,    'string'); %#ok<NASGU>
+temporal_window_str= get(handles.temporal_window, 'string'); %#ok<NASGU>
 
 clear handles hObject eventdata
 if ~isequal(FileName,0)

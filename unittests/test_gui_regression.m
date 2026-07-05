@@ -49,10 +49,20 @@ runGuiRegressionForMode(testCase, 0);
 
 closePIVlabIfOpen();
 closeAllNonPIVlabFigures();
+% Only skip (filter) the parallel regression when parallel processing is
+% genuinely unavailable on this machine. A failure while parallel IS active
+% is a real regression and must fail the test rather than be silently masked.
+if ~parallelProcessingAvailable()
+    testCase.assumeFail('Parallel Computing Toolbox not available; skipping parallel GUI regression.');
+end
 try
     runGuiRegressionForMode(testCase, 2);
 catch err
-    testCase.assumeTrue(false, ['Parallel GUI regression could not be exercised: ' err.message]);
+    if isParallelInfrastructureError(err)
+        testCase.assumeFail(['Parallel pool could not be started; skipping parallel GUI regression: ' err.message]);
+    else
+        rethrow(err);
+    end
 end
 end
 
@@ -289,8 +299,9 @@ end
 function calculateDerivedAndMeanVelocity(testCase)
 handles = gui.gethand();
 gui.switchui('multip08');
-set(handles.smooth, 'Value', 1);
-set(handles.smoothstr, 'Value', 3);
+set(handles.smooth_mode, 'Value', 2);      % 2D
+set(handles.smooth_param, 'String', '0.3');
+plot.smooth_mode_Callback(handles.smooth_mode);
 plot.derivative_calc(1, 3, 0);
 
 derived = gui.retr('derived');
@@ -298,6 +309,19 @@ resultslist = gui.retr('resultslist');
 testCase.verifyNotEmpty(derived{2, 1}, 'Velocity magnitude was not calculated.');
 testCase.verifyNotEmpty(resultslist{10, 1}, 'Smoothed U field was not stored.');
 testCase.verifyNotEmpty(resultslist{11, 1}, 'Smoothed V field was not stored.');
+
+% exercise the temporal (2D + time) moving-average smoothing path
+set(handles.smooth_mode, 'Value', 4);      % 2D + time
+set(handles.temporal_window, 'String', '3');
+plot.smooth_mode_Callback(handles.smooth_mode);
+plot.derivative_calc(2, 3, 0);
+resultslist = gui.retr('resultslist');
+testCase.verifyNotEmpty(resultslist{10, 2}, 'Temporally smoothed U field was not stored.');
+testCase.verifyNotEmpty(resultslist{11, 2}, 'Temporally smoothed V field was not stored.');
+
+% restore default smoothing for the rest of the regression run
+set(handles.smooth_mode, 'Value', 2);
+plot.smooth_mode_Callback(handles.smooth_mode);
 
 gui.put('displaywhat', 2);
 gui.sliderdisp(gui.retr('pivlab_axis'));
@@ -311,6 +335,30 @@ drawnow;
 resultslist = gui.retr('resultslist');
 testCase.verifyGreaterThanOrEqual(size(resultslist, 2), 4, 'Temporal mean velocity was not appended.');
 testCase.verifyNotEmpty(resultslist{3, 4}, 'Mean U field is empty.');
+
+% multi-row (phase-average) selection: each ';'-separated row must append its
+% own averaged frame. Uses unequal-length rows to cover that path, and
+% 'replace' mode so the previously appended single mean is cleared first.
+ismeanBefore = gui.retr('ismean');
+nBaseFrames = nnz(ismeanBefore == 0);   % analyzed (non-mean) frames
+set(handles.selectedFramesMean, 'String', '[1;2:3]');
+set(handles.append_replace, 'Value', 2);   % replace: clears prior means first
+plot.temporal_operation_Callback([], [], 1);
+drawnow;
+
+resultslist = gui.retr('resultslist');
+ismean = gui.retr('ismean');
+filename = gui.retr('filename');
+testCase.verifyEqual(nnz(ismean == 1), 2, 'Two-row selection should append exactly two mean frames.');
+testCase.verifyEqual(size(resultslist, 2), nBaseFrames + 2, 'Multi-row averaging must append one frame per row.');
+testCase.verifyNotEmpty(resultslist{3, nBaseFrames + 1}, 'First phase-average U field is empty.');
+testCase.verifyNotEmpty(resultslist{3, nBaseFrames + 2}, 'Second phase-average U field is empty.');
+testCase.verifyFalse(isequal(resultslist{3, nBaseFrames + 1}, resultslist{3, nBaseFrames + 2}), ...
+    'Phase averages over different frames should not be identical.');
+testCase.verifyTrue(contains(filename{end, 1}, '#2'), 'Multi-row mean frames should carry a per-row label suffix.');
+
+% restore single-frame append behaviour for the remainder of the run
+set(handles.append_replace, 'Value', 1);
 
 plot.statistics_Callback([], [], []);
 testCase.verifyTrue(isOnState(get(handles.multip14, 'Visible')), 'Statistics panel did not become visible.');
@@ -457,4 +505,18 @@ if isa(value, 'matlab.lang.OnOffSwitchState')
 else
     tf = isequal(value, 'on');
 end
+end
+
+function tf = parallelProcessingAvailable()
+% Side-effect-free check for parallel processing support (no pool is started).
+tf = license('test', 'Distrib_Computing_Toolbox') == 1 && ~isempty(ver('parallel'));
+end
+
+function tf = isParallelInfrastructureError(err)
+% True only for errors indicating the parallel infrastructure (toolbox / pool)
+% is unavailable - NOT for genuine analysis or GUI regressions, which must fail.
+tf = contains(err.identifier, 'parallel', 'IgnoreCase', true) || ...
+    contains(err.identifier, 'parpool', 'IgnoreCase', true) || ...
+    contains(err.message, 'parallel pool', 'IgnoreCase', true) || ...
+    contains(err.message, 'Parallel Computing Toolbox', 'IgnoreCase', true);
 end

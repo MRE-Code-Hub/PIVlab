@@ -70,6 +70,7 @@ step3=get(handles.text127, 'string');
 step4=get(handles.text128, 'string');
 holdstream=get(handles.holdstream, 'value');
 streamlamount=get(handles.streamlamount, 'string');
+streamslicedensity=get(handles.streamslicedensity, 'string');
 streamlcolor=get(handles.streamlcolor, 'value');
 
 try
@@ -142,6 +143,11 @@ secondpeak_color_idx = get(handles.secondpeak_color, 'Value');
 interp_color_idx     = get(handles.interp_color,     'Value');
 deriv_color_idx      = get(handles.deriv_color,      'Value');
 extrapolate_border   = get(handles.extrapolate_border,'value'); %#ok<NASGU>
+
+%data smoothing (popupmenu mode + parameters)
+smooth_mode_val    = get(handles.smooth_mode,     'value'); %#ok<NASGU>
+smooth_param_str   = get(handles.smooth_param,    'string'); %#ok<NASGU>
+temporal_window_str= get(handles.temporal_window, 'string'); %#ok<NASGU>
 
 clear handles
 cameraParams         = gui.retr('cameraParams');

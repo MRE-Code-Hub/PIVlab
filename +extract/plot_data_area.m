@@ -3,17 +3,31 @@ function [returned_data, returned_header]=plot_data_area(currentframe,refreshdis
 handles=gui.gethand;
 resultslist=gui.retr('resultslist');
 extractwhat=get(handles.extraction_choice_area,'Value');
-if extractwhat==9 || extractwhat==10
+if extractwhat==9 || extractwhat==10 || extractwhat==11
+	% option 9 = vector angle  → deriv 11 (extractwhat+2), derived{10}
+	% option 10 = correlation  → deriv 12 (extractwhat+2), derived{11}
+	% option 11 = uncertainty  → deriv 13 (extractwhat+2), derived{12}
 	plot.derivative_calc(currentframe,extractwhat+2,0);
 else
 	plot.derivative_calc(currentframe,extractwhat+1,0);
 end
 derived=gui.retr('derived');
-if extractwhat==9 || extractwhat==10
+if extractwhat==9 || extractwhat==10 || extractwhat==11
 	maptoget=derived{extractwhat+1,currentframe};
 else
 	maptoget=derived{extractwhat,currentframe};
 end
+
+if extractwhat==11 && isempty(maptoget) %uncertainty has not been calculated
+	gui.custom_msgbox('msg',getappdata(0,'hgui'),'No uncertainty data',...
+		['No uncertainty map found for this frame. ' ...
+		'Re-analyze with ''Compute uncertainty'' enabled.'],...
+		'modal',{'OK'},'OK');
+	returned_data=[];
+	returned_header=[];
+	return
+end
+
 xposition=gui.retr('xposition');
 yposition=gui.retr('yposition');
 extract_type = gui.retr('extract_type');
@@ -40,7 +54,7 @@ else
 	unitpar=get(handles.extraction_choice_area,'string');
 	unitpar=unitpar{get(handles.extraction_choice_area,'value')};
 	%unitpar=unitpar(strfind(unitpar,'[')+1:end-1);
-	unitpar=unitpar(strfind(unitpar,'in ')+3:end);
+	idx_in=strfind(unitpar,'in '); if ~isempty(idx_in); unitpar=unitpar(idx_in(end)+3:end); end
 
 	if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0 %if there is data in the current frame
 		maptoget=plot.rescale_maps_nan(maptoget,0,currentframe);
