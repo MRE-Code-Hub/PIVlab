@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masking · PIVlab Manual</title>
+  <meta name="description" content="How to mask images in PIVlab — draw, apply, edit and auto-generate masks that exclude regions from the PIV analysis.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Masking</h1>
+    <p class="lead">Masking tells PIVlab which parts of your images to ignore — solid
+    walls, models, reflections or any region without valid tracer particles. Masked pixels
+    produce no vectors and are excluded from all results and statistics.</p>
+
+    <p>A mask is a shape (or several shapes) drawn on top of the image. Inside a mask, the
+    velocity is set to <em>“not a number”</em> (<code>NaN</code>), so it never contributes to
+    the correlation, the plots or the averaged data. Masks are stored per frame, but can be
+    copied to as many frames as you like — useful when an object stays still throughout a
+    time-resolved recording.</p>
+
+    <div class="split">
+      <div>
+        <h2 id="opening">Opening the masking panel</h2>
+        <p>From the menu bar choose
+        <span class="ui">Image settings → Define masks (exclude regions from analysis)</span>.
+        The left-hand panel switches to <span class="ui">Image masking</span>, shown here.</p>
+        <p>Load your images first (<span class="ui">File → New session</span>) so the image is
+        visible while you draw. If a region is hard to see, use the
+        <span class="ui">Image display options</span> buttons — <span class="ui">Brighter</span>,
+        <span class="ui">Darker</span> and <span class="ui">Display average</span> (the mean of
+        all frames) — to make objects and reflections stand out.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/masking/panel-basic.png" alt="PIVlab Image masking panel in Basic mode">
+        <figcaption>The <strong>Image masking</strong> panel (Basic mode).</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="mode">Mode and Capabilities</h2>
+    <p>Two dropdowns at the top of the panel control how masking behaves:</p>
+    <table class="ref">
+      <tr><th>Dropdown</th><th>Options</th><th>What it does</th></tr>
+      <tr>
+        <td>Mode</td>
+        <td>Edit mask / Preview mask</td>
+        <td><strong>Edit mask</strong> shows every mask as an editable shape you can drag and
+        resize. <strong>Preview mask</strong> shows the masks only as a coloured overlay, so
+        you can check the result without accidentally moving a shape.</td>
+      </tr>
+      <tr>
+        <td>Capabilities</td>
+        <td>Basic / Expert</td>
+        <td><strong>Basic</strong> gives you the manual drawing tools. <strong>Expert</strong>
+        adds the automatic mask generators (see <a href="#automatic">Automatic masks</a>).</td>
+      </tr>
+    </table>
+
+    <h2 id="drawing">Drawing a mask</h2>
+    <p>With <span class="ui">Mode: Edit mask</span> and <span class="ui">Capabilities: Basic</span>,
+    the <span class="ui">Polygon mask items</span> panel offers five drawing tools:</p>
+    <table class="ref">
+      <tr><th>Tool</th><th>Use it for</th></tr>
+      <tr><td>Free hand</td><td>Tracing an irregular outline by dragging the mouse.</td></tr>
+      <tr><td>Assisted f.h.</td><td>Freehand drawing that snaps to nearby image edges.</td></tr>
+      <tr><td>Circle</td><td>Round objects such as cylinders or bubbles.</td></tr>
+      <tr><td>Rectangle</td><td>Straight-edged regions and image borders.</td></tr>
+      <tr><td>Polygon</td><td>Click corner-by-corner to enclose a straight-sided region.</td></tr>
+    </table>
+
+    <p><strong>Worked example — mask the cylinder in the Kármán example.</strong> The example
+    images contain a dark cylindrical rod that should be excluded:</p>
+    <ol class="steps">
+      <li>Zoom in on the object first: click the magnifier icon, drag a rectangle around it,
+      then click the magnifier again to leave zoom mode. This makes accurate drawing easier.</li>
+      <li>Click <span class="ui">Circle</span> in the <span class="ui">Polygon mask items</span> panel.</li>
+      <li>In the image, <strong>press and drag with the left mouse button</strong> to draw the
+      circle; <strong>release</strong> to finish. In PIVlab the left mouse button performs the
+      action and the right mouse button ends it.</li>
+      <li>Fine-tune the shape by dragging its handles or its centre until it covers the object.</li>
+    </ol>
+
+    <figure>
+      <img src="../assets/img/masking/circle-on-rod.png" alt="A red circular mask covering the dark cylindrical rod">
+      <figcaption>A circular mask (red, semi-transparent) placed over the rod. The red handles
+      appear in <strong>Edit mask</strong> mode and let you move and resize the shape.</figcaption>
+    </figure>
+
+    <p>You can draw as many masks as you need in a frame — add a rectangle along an edge and a
+    circle over an object, for example. To remove a single mask, click it and press
+    <kbd>Delete</kbd>, or right-click it and choose the delete option.</p>
+
+    <div class="tip">
+      <strong>Tip</strong>
+      Already have a mask as a black-and-white image (for example from another program)? Use
+      <span class="ui">Import pixel mask</span> to load it from a binary image file instead of
+      drawing by hand.
+    </div>
+
+    <div class="split">
+      <div>
+        <h2 id="frames">Applying a mask to several frames</h2>
+        <p>Masks start out on the current frame only. Because the rod does not move during the
+        recording, the same mask should apply to every frame. Use the
+        <span class="ui">Mask operations</span> panel:</p>
+        <ol class="steps">
+          <li>In the field next to <span class="ui">Copy mask to frames</span>, enter the
+          frames to copy to. The default <code>1:end</code> means “all frames”.</li>
+          <li>Click <span class="ui">Copy mask to frames</span>. The masks from the current
+          frame are copied to every frame you listed.</li>
+        </ol>
+        <p>The frame field accepts MATLAB-style ranges: <code>1:end</code> (all frames),
+        <code>1,4,7</code> (individual frames), <code>10:15</code> (a continuous range), or a
+        combination. <code>end</code> always means the last frame.</p>
+        <p>To remove masks again, enter a range next to
+        <span class="ui">Clear masks in frames</span> and click it — only the frames you list
+        are cleared.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/masking/mask-operations.png" alt="Mask operations panel with frame-range fields">
+        <figcaption>The <strong>Mask operations</strong> panel with its frame-range fields.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="overlapping">Overlapping masks — keeping only a region</h2>
+    <p>When masks overlap, PIVlab combines them with an <strong>even–odd rule</strong>: a pixel
+    is excluded from the analysis when it lies inside an <strong>odd</strong> number of masks.
+    One mask over an area excludes it; a second mask overlapping the first <em>cancels the
+    overlap</em> and brings that region back into the analysis; a third overlap excludes it
+    again, and so on.</p>
+
+    <p>This turns an otherwise awkward task into two steps: to <strong>analyse only a small
+    region and exclude everything else</strong>, use two overlapping masks —</p>
+    <ol class="steps">
+      <li>Draw a large mask (for example a <span class="ui">Rectangle</span>) covering the
+      whole image. On its own, this would exclude everything.</li>
+      <li>Draw a smaller mask of any shape over just the region you want to keep. Where it
+      overlaps the large mask the two cancel, so that region stays <em>un-masked</em> and is
+      the only part analysed.</li>
+    </ol>
+
+    <figure>
+      <svg viewBox="0 0 460 230" role="img" aria-label="Diagram: a large mask covers the whole image while a smaller overlapping mask in the middle cancels out, leaving the centre analysed."
+           style="width:100%;max-width:460px;font-family:inherit;">
+        <!-- image frame -->
+        <rect x="12" y="14" width="300" height="202" rx="6"
+              fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.5"/>
+        <!-- masked region = big mask MINUS the overlap (even-odd fill) -->
+        <path fill="#c8302a" fill-opacity="0.42" fill-rule="evenodd"
+              d="M24 26 H300 V204 H24 Z M132 96 H192 V150 H132 Z"/>
+        <!-- outlines of the two masks -->
+        <rect x="24" y="26" width="276" height="178" fill="none"
+              stroke="#c8302a" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <rect x="132" y="96" width="60" height="54" fill="none"
+              stroke="var(--gold-strong)" stroke-width="2"/>
+        <!-- labels -->
+        <text x="162" y="126" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">analysed</text>
+        <text x="70" y="52" fill="var(--text)" font-size="12" font-weight="600">masked</text>
+        <!-- legend -->
+        <rect x="332" y="40" width="18" height="14" fill="#c8302a" fill-opacity="0.42" stroke="#c8302a"/>
+        <text x="358" y="51" fill="var(--text-soft)" font-size="12">1 mask &#8594; excluded</text>
+        <rect x="332" y="70" width="18" height="14" fill="var(--bg-soft)" stroke="var(--gold-strong)" stroke-width="2"/>
+        <text x="358" y="81" fill="var(--text-soft)" font-size="12">2 masks &#8594; kept</text>
+      </svg>
+      <figcaption>A full-image mask plus a smaller overlapping mask. The overlap cancels
+      (even count), so only the centre is analysed — everything else is excluded.</figcaption>
+    </figure>
+
+    <div class="note">
+      <strong>Want a union instead of a hole?</strong>
+      If you need two overlapping masks to <em>merge</em> into one solid exclusion rather than
+      cancel, select them and click <span class="ui">Combine</span> (see below). Combine fuses
+      all overlapping masks in the frame into a single shape, so the overlap is filled in
+      rather than cut out.
+    </div>
+
+    <h2 id="editing">Editing, removing and combining masks</h2>
+    <p>The <span class="ui">Mask modifications</span> panel adjusts the currently selected
+    mask (click a mask to select it):</p>
+    <table class="ref">
+      <tr><th>Button</th><th>Effect</th></tr>
+      <tr><td>Shrink mask</td><td>Contracts the selected mask inward.</td></tr>
+      <tr><td>Grow mask</td><td>Expands the selected mask outward — handy for adding a small safety margin around an object.</td></tr>
+      <tr><td>Simplify</td><td>Reduces the number of points, giving a smoother, lighter outline.</td></tr>
+      <tr><td>Subdivide</td><td>Adds points, allowing finer detail.</td></tr>
+      <tr><td>Optimize</td><td>Re-distributes the outline points for a cleaner shape.</td></tr>
+      <tr><td>Combine</td><td>Merges all overlapping masks in the current frame into one.</td></tr>
+    </table>
+
+    <div class="tip">
+      <strong>Masks too opaque (or too faint) to see the image underneath?</strong>
+      The red overlay's see-through amount is a separate setting — <span class="ui">Mask
+      transparency [%]</span> in <a href="plot-appearance.html">Modify plot appearance</a>.
+    </div>
+
+    <h2 id="automatic">Automatic masks (Expert mode)</h2>
+    <p>Switch <span class="ui">Capabilities</span> to <span class="ui">Expert</span> to reveal
+    the <span class="ui">Generate masks from PIV images</span> panel. Instead of drawing by
+    hand, PIVlab can detect regions to mask directly from the image content. Pick a generator
+    from the dropdown:</p>
+    <ul>
+      <li><strong>Bright area mask generator</strong> — masks over-exposed regions such as
+      glare and reflections (bright pixels above a threshold).</li>
+      <li><strong>Dark area mask generator</strong> — masks dark objects and shadows (pixels
+      below a threshold).</li>
+      <li><strong>Low contrast area mask generator</strong> — masks regions with too few
+      particles to correlate reliably. The <span class="ui">Suggest threshold</span> button
+      proposes a sensible starting value.</li>
+    </ul>
+
+    <div class="split">
+      <div>
+        <p>Each generator has a <span class="ui">Threshold</span> plus optional clean-up filters
+        (median smoothing, morphological open/close, dilate/erode, remove small blobs, fill
+        holes). Enable only what you need — for a first attempt, the threshold alone is often
+        enough. Then use the three buttons at the bottom:</p>
+        <ol class="steps">
+          <li><span class="ui">Preview current frame</span> — see the detected region without
+          committing, and adjust the threshold until it fits.</li>
+          <li><span class="ui">Make mask for current frame</span> — turn the preview into a real
+          mask on this frame.</li>
+          <li><span class="ui">Make mask for all frames</span> — run the detection on every
+          frame in the session.</li>
+        </ol>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/masking/panel-expert.png" alt="Expert-mode automatic mask generator panel">
+        <figcaption>The <strong>Expert</strong> panel with the bright-area generator selected.</figcaption>
+      </figure>
+    </div>
+
+    <div class="note">
+      <strong>Automatic masks are editable</strong>
+      A generated mask becomes an ordinary shape. Switch back to <span class="ui">Edit mask</span>
+      mode to fine-tune it, or use <span class="ui">Grow mask</span> to add a margin.
+    </div>
+
+    <h2 id="saveload">Saving, loading and importing masks</h2>
+    <p>Masks are stored with your PIVlab session, but you can also reuse them independently:</p>
+    <table class="ref">
+      <tr><th>Button</th><th>Action</th></tr>
+      <tr><td>Save all masks</td><td>Writes every mask in the session to a MATLAB <code>.mat</code> file for reuse.</td></tr>
+      <tr><td>Load mask(s)</td><td>Loads masks that were previously saved from PIVlab.</td></tr>
+      <tr><td>Import pixel mask</td><td>Imports a mask from a black-and-white image file (Basic mode).</td></tr>
+    </table>
+
+    <div class="tip">
+      <strong>Remember</strong>
+      Masking only affects the analysis when the masked frames are analysed. Set up your masks
+      <em>before</em> running the PIV analysis, or re-run the analysis after changing them.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

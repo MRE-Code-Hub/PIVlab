@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interface &amp; workflow · PIVlab Manual</title>
+  <meta name="description" content="How the PIVlab window is laid out, the left-to-right analysis workflow, and the Tools panel at the bottom left.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">The interface &amp; workflow</h1>
+    <p class="lead">Before diving into individual features, it helps to know how the PIVlab
+    window is organised and the order you're meant to work through it. Almost everything in
+    PIVlab follows one simple rule: <strong>work from the left of the menu bar to the
+    right</strong>.</p>
+
+    <h2 id="layout">The main layout</h2>
+    <p>The window is organised into a handful of regions, numbered here to match the rest of
+    this page:</p>
+
+    <figure>
+      <div class="annot">
+        <img src="../assets/img/interface/gui-overview.jpg"
+             alt="The PIVlab main window, with the menu bar across the top, the settings panel and the tool strips down the left side, and the large image display filling the centre and right.">
+        <svg viewBox="0 0 1248 918" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <g fill="none" stroke="#c3d400" stroke-width="3.5">
+            <rect x="3"   y="32"  width="1242" height="24"  rx="3"/>
+            <rect x="5"   y="59"  width="253"  height="586" rx="3"/>
+            <rect x="261" y="59"  width="983"  height="744" rx="3"/>
+            <rect x="5"   y="648" width="253"  height="47"  rx="3"/>
+            <rect x="5"   y="697" width="253"  height="40"  rx="3"/>
+            <rect x="5"   y="739" width="253"  height="173" rx="3"/>
+          </g>
+          <g font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">
+            <g><circle cx="1015" cy="44"  r="17" fill="#c3d400"/><text x="1015" y="44"  dy="0.34em" text-anchor="middle" fill="#12160f">1</text></g>
+            <g><circle cx="236"  cy="80"  r="17" fill="#c3d400"/><text x="236"  y="80"  dy="0.34em" text-anchor="middle" fill="#12160f">2</text></g>
+            <g><circle cx="1216" cy="82"  r="17" fill="#c3d400"/><text x="1216" y="82"  dy="0.34em" text-anchor="middle" fill="#12160f">3</text></g>
+            <g><circle cx="236"  cy="671" r="17" fill="#c3d400"/><text x="236"  y="671" dy="0.34em" text-anchor="middle" fill="#12160f">4</text></g>
+            <g><circle cx="236"  cy="717" r="17" fill="#c3d400"/><text x="236"  y="717" dy="0.34em" text-anchor="middle" fill="#12160f">5</text></g>
+            <g><circle cx="236"  cy="757" r="17" fill="#c3d400"/><text x="236"  y="757" dy="0.34em" text-anchor="middle" fill="#12160f">6</text></g>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        <ol class="legend">
+          <li><span class="n">1</span><span><b>Menu bar</b> — every tool, ordered left-to-right.</span></li>
+          <li><span class="n">2</span><span><b>Settings panel</b> — configures the selected step; swaps per menu item.</span></li>
+          <li><span class="n">3</span><span><b>Image display</b> — your image, vectors and overlays.</span></li>
+          <li><span class="n">4</span><span><b>Quick access</b> — icon shortcuts to common steps.</span></li>
+          <li><span class="n">5</span><span><b>Progress</b> — a bar for long operations.</span></li>
+          <li><span class="n">6</span><span><b>Tools</b> — frame navigation, zoom/pan and a live readout.</span></li>
+        </ol>
+      </figcaption>
+    </figure>
+
+    <p>Selecting a menu item (region 1) swaps the settings panel (region 2); it does not open a
+    separate window. That's why the workflow feels like moving a single panel through a sequence
+    of steps. Regions 4–6 down the bottom-left are always visible, whatever step you're on — they
+    are described in <a href="#tools">The Tools panel</a> and <a href="#quickaccess">Quick access
+    &amp; progress</a> below.</p>
+
+    <h2 id="workflow">Work from left to right</h2>
+    <p>The menu bar mirrors a typical PIV analysis, in order. A normal session moves through it
+    roughly like this:</p>
+    <ol class="steps">
+      <li><span class="ui">File</span> — start a <a href="sessions.html">new session and import
+      images</a>.</li>
+      <li><span class="ui">Image settings</span> — optionally set a
+      <a href="roi.html">region of interest</a>, draw <a href="masking.html">masks</a>, and
+      apply <a href="preprocessing.html">pre-processing</a>.</li>
+      <li><span class="ui">Analysis</span> — choose <a href="piv-settings.html">PIV settings</a>
+      and <a href="analyze.html">run the analysis</a>.</li>
+      <li><span class="ui">Validation</span> — remove bad vectors
+      (<a href="validation-velocity.html">velocity-based</a> and
+      <a href="validation-image.html">image-based</a>).</li>
+      <li><span class="ui">Spatial calibration</span> — convert
+      <a href="spatial-calibration.html">pixels to millimeters</a>.</li>
+      <li><span class="ui">Plot</span> — <a href="derive-spatial.html">derive parameters</a>
+      (vorticity, etc.) and <a href="plot-appearance.html">adjust the display</a>.</li>
+      <li><span class="ui">Extractions</span> / <span class="ui">Statistics</span> — pull out
+      <a href="extract-polyline.html">profiles</a>, <a href="extract-area.html">averages</a> and
+      <a href="statistics.html">statistics</a>.</li>
+      <li><span class="ui">File → Export</span> — <a href="export.html">save your results</a>.</li>
+    </ol>
+    <p>You don't have to use every step — a minimal analysis is just import → PIV settings →
+    analyze — but the left-to-right order is always the safe path.</p>
+
+    <div class="tip">
+      <strong>Tool tips are everywhere</strong>
+      Hover the mouse over any button, checkbox or field and a tool tip appears explaining what
+      it does. This manual is built from those same descriptions — when in doubt, hover.
+    </div>
+
+    <h2 id="tools">The Tools panel (bottom left, region 6)</h2>
+    <p>The <span class="ui">Tools</span> panel is always visible, whatever step you're on. It
+    handles navigation and inspection of whatever is currently displayed:</p>
+    <table class="ref">
+      <tr><th>Control</th><th>What it does</th></tr>
+      <tr><td>Frame slider</td><td>Steps through the frames of your session (tool tip: "Step through your frames here"). The filename of the current frame is shown just above it.</td></tr>
+      <tr><td>Toggle</td><td>Switches between the two images (A and B) of the current frame.</td></tr>
+      <tr><td>Zoom / Pan</td><td>The two icon buttons enable zooming and panning of the image display. Click a button again to leave that mode.</td></tr>
+      <tr><td>Parallel-processing toggle</td><td>Turns multi-core parallel processing on or off (it opens or closes a parallel pool). Useful to speed up analysing many frames.</td></tr>
+      <tr><td>Current point</td><td>A live readout of the data under the cursor. After an analysis, <strong>click a vector</strong> in the image to show its position (x, y), its velocity components (u, v) and the value of the displayed scalar at that point.</td></tr>
+    </table>
+
+    <h2 id="quickaccess">Quick access &amp; progress (regions 4 and 5)</h2>
+    <p>Just above the Tools panel are two more always-visible strips:</p>
+    <ul>
+      <li><span class="ui">Main tasks quick access</span> (region 4) — six icon buttons that jump
+      straight to the most common steps: <span class="ui">Load images</span>,
+      <span class="ui">Mask generation</span>, <span class="ui">Pre-processing</span>,
+      <span class="ui">PIV settings</span>, <span class="ui">Analyze</span> and
+      <span class="ui">Calibrate</span>. They're shortcuts to menu items you'd otherwise reach
+      from the menu bar.</li>
+      <li><span class="ui">Progress</span> (region 5) — a bar that fills up during long operations
+      such as analysing all frames, so you can see how far along a batch job is.</li>
+    </ul>
+
+    <h2 id="conventions">Mouse &amp; coordinate conventions</h2>
+    <p>Two conventions hold throughout PIVlab:</p>
+    <ul>
+      <li><strong>Mouse:</strong> when drawing (masks, ROIs, extraction lines, markers), the
+      <strong>left</strong> mouse button performs the action and the <strong>right</strong>
+      mouse button ends it.</li>
+      <li><strong>Coordinates:</strong> the origin is at the top-left of the image.
+      <em>u</em> is the horizontal velocity component and <em>v</em> is the vertical one. This
+      coordinate system can be adjusted after <a href="spatial-calibration.html">calibration</a>.</li>
+    </ul>
+
+    <h2 id="modes">Basic vs. Advanced mode</h2>
+    <p>PIVlab can run in a simplified <strong>Basic</strong> mode or a full
+    <strong>Advanced</strong> mode. Basic hides the more specialized controls for a cleaner
+    first experience; Advanced exposes everything described in this manual. You choose a mode at
+    startup, and can switch anytime from the <span class="ui">File → Mode</span> menu.</p>
+    <div class="note">
+      <strong>This manual assumes Advanced mode</strong>
+      Some panels and options described here are hidden in Basic mode. If you can't find a
+      control mentioned in the manual, switch to Advanced mode.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

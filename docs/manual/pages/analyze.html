@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running the analysis · PIVlab Manual</title>
+  <meta name="description" content="How to run a PIV analysis in PIVlab — analysing a single frame or the whole session, tracking progress, cancelling, and clearing results.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Running the analysis (ANALYZE!)</h1>
+    <p class="lead">Once your images, masks, ROI and PIV settings are ready, this is where you
+    actually run the cross-correlation and get vectors.</p>
+
+    <div class="split">
+      <div>
+        <h2 id="opening">Opening the panel</h2>
+        <p>Choose <span class="ui">Analysis → ANALYZE!</span> (<kbd>Ctrl+A</kbd>). The panel is
+        deliberately simple: two buttons to start an analysis, a way to track and cancel
+        progress, and a way to clear results.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/analyze/panel.png" alt="PIVlab Analyze panel">
+        <figcaption>The <strong>Analyze</strong> panel.</figcaption>
+      </figure>
+    </div>
+
+    <figure>
+      <img src="../assets/img/analyze/result-vectors.png" alt="Velocity vector field over the Karman vortex example after analysis">
+      <figcaption>The result of an analysis: a velocity vector field, here over the
+      Kármán-vortex example. (Note the single long, wrong vector near the rod — exactly the kind
+      of outlier <a href="validation-velocity.html">validation</a> removes.)</figcaption>
+    </figure>
+
+    <h2 id="running">Analyzing current frame vs. all frames</h2>
+    <table class="ref">
+      <tr><th>Button</th><th>Effect</th></tr>
+      <tr>
+        <td>Analyze current frame</td>
+        <td>Runs the PIV analysis on just the frame you're currently viewing — the same quick
+        test available directly from the PIV settings panel.</td>
+      </tr>
+      <tr>
+        <td>Analyze all frames</td>
+        <td>Runs the analysis across every loaded frame, one after another, using your current
+        PIV settings.</td>
+      </tr>
+    </table>
+    <div class="note">
+      <strong>This button renames itself for Ensemble</strong>
+      If the <span class="ui">Ensemble multipass FFT window deformation</span> algorithm is
+      selected, this button reads <span class="ui">Start ensemble analysis</span> instead —
+      because ensemble correlation works across the whole sequence at once rather than
+      frame-by-frame.
+    </div>
+
+    <h2 id="progress">Tracking and cancelling progress</h2>
+    <p>While an analysis runs, PIVlab shows <span class="ui">Frame progress</span>,
+    <span class="ui">Total progress</span> and an estimated <span class="ui">Time left</span>.
+    Click <span class="ui">Cancel</span> at any point to stop — frames already analysed keep
+    their results.</p>
+    <div class="tip">
+      <strong>Refresh display</strong>
+      The <span class="ui">Refresh display</span> checkbox updates the on-screen vector plot as
+      each frame finishes. Turning it off speeds up processing, since PIVlab isn't
+      constantly redrawing — worth doing for long batch runs. It's hidden automatically when
+      parallel processing is enabled, since frames aren't completed in a simple sequential order.
+    </div>
+
+    <h2 id="clear">Clearing results</h2>
+    <p>Click <span class="ui">Clear all results</span> to discard the current analysis
+    results and derived parameters and reset the progress display — useful before re-running
+    with different settings. This only clears <em>results</em>; your images, masks, ROI and PIV
+    settings are untouched.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

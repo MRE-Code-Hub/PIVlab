@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image pre-processing · PIVlab Manual</title>
+  <meta name="description" content="How to use PIVlab's image pre-processing filters — CLAHE, highpass, intensity capping, Wiener denoise, auto contrast stretch and background subtraction.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Image pre-processing</h1>
+    <p class="lead">Pre-processing filters clean up your images before the cross-correlation
+    runs, so PIVlab can find particles more reliably. They don't change your original image
+    files — they're applied on the fly whenever an image is analysed or previewed.</p>
+
+    <div class="split">
+      <div>
+        <h2 id="opening">Opening the panel</h2>
+        <p>Choose <span class="ui">Image settings → Image pre-processing / enhancement</span>
+        (<kbd>Ctrl+I</kbd>). Every filter here has its own tool tip — hover over a checkbox or
+        field for a short explanation.</p>
+        <p>Two filters are <strong>enabled by default</strong>: <span class="ui">Enable
+        CLAHE</span> and <span class="ui">Auto contrast stretch</span>. For most datasets these
+        two are all you need; the rest exist for specific, less common problems.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/preprocessing/panel.png" alt="PIVlab Image pre-processing panel">
+        <figcaption>The <strong>Image pre-processing</strong> panel, with its default filters enabled.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="clahe">CLAHE (recommended, on by default)</h2>
+    <p><span class="ui">Enable CLAHE</span> — Contrast Limited Adaptive Histogram
+    Equalization — locally boosts contrast across the image, which generally makes particles
+    easier for the correlation to distinguish. <span class="ui">Window size [px]</span>
+    (default 64) sets the tile size CLAHE works on; the default is fine in most cases.</p>
+
+    <h2 id="specialcases">Filters for special cases (off by default)</h2>
+    <p>These address specific image problems. Leave them off unless you have a concrete reason
+    to turn one on:</p>
+    <table class="ref">
+      <tr><th>Filter</th><th>Parameter</th><th>What it's for</th></tr>
+      <tr>
+        <td>Enable highpass</td>
+        <td>Kernel size [px] (default 15)</td>
+        <td>Subtracts a low-pass (blurred) version of the image from itself, removing slow
+        background brightness variations while keeping fine particle detail.</td>
+      </tr>
+      <tr>
+        <td>Enable intensity capping</td>
+        <td>—</td>
+        <td>Caps very bright pixels (e.g. reflections or glare) so a few extreme values don't
+        dominate the correlation.</td>
+      </tr>
+      <tr>
+        <td>Wiener2 denoise and low pass</td>
+        <td>Window size [px] (default 15)</td>
+        <td>Wiener denoising followed by a Gaussian low-pass — reduces sensor noise in
+        low-quality or noisy images.</td>
+      </tr>
+    </table>
+
+    <h2 id="autocontrast">Auto contrast stretch (recommended, on by default)</h2>
+    <p><span class="ui">Auto contrast stretch</span> automatically stretches the image's
+    intensity histogram between a <span class="ui">minimum</span> and <span class="ui">maximum</span>
+    value. This matters most for <strong>16-bit images</strong>, whose useful intensity range is
+    often only a small slice of the full range — without stretching, the image can look
+    almost blank. The two fields show the detected bounds (0–1 scale) and update automatically.</p>
+
+    <h2 id="background">Background subtraction</h2>
+    <p>The <span class="ui">Background Subtraction</span> panel computes one background image
+    from your whole loaded sequence and subtracts it from every frame — useful for removing a
+    static, unwanted structure (a fixed reflection, a stationary object's outline) that would
+    otherwise interfere with the correlation.</p>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>Dropdown: off / subtract average intensity / subtract minimum intensity</td>
+          <td>Chooses whether to build the background from the <em>average</em> or the
+          <em>minimum</em> intensity across all loaded images, or to disable subtraction.</td></tr>
+      <tr><td>View background image</td><td>Displays the computed background; click again to toggle between the A and B background.</td></tr>
+      <tr><td>Save / Load</td><td>Save the computed background image to reuse later, or load one you saved previously.</td></tr>
+    </table>
+
+    <h2 id="apply">Applying your changes</h2>
+    <ol class="steps">
+      <li>Enable and configure the filters you want.</li>
+      <li>Click <span class="ui">Apply and preview current frame</span> to see the result on the
+      frame currently shown. This is only a preview — but the same filter settings are
+      automatically applied to <strong>every frame</strong> in the session once you run the PIV
+      analysis, so you don't need to repeat this per frame.</li>
+      <li>Optionally, click <span class="ui">Export preview</span> to save the pre-processed
+      image currently shown (use the <span class="ui">Toggle</span> button in the Tools panel
+      to switch between image A and B first).</li>
+    </ol>
+
+    <h2 id="tips">Tips &amp; tricks: preprocessing isn't a fix-all</h2>
+    <ul>
+      <li><strong>Start simple.</strong> Leave the defaults (CLAHE + Auto contrast stretch)
+      enabled and run a quick test analysis before reaching for anything else.</li>
+      <li><strong>Change one filter at a time.</strong> Enabling several at once makes it hard to
+      tell which one actually helped — or hurt.</li>
+      <li><strong>Always compare processed vs. unprocessed.</strong> Use <span class="ui">Apply
+      and preview current frame</span> to see the effect before committing, rather than assuming
+      more filtering is better.</li>
+    </ul>
+    <div class="warn">
+      <strong>Preprocessing changes your measured velocities</strong>
+      Filters here are not a cosmetic step — they alter the image data the correlation actually
+      runs on, which can shift your results. Treat preprocessing as a real analysis decision, and
+      revisit it if something about your results looks off. It also can't rescue fundamentally
+      poor image data; see <a href="best-practices.html#seeding">Particle seeding &amp; image
+      quality</a> for what to fix upstream instead.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Correlation matrices · PIVlab Manual</title>
+  <meta name="description" content="How to inspect the raw cross-correlation matrix behind any individual vector in PIVlab.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Correlation matrices</h1>
+    <p class="lead">A diagnostic tool for looking under the hood of a single vector — the raw
+    correlation surface that produced it, for every pass.</p>
+    <p>Open via <span class="ui">Plot → Correlation matrices</span>.</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/correlation-matrices/panel.png" alt="PIVlab Display correlation matrices panel">
+      <figcaption>The <strong>Display correlation matrices</strong> panel.</figcaption>
+    </figure>
+
+    <ol class="steps">
+      <li>Click <span class="ui">Retrieve correlation matrices</span> to compute them for the
+      currently displayed frame.</li>
+      <li>Click on any vector in the plot to display the correlation matrices of all passes for
+      that specific vector.</li>
+    </ol>
+    <figure>
+      <img src="../assets/img/correlation-matrices/result.jpg" alt="Pop-up showing four correlation matrices for one vector, one per pass, each with a single bright peak; the interrogation window shrinks from 128x128 down to 20x20 across the passes">
+      <figcaption>The correlation matrices for a single vector, one per pass. The interrogation
+      window shrinks each pass (128×128 → 20×20 here), and each surface has a clear, single peak
+      — the sign of a reliable vector.</figcaption>
+    </figure>
+
+    <p>What the surface looks like tells you why a vector turned out the way it did:</p>
+    <table class="ref">
+      <tr><th>Peak shape</th><th>Meaning</th></tr>
+      <tr><td>Sharp, single, dominant peak</td><td>A reliable match — this is what you want to see.</td></tr>
+      <tr><td>Multiple competing peaks of similar height</td><td>An ambiguous match — the
+      correlation can't clearly tell which displacement is correct.</td></tr>
+      <tr><td>Broad, flat peak</td><td>Poor accuracy — the location is only loosely determined.</td></tr>
+      <tr><td>Noisy surface with no clear peak</td><td>Too few particles or poor image quality
+      in that interrogation area.</td></tr>
+    </table>
+    <div class="tip">
+      <strong>When this is useful</strong>
+      This explains why a particular vector looks wrong or got flagged during
+      <a href="validation-velocity.html">validation</a> — useful for understanding, not just
+      seeing, a bad result.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

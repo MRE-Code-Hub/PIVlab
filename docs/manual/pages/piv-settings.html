@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PIV settings · PIVlab Manual</title>
+  <meta name="description" content="Choosing a PIV algorithm and setting interrogation areas, passes, sub-pixel estimation and correlation robustness in PIVlab.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">PIV settings</h1>
+    <p class="lead">This is where you choose the cross-correlation algorithm and its
+    parameters — the heart of a PIV analysis. Settings here don't compute anything by
+    themselves; they define what happens when you click <span class="ui">Analyze current
+    frame</span> or run the full analysis.</p>
+
+    <div class="split">
+      <div>
+        <h2 id="opening">Opening the panel</h2>
+        <p>Choose <span class="ui">Analysis → PIV settings</span> (<kbd>Ctrl+S</kbd>). The panel
+        reflows depending on which algorithm you pick — the screenshot shows the default,
+        <span class="ui">Multipass FFT window deformation</span>.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/piv-settings/panel-fft.png" alt="PIVlab PIV settings panel with Multipass FFT window deformation selected">
+        <figcaption>The <strong>PIV settings</strong> panel (Multipass FFT window deformation, the default).</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="suggest">Not sure where to start? Suggest settings</h2>
+    <p>Click <span class="ui">Suggest settings</span>, then drag a rectangle around a
+    representative area of your image — one with typical particle density and a typical
+    displacement between frames. PIVlab proposes an interrogation area size from that
+    selection, giving you a reasonable starting point instead of guessing.</p>
+
+    <h2 id="algorithm">Choosing an algorithm</h2>
+    <p>The <span class="ui">PIV algorithm</span> dropdown offers four options — this is
+    PIVlab's own guidance, shown in the dropdown's tool tip:</p>
+    <table class="ref">
+      <tr><th>Algorithm</th><th>When to use it</th></tr>
+      <tr>
+        <td>Multipass FFT window deformation</td>
+        <td>The standard algorithm, suitable for most cases — start here unless you have a
+        specific reason not to.</td>
+      </tr>
+      <tr>
+        <td>Ensemble multipass FFT window deformation</td>
+        <td>For sparsely seeded flows (e.g. micro-PIV), where a single image pair doesn't have
+        enough particles for a reliable correlation on its own.</td>
+      </tr>
+      <tr>
+        <td>Single pass direct cross-correlation (DCC)</td>
+        <td>The first algorithm PIVlab ever implemented — simpler, single-pass, generally
+        superseded by multipass FFT for everyday use.</td>
+      </tr>
+      <tr>
+        <td>Optical flow (wavelet-based, wOFV)</td>
+        <td>Can reach higher spatial resolution with suitable image data, at the cost of speed.
+        Implemented by Schmidt et al.</td>
+      </tr>
+    </table>
+
+    <p>Picking an algorithm changes which controls are shown below it — described per algorithm
+    next.</p>
+
+    <h2 id="fft-ensemble">Multipass FFT window deformation &amp; Ensemble</h2>
+    <p>Both use the same pass-based structure. Analysis proceeds through up to four passes,
+    each with a smaller <span class="ui">Interrogation area</span> than the last, refining the
+    displacement estimate every time:</p>
+    <table class="ref">
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr>
+        <td>Pass 1 → Interrogation area [px]</td>
+        <td>Edge length of the first pass's window. Should be smaller than about a quarter of
+        your expected maximum displacement.</td>
+      </tr>
+      <tr>
+        <td>Pass 1 → Step [px]</td>
+        <td>Spacing between windows — usually 50% of the interrogation area (the panel shows
+        this overlap percentage automatically).</td>
+      </tr>
+      <tr>
+        <td>Pass 2 / 3 / 4 (checkboxes + sizes)</td>
+        <td>Each enabled pass must use an interrogation area no larger than the pass before it.
+        More passes generally improve accuracy and resolution, at the cost of computation time.</td>
+      </tr>
+    </table>
+    <p>For guidance on how large to make each pass and how many passes to use, see
+    <a href="#tips">Tips &amp; tricks: choosing a suitable interrogation area</a> below.</p>
+    <div class="note">
+      <strong>Ensemble has no single-frame preview</strong>
+      <span class="ui">Analyze current frame</span> isn't available for the Ensemble algorithm
+      — it builds one statistical correlation across your <em>entire</em> loaded sequence, so
+      there's nothing meaningful to compute from a single frame pair alone.
+    </div>
+
+    <h2 id="dcc">Single pass direct cross-correlation (DCC)</h2>
+    <p>Only the <span class="ui">Pass 1</span> panel is shown — DCC is single-pass by
+    definition, so there's no Pass 2–4 refinement and no correlation-robustness or
+    auto-correlation option (see the table below).</p>
+
+    <h2 id="wofv">Optical flow (wOFV)</h2>
+    <p>Selecting this algorithm replaces the pass panels with an
+    <span class="ui">Optical flow settings</span> panel:</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/piv-settings/panel-wofv.png" alt="PIVlab PIV settings panel with Optical flow (wavelet-based) selected">
+      <figcaption>The <strong>PIV settings</strong> panel with Optical flow selected.</figcaption>
+    </figure>
+    <table class="ref">
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr><td>Parallel process patches</td><td>Splits the image into patches processed in parallel (Off, a fixed size, or Default).</td></tr>
+      <tr><td>Inter-pass median filter</td><td>Optional median filtering between the coarse-to-fine pyramid levels.</td></tr>
+      <tr><td>Pyramid levels</td><td>Number of coarse-to-fine steps; larger displacements need more levels.</td></tr>
+      <tr><td>Smoothness (eta)</td><td>Regularization parameter controlling how smooth the resulting flow field is.</td></tr>
+    </table>
+    <div class="tip">
+      <strong>wOFV gives one vector per pixel</strong>
+      This is far denser than windowed algorithms. PIVlab notices when you switch to wOFV and
+      offers to reduce the vector <em>display</em> density for you (plotting every 5th vector)
+      — the underlying data is unaffected; you can change this anytime in
+      <span class="ui">Plot → Modify plot appearance → plot every nth vector</span>.
+    </div>
+    <p>The <span class="ui">References</span> panel credits the method's sources: Schmidt, B. E.,
+    and J. A. Sutton, "High-resolution velocimetry from tracer particle fields using a
+    wavelet-based optical flow method," <em>Experiments in Fluids</em> 60.3 (2019): 37; and
+    Jassal, G. R., Thielicke, W. and Schmidt, B. E., "An Optical Flow Algorithm with Automatic
+    Parameter Adjustment for Fluid Velocimetry," <em>Journal of Open Research Software</em>,
+    13(1) (2025), p. 22.</p>
+
+    <h2 id="shared">Sub-pixel estimation, robustness and uncertainty</h2>
+    <p>These extra controls sit below the algorithm-specific panels — which ones are shown
+    depends on the algorithm you picked:</p>
+    <table class="ref">
+      <tr><th>Control</th><th>Shown for</th><th>What it does</th></tr>
+      <tr>
+        <td>Sub-pixel estimator (Gauss 2×3-point / 2D Gauss)</td>
+        <td>FFT, Ensemble, DCC</td>
+        <td>How the peak position is refined below one pixel of precision. 2D Gauss is thought
+        to help slightly with motion-blurred images, but the difference is usually small.</td>
+      </tr>
+      <tr>
+        <td>Disable auto-correlation</td>
+        <td>FFT, Ensemble</td>
+        <td>Rejects displacements very close to zero — useful when a strong background signal
+        would otherwise bias results toward "no motion".</td>
+      </tr>
+      <tr>
+        <td>Correlation robustness (Standard / High / Extreme)</td>
+        <td>FFT, Ensemble</td>
+        <td>Trade speed for robustness against difficult image data. Higher settings are slower.</td>
+      </tr>
+      <tr>
+        <td>Estimate uncertainty (slow)</td>
+        <td>FFT only</td>
+        <td>Computes a velocity-measurement uncertainty estimate (Sciacchitano 2013).
+        Roughly doubles analysis time.</td>
+      </tr>
+    </table>
+
+    <h2 id="tips">Tips &amp; tricks: choosing a suitable interrogation area</h2>
+    <p>This applies mainly to <span class="ui">Multipass FFT window deformation</span> and
+    <span class="ui">Ensemble</span>, where you choose a size for each of several passes. DCC has
+    only one pass by definition, and wOFV doesn't use interrogation areas at all.</p>
+
+    <h3 id="particles-vs-resolution">Balancing particle count and displacement</h3>
+    <p>Two numbers matter most for your <em>final</em> pass: how many particles fall inside each
+    interrogation area, and how far particles travel between frames.</p>
+    <table class="ref">
+      <tr><th>Quantity</th><th>Target</th></tr>
+      <tr><td>Particles per interrogation area (final pass)</td><td>Roughly 5–15. Too few gives a
+      weak, noisy correlation peak; too many is fine — it just costs resolution.</td></tr>
+      <tr><td>Particle displacement between frames</td><td>Roughly 2–8 px. Large interrogation
+      areas are fine and will only limit your resolution, not your accuracy.</td></tr>
+    </table>
+    <p>It's tempting to shrink the final interrogation area further just to get a denser-looking
+    vector field. Resist it — a smaller window with too few particles produces noisier, less
+    accurate vectors even though the plot <em>looks</em> higher-resolution. Make the final
+    interrogation area as large as your target particle count and displacement allow, not as
+    small as possible.</p>
+
+    <h3 id="multipass-changes-rules">How multi-pass deformation changes the rules</h3>
+    <p>The classical "¼ rule" — keep the interrogation window at least four times the maximum
+    expected displacement — is a reasonable starting point, but it was designed for single-pass
+    correlation. It doesn't strictly apply once you're running multiple passes with window
+    deformation, and later passes can safely use much smaller windows than the rule would
+    suggest. There's no universally valid formula here; some tuning by eye is unavoidable.</p>
+    <p>That's because each pass solves a different problem. Pass 1 only needs a rough displacement
+    estimate, so a large window helps — it improves signal-to-noise, converges more reliably, and
+    produces fewer failed correlations. Every later pass deforms and repositions its windows
+    using the previous pass's estimate, which lets it safely use a smaller window than a
+    single-pass algorithm ever could. A typical three-pass progression is 128 → 64 → 32 px. More
+    passes generally reduce noise and bias further, at the cost of computation time — three is a
+    reasonable default.</p>
+
+    <h3 id="starting-workflow">A practical starting workflow</h3>
+    <p>Put together, this is a reasonable order to work through when setting up a new analysis:</p>
+    <table class="ref">
+      <tr><th>Step</th><th>Recommendation</th></tr>
+      <tr><td>Estimate displacement</td><td>Aim for roughly 2–8 px between frames.</td></tr>
+      <tr><td>Choose Pass 1</td><td>Use a large interrogation area — often 128 px, sometimes larger.</td></tr>
+      <tr><td>Subsequent passes</td><td>Reduce gradually, e.g. 128 → 64 → 32 px.</td></tr>
+      <tr><td>Check particle count</td><td>Aim for 5–15 particles in the final interrogation area.</td></tr>
+      <tr><td>Inspect results</td><td>Look for noisy vectors or failed correlations.</td></tr>
+      <tr><td>If noisy</td><td>Increase the final interrogation area.</td></tr>
+      <tr><td>If resolution is insufficient</td><td>Decrease the final interrogation area — only
+      if correlation quality stays acceptable.</td></tr>
+    </table>
+    <p>None of this is exact — treat it as a starting point, then adjust based on what
+    <span class="ui">Analyze current frame</span> shows you (see <a href="#preview">Testing your
+    settings</a> below).</p>
+
+    <h3 id="dont-fix-with-ia">When not to fix it with interrogation area size</h3>
+    <div class="warn">
+      <strong>Don't tune around a bad image</strong>
+      Noisy or missing vectors are often caused by the images themselves — poor seeding density,
+      compression artifacts, a thick laser sheet, uneven illumination — not by interrogation-area
+      choice. No amount of parameter tuning fully compensates for poor image quality; see
+      <a href="best-practices.html#seeding">Particle seeding &amp; image quality</a> for what to
+      check first.
+    </div>
+    <div class="note">
+      <strong>If PIVlab warns your image data looks problematic</strong>
+      A warning like "try increasing the Pass 1 interrogation area size to 256 pixels" is worth
+      acting on, but it can also be triggered by skipped camera frames or an unusually large
+      displacement — not only by interrogation-area size. Check those too before assuming it's
+      purely an IA problem.
+    </div>
+    <p>The <a href="#suggest"><span class="ui">Suggest settings</span></a> button gives you a
+    first estimate from your image's particle density and typical displacement — a good starting
+    point, not a substitute for checking the result against the workflow above.</p>
+
+    <h3 id="choosing-dt">Choosing Δt together with the interrogation area</h3>
+    <p>The time step between your two images (the same value you'll later enter as
+    <span class="ui">time step in ms</span> in <a href="spatial-calibration.html">spatial
+    calibration</a>) and your interrogation area choice are not independent — pick them together.
+    Aim for the same 2–8 px displacement discussed above: too small a Δt increases uncertainty,
+    too large a Δt causes the correlation to fail outright.</p>
+    <p>Rather than calculating the ideal Δt in advance, it's often quicker to just enter a rough
+    guess, run a quick test analysis, then click a vector in the region that matters to you — the
+    <a href="interface.html#tools">Tools panel</a> (bottom left, "Current point") reports the
+    displacement directly in pixels, so you can see immediately whether it's in the 2–8 px range
+    and adjust the pulse separation or frame spacing accordingly.</p>
+
+    <h2 id="preview">Testing your settings</h2>
+    <p>Click <span class="ui">Analyze current frame</span> to run the analysis on just the
+    frame you're viewing — a quick way to check your settings before committing to a full,
+    multi-frame run. Running the analysis on the whole session is covered on its own page.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

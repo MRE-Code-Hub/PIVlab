@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exporting results · PIVlab Manual</title>
+  <meta name="description" content="How to export PIVlab results — still images and animations, ASCII text, MAT files, Tecplot, Paraview VTK, and directly to the MATLAB workspace.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Exporting results</h1>
+    <p class="lead">PIVlab can export your results in six different ways, all reachable from
+    <span class="ui">File → Export</span>. Each one needs an existing analysis — run
+    <span class="ui">ANALYZE!</span> first, or these panels will have nothing to work with.</p>
+
+    <table class="ref">
+      <tr><th>Menu item</th><th>Use it for</th></tr>
+      <tr><td>Still image or animation</td><td>A picture or video of the vector plot as displayed on screen.</td></tr>
+      <tr><td>Text file (ASCII)</td><td>Plain-text numeric data — the most portable, tool-agnostic option.</td></tr>
+      <tr><td>MAT file</td><td>MATLAB's native format, for further analysis in MATLAB.</td></tr>
+      <tr><td>Tecplot file</td><td>For visualization in Tecplot.</td></tr>
+      <tr><td>Paraview binary VTK</td><td>For visualization in ParaView.</td></tr>
+      <tr><td>All results to Matlab workspace</td><td>Loads every result straight into variables in your current MATLAB session — no file at all.</td></tr>
+    </table>
+
+    <h2 id="image">Still image or animation</h2>
+    <p><span class="ui">File → Export → Still image or animation</span> opens a panel with a
+    format dropdown. The choices depend on what your MATLAB installation supports:
+    <span class="ui">PNG</span>, <span class="ui">JPG</span>, <span class="ui">PDF</span> and
+    <span class="ui">Matlab Figure</span> are always available; <span class="ui">Archival
+    AVI</span> and <span class="ui">MPEG-4</span> appear too if your system has those video
+    profiles.</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/export/panel-image.png" alt="PIVlab Save image (sequence) export panel">
+      <figcaption>The <strong>Save image (sequence)</strong> panel.</figcaption>
+    </figure>
+    <table class="ref">
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr><td>Quality (%)</td><td>Compression quality of the exported file.</td></tr>
+      <tr><td>Frames per second (Hz)</td><td>Playback frame rate, for video formats.</td></tr>
+      <tr><td>Image size (%) / Resolution (dpi)</td><td>Output scaling relative to the raw images (newer MATLAB) or DPI (older versions).</td></tr>
+    </table>
+    <ol class="steps">
+      <li>Click <span class="ui">Export single frame</span> to save exactly what's on screen right now.</li>
+      <li>Or set <span class="ui">First frame</span> / <span class="ui">Last frame</span> (pre-filled
+      with your analysed range) and click <span class="ui">Export multiple frames</span> to save
+      an image sequence or a video covering that range.</li>
+    </ol>
+
+    <h2 id="ascii">Text file (ASCII)</h2>
+    <p><span class="ui">File → Export → Text file (ASCII)</span> — the most portable option,
+    readable by essentially any tool.</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/export/panel-ascii.png" alt="PIVlab Export as text file ASCII panel">
+      <figcaption>The <strong>Export as text file (ASCII)</strong> panel.</figcaption>
+    </figure>
+    <table class="ref">
+      <tr><th>Option</th><th>Effect</th></tr>
+      <tr><td>Add file information</td><td>Includes source image file names etc. in the output.</td></tr>
+      <tr><td>Add column headers</td><td>Writes a header row naming each column.</td></tr>
+      <tr><td>Include derivatives</td><td>Calculates and adds derived quantities (see MAT file below for the full list).</td></tr>
+      <tr><td>Delimiter</td><td>comma, tab, or space.</td></tr>
+    </table>
+    <p>Click <span class="ui">Export current frame</span> or <span class="ui">Export all
+    frames</span>.</p>
+
+    <h2 id="mat">MAT file</h2>
+    <p><span class="ui">File → Export → MAT file</span> saves in MATLAB's native format. By
+    default it exports <strong>x, y, velocities, calibration, and vector type</strong>. Enable
+    <span class="ui">Include derivatives</span> to also calculate and export
+    <strong>vorticity, magnitude, divergence, Q criterion, shear, strain, vector angle, and
+    correlation coefficient</strong>. Then click <span class="ui">Export current frame</span> or
+    <span class="ui">Export all frames</span>.</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/export/panel-mat.png" alt="PIVlab Save as MATLAB file export panel">
+      <figcaption>The <strong>Save as MATLAB file</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="tecplot">Tecplot file</h2>
+    <p><span class="ui">File → Export → Tecplot file</span> has a single
+    <span class="ui">Include derivatives</span> checkbox, then <span class="ui">Save current
+    frame</span> or <span class="ui">Save all frames</span>.</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/export/panel-tecplot.png" alt="PIVlab Save as TECPLOT file export panel">
+      <figcaption>The <strong>Save as TECPLOT file</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="paraview">Paraview binary VTK</h2>
+    <p><span class="ui">File → Export → Paraview binary VTK</span> has no extra options — just
+    <span class="ui">Save current frame</span> or <span class="ui">Save all frames</span>.</p>
+    <figure class="inline-panel">
+      <img src="../assets/img/export/panel-paraview.png" alt="PIVlab Save as Paraview VTK file export panel">
+      <figcaption>The <strong>Save as Paraview VTK file</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="workspace">All results to Matlab workspace</h2>
+    <p><span class="ui">File → Export → All results to Matlab workspace</span> is different from
+    the others: there's no panel or file dialog — it immediately writes variables directly into
+    your MATLAB base workspace, ready to use in your own scripts. It creates
+    <code>x</code>, <code>y</code>, <code>u_original</code>/<code>v_original</code> (raw
+    correlation output), <code>u_filtered</code>/<code>v_filtered</code> (after your validation),
+    <code>u_smoothed</code>/<code>v_smoothed</code>, plus <code>vorticity</code>,
+    <code>velocity_magnitude</code>, <code>divergence</code>, <code>q_criterion</code>,
+    <code>shear_rate</code>, <code>strain_rate</code>, <code>vectorangle</code>,
+    <code>correlation_map</code>, <code>uncertainty_map</code> and the calibration factors. Each
+    variable is a cell array with one entry per frame. After running it, check the Command
+    Window — PIVlab prints an explanation of every variable it just created.</p>
+
+    <div class="warn">
+      <strong>Fails silently without results</strong>
+      Unlike the other export options, this one does not show an error message if there's
+      nothing to export — it simply does nothing. If your workspace doesn't get any new
+      variables, double-check that you've actually run an analysis.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

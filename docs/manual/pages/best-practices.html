@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best practices & troubleshooting · PIVlab Manual</title>
+  <meta name="description" content="Practical PIV advice distilled from years of PIVlab support: getting good images, diagnosing problems before tuning settings, and a troubleshooting-by-symptom guide.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Best practices &amp; troubleshooting</h1>
+    <p class="lead">A successful PIV measurement depends far more on experimental design and
+    careful validation than on finding a "magic" combination of software settings. This page
+    distills the recurring advice from years of PIVlab support questions — most problems trace
+    back to the images, not the analysis parameters.</p>
+
+    <h2 id="mindset">The five-stage mindset</h2>
+    <p>Every PIV measurement goes through roughly the same five stages. Working through them in
+    order — rather than jumping straight to parameter tuning — is the single biggest predictor
+    of a smooth analysis:</p>
+    <table class="ref">
+      <tr><th>Stage</th><th>What it covers</th></tr>
+      <tr><td>1. Acquire good images</td><td>Illumination, seeding, optics — see
+      <a href="#seeding">Particle seeding &amp; image quality</a> below, and
+      <a href="capture.html">Capturing images from a camera</a>.</td></tr>
+      <tr><td>2. Choose acquisition parameters</td><td>Time separation (Δt) and expected particle
+      displacement — see <a href="piv-settings.html#choosing-dt">Choosing Δt together with the
+      interrogation area</a>.</td></tr>
+      <tr><td>3. Configure the analysis</td><td>Interrogation area, passes, algorithm — see
+      <a href="piv-settings.html#tips">Tips &amp; tricks: choosing a suitable interrogation
+      area</a>.</td></tr>
+      <tr><td>4. Validate &amp; interpret</td><td>Filters, interpolated vectors, VDP, correlation
+      quality — see <a href="validation-velocity.html">Velocity-based validation</a>.</td></tr>
+      <tr><td>5. Troubleshoot systematically</td><td>Recognise a symptom, trace it back to
+      acquisition, seeding or processing — see <a href="#troubleshooting">Troubleshooting by
+      symptom</a> below.</td></tr>
+    </table>
+
+    <h2 id="seeding">Particle seeding &amp; image quality</h2>
+    <p>Good particle images outperform clever parameter tuning every time. Aim for:</p>
+    <ul>
+      <li>Particles with good optical contrast against the background.</li>
+      <li>A homogeneous distribution — avoid dense clustering in some areas and empty gaps in others.</li>
+      <li>Moderate density — too sparse starves the correlation, too dense causes particle images to merge.</li>
+      <li>Seeding across the <strong>entire</strong> field of view you intend to analyse.</li>
+    </ul>
+    <div class="warn">
+      <strong>Software can't fix bad images</strong>
+      Poor seeding, compression artifacts, and uneven illumination cannot be reliably
+      compensated for by adjusting interrogation area, preprocessing, or any other analysis
+      setting. If results look wrong, improving the experiment usually has a far bigger impact
+      than reworking parameters.
+    </div>
+
+    <h2 id="diagnose">Diagnose before you tune</h2>
+    <p>Before changing any software setting, work through this checklist — it takes a minute and
+    often points straight at the real cause:</p>
+    <ul>
+      <li>Are individual particles clearly visible in the raw images? The human eye is
+      extremely good at tracking particles or textures — if you can't visually see groups of
+      particles moving between the two images, it's unfortunately likely that the PIV software
+      won't be able to find that motion either.</li>
+      <li>Is illumination uniform across the field of view?</li>
+      <li>Are there reflections off nearby surfaces or objects?</li>
+      <li>Is the laser sheet thin and well-aligned, or thick and diffuse?</li>
+      <li>Is seeding density sufficient — and consistent — across the whole image?</li>
+      <li>Could image compression be introducing artifacts?</li>
+    </ul>
+    <p>Only once these are ruled out is it time to look at analysis settings.</p>
+
+    <h2 id="troubleshooting">Troubleshooting by symptom</h2>
+    <p>A quick map from what you're seeing to what's likely causing it:</p>
+    <table class="ref">
+      <tr><th>Symptom</th><th>Likely cause</th></tr>
+      <tr><td>Very noisy vectors</td><td>Interrogation area too small, poor seeding, or low
+      signal-to-noise — see <a href="piv-settings.html#tips">choosing an interrogation
+      area</a>.</td></tr>
+      <tr><td>Large regions of interpolated (orange) vectors</td><td>Poor image quality,
+      reflections, or insufficient particles in that region — see
+      <a href="preprocessing.html">Image pre-processing</a>.</td></tr>
+      <tr><td>Random/spurious vectors near walls or objects</td><td>Missing or incomplete
+      <a href="masking.html">masks</a>, or reflections off the object.</td></tr>
+      <tr><td>Unrealistically high velocities</td><td>Incorrect time step (Δt) or
+      <a href="spatial-calibration.html">calibration</a>.</td></tr>
+      <tr><td>Displacement measured close to zero where it shouldn't be</td><td>A strong,
+      stationary background signal can correlate more strongly than the actual particle motion,
+      biasing results toward "no motion." Subtract the background in
+      <a href="preprocessing.html#background">Background subtraction</a> — usually the better
+      fix. <a href="piv-settings.html#shared">Disable auto-correlation</a> is an alternative for
+      special situations where that isn't enough.</td></tr>
+      <tr><td>Correlation fails outright</td><td>Excessive particle displacement, compression
+      artifacts, or poor seeding — try increasing the Pass 1 interrogation area first.</td></tr>
+      <tr><td>Different results between the GUI and a batch run</td><td>Different
+      <a href="preprocessing.html">pre-processing</a> settings applied in each case — double-check
+      they match.</td></tr>
+    </table>
+
+    <div class="note">
+      <strong>Where this advice comes from</strong>
+      This page distills recurring, practical guidance from years of PIVlab user-support
+      questions — it complements the rest of this manual, which documents what each control
+      does, with advice on what values and workflow tend to work well in practice.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

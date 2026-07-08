@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Capturing images from a camera · PIVlab Manual</title>
+  <meta name="description" content="Overview of PIVlab's live camera and laser-synchronizer image acquisition.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Capturing images from a camera</h1>
+    <p class="lead">PIVlab can acquire PIV image pairs directly from a connected camera, and —
+    with PIVlab's own <strong>SimpleSync</strong> synchronizer hardware — trigger and time a
+    pulsed laser to match. This is a hardware-dependent feature; this page covers the shape of
+    the workflow rather than settings for any specific camera or synchronizer model.</p>
+    <p>Open via <span class="ui">Image acquisition → Capture PIV images</span>, or the
+    <span class="ui">Acquire images</span> button in the <a href="sessions.html">Input data
+    panel</a>. This requires MATLAB R2019b or newer.</p>
+
+    <figure>
+      <img src="../assets/img/capture/panel.png" alt="PIVlab Image Acquisition panel">
+      <figcaption>The <strong>Image Acquisition</strong> panel — general settings, synchronizer
+      control, camera settings, live image and PIV capture, all in one place.</figcaption>
+    </figure>
+
+    <h2 id="workflow">The general workflow</h2>
+    <ol class="steps">
+      <li><span class="ui">Select configuration</span> — choose the camera + synchronizer
+      combination you have (e.g. <span class="ui">PIVlab LD-PS + OPTOcam 2/80</span>). A demo
+      option (<span class="ui">Webcam demo (no synchronizer)</span>) lets you try the feature
+      without special hardware.</li>
+      <li>Set your <span class="ui">Project path</span> — where images and configuration get saved.</li>
+      <li>If using a SimpleSync synchronizer, select its COM port and click
+      <span class="ui">Connect</span>.</li>
+      <li>Configure synchronizer settings: <span class="ui">Frame rate</span>,
+      <span class="ui">Pulse distance</span> (laser pulse spacing in µs), and
+      <span class="ui">Laser energy</span>. A <span class="ui">Timing graph</span> option
+      visualizes camera/laser timing, and <span class="ui">Toggle Laser</span> fires it manually.</li>
+      <li>Under <span class="ui">Camera settings</span>, use <span class="ui">Binning</span>,
+      <span class="ui">ROI</span>, <span class="ui">Lens</span> and <span class="ui">Setup</span>
+      to configure the camera itself, and optionally overlay <span class="ui">Sharpness</span>,
+      <span class="ui">Grid</span>, <span class="ui">Calibration</span> or
+      <span class="ui">Displacement</span> guides on the live view.</li>
+      <li>Under <span class="ui">Live image</span>, set an <span class="ui">Exposure</span> and
+      click <span class="ui">Start</span> to preview, or <span class="ui">Snapshot</span> to
+      grab a single still.</li>
+      <li>Under <span class="ui">Capture PIV images</span>, tick <span class="ui">Save</span> to
+      actually write the captured images to disk — this also unlocks the
+      <span class="ui">Image amount</span> field, which stays disabled while
+      <span class="ui">Save</span> is off. Set the amount, then click <span class="ui">Start</span>
+      to begin capturing PIV image pairs (this also fires the laser via the synchronizer).
+      <span class="ui">Abort</span> stops an in-progress capture.</li>
+    </ol>
+
+    <p>A separate live-view <span class="ui">Start</span> button is available for camera
+    calibration image capture, independent of the main PIV capture.</p>
+
+    <h2 id="webcam">Trying it with just a webcam</h2>
+    <p>You don't need a PIV camera or a synchronizer to get a feel for image acquisition — the
+    <span class="ui">Webcam demo (no synchronizer)</span> configuration runs the whole capture
+    workflow against an ordinary USB webcam:</p>
+    <ol class="steps">
+      <li>Select <span class="ui">Webcam demo (no synchronizer)</span> from
+      <span class="ui">Select configuration</span>. PIVlab looks for a connected webcam; if none
+      is found, or the required free <a href="https://www.mathworks.com/matlabcentral/fileexchange/45182-matlab-support-package-for-usb-webcams" target="_blank" rel="noopener">MATLAB Support Package for USB Webcams</a>
+      isn't installed, it tells you so.</li>
+      <li>Everything synchronizer- and laser-related (frame rate, pulse distance, laser energy,
+      timing graph, external trigger) and camera-specific (binning, ROI, lens control) is
+      automatically disabled — there's no hardware for those to control.</li>
+      <li>Under <span class="ui">Live image</span>, click <span class="ui">Start</span> to see
+      the webcam's live feed, or <span class="ui">Snapshot</span> to grab a single still.</li>
+      <li>Under <span class="ui">Capture PIV images</span>, tick <span class="ui">Save</span>,
+      set an <span class="ui">Image amount</span>, and click <span class="ui">Start</span> to
+      capture a demo PIV image sequence — no laser or synchronizer involved.</li>
+    </ol>
+    <p>It won't produce meaningful PIV data (a webcam isn't a PIV camera, and there's no pulsed
+    laser), but it's a quick, hardware-free way to see how the capture panel behaves before
+    setting up real equipment.</p>
+
+    <div class="note">
+      <strong>Hardware-specific setup lives on the PIVlab wiki</strong>
+      For wiring, camera drivers and step-by-step synchronizer configuration for your specific
+      hardware, see
+      <a href="https://shrediquette.github.io/PIVlab/wiki/5-camera-setup/" target="_blank" rel="noopener">Camera Setup</a>
+      and
+      <a href="https://shrediquette.github.io/PIVlab/wiki/4-synchronizer-laser/" target="_blank" rel="noopener">Synchronizer setup</a>
+      on the PIVlab website — this manual covers the in-app controls, not hardware wiring.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

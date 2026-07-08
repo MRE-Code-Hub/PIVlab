@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Streamlines · PIVlab Manual</title>
+  <meta name="description" content="How to draw and style streamlines in PIVlab — manual streamlines, rakes, and automatic streamslices.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Streamlines</h1>
+    <p class="lead">Streamlines trace the instantaneous flow direction through your vector
+    field. Open via <span class="ui">Plot → Streamlines</span>.</p>
+
+    <div class="note">
+      <strong>Streamlines are global</strong>
+      Once drawn, streamlines apply to <strong>every frame</strong> in the session, not just the
+      one you drew them on.
+    </div>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/streamlines/panel.png" alt="PIVlab Stream lines panel">
+      <figcaption>The <strong>Stream lines</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="drawing">Drawing streamlines</h2>
+    <table class="ref">
+      <tr><th>Button</th><th>How it works</th></tr>
+      <tr>
+        <td>Draw stream lines</td>
+        <td>Click to place a streamline's starting point; every click adds another. Right-click to finish.</td>
+      </tr>
+      <tr>
+        <td>Draw stream line rake</td>
+        <td>Click once for the rake's start point, once more for its end point — PIVlab spaces
+        <span class="ui">Amount of stream lines on rake</span> (default 10) evenly along that line.</td>
+      </tr>
+      <tr>
+        <td>Draw streamslice</td>
+        <td>Automatically fills the entire field with streamlines using MATLAB's
+        <code>streamslice</code>, at a density you set (default 1 — higher values draw more streamlines).</td>
+      </tr>
+    </table>
+    <p><span class="ui">hold streamlines</span> (on by default) adds each new streamline to the
+    existing set instead of replacing it — turn it off if you want each draw action to start
+    fresh. Click <span class="ui">Delete all stream lines</span> to clear everything.</p>
+    <figure>
+      <img src="../assets/img/streamlines/streamlines-result.jpg" alt="Yellow streamlines tracing the flow direction, drawn on top of a velocity-magnitude colour overlay">
+      <figcaption>Streamlines (yellow) tracing the flow, here drawn over a velocity-magnitude
+      overlay. They can be combined with any <a href="derive-spatial.html">derived
+      parameter</a> in the background.</figcaption>
+    </figure>
+
+    <h2 id="styling">Styling</h2>
+    <p>Choose a <span class="ui">Color</span> (yellow, red, blue, black or white) and
+    <span class="ui">Line width</span> (1–3), then click <span class="ui">Apply color and
+    width</span>.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

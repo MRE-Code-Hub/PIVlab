@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camera calibration &amp; rectification · PIVlab Manual</title>
+  <meta name="description" content="How to calibrate a camera's lens distortion and rectify its image plane in PIVlab using a ChArUco marker board.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Camera calibration &amp; rectification</h1>
+    <p class="lead">These tools correct problems introduced by the <strong>camera and
+    lens</strong> — distortion and misalignment — before the PIV analysis runs. They're
+    different from <a href="spatial-calibration.html">Spatial calibration (px → mm)</a>, which
+    just converts pixel units to physical units after the fact.</p>
+
+    <table class="ref">
+      <tr><th>Tool</th><th>Corrects</th></tr>
+      <tr><td>Camera calibration (undistortion)</td><td>Lens distortion (barrel/pincushion effects) using a photographed marker board.</td></tr>
+      <tr><td>Image rectification</td><td>Misalignment between the camera's image plane and your target coordinate system / laser sheet.</td></tr>
+    </table>
+
+    <div class="note">
+      <strong>Mono setups only, for now</strong>
+      Both tools accept a "Camera 2" in their menu (<span class="ui">Image settings → Camera
+      calibration</span>), but that option is currently disabled — only a single camera is
+      supported today.
+    </div>
+
+    <h2 id="markerboard">Setting up a marker board</h2>
+    <p>Both calibration and rectification are done by photographing a printed
+    <strong>ChArUco board</strong> (a checkerboard combined with ArUco markers). Configure it
+    via <span class="ui">Image settings → Camera calibration → Setup / define / generate marker
+    board</span>:</p>
+    <table class="ref">
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr><td>Board type</td><td>Currently only ChArUco DICT_4X4_1000.</td></tr>
+      <tr><td>Origin color</td><td>Color of the top-left checker (Black/White) — must match your printed board.</td></tr>
+      <tr><td>Rows / Columns</td><td>Checkerboard dimensions (default 23 × 24).</td></tr>
+      <tr><td>Checker size / Marker size</td><td>Physical size of the checkers and the ArUco markers printed on them.</td></tr>
+    </table>
+    <p>Click <span class="ui">Guess parameters</span> to have PIVlab estimate these from a
+    photo, or <span class="ui">Generate Charuco board</span> to produce a printable board
+    matching your settings.</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/camera-calibration/panel-markerboard.png" alt="PIVlab Marker board setup panel">
+      <figcaption>The <strong>Marker board setup</strong> panel.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/camera-calibration/charuco-board.jpg" alt="A generated printable ChArUco board: a checkerboard with ArUco markers in the black squares, labelled with its dictionary and dimensions">
+      <figcaption>A board produced by <span class="ui">Generate Charuco board</span> — print it
+      out and photograph it to calibrate. The header records its exact parameters (dictionary,
+      rows × columns, checker/marker sizes) so PIVlab can detect it.</figcaption>
+    </figure>
+
+    <h2 id="calibration">Camera calibration (lens undistortion)</h2>
+    <p>Open via <span class="ui">Image settings → Camera calibration → Camera calibration
+    (undistortion) → Camera 1</span>.</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/camera-calibration/panel-calibration.png" alt="PIVlab Camera calibration panel">
+      <figcaption>The <strong>Camera calibration</strong> panel.</figcaption>
+    </figure>
+
+    <ol class="steps">
+      <li>Click <span class="ui">Load target images</span> and select several photos of your
+      marker board from different angles/positions.</li>
+      <li>If your camera uses a Scheimpflug adapter (tilted sensor), enable
+      <span class="ui">Scheimpflug adapter (tilted sensor model)</span> first.</li>
+      <li>Click <span class="ui">Estimate cam parameters</span> to detect the markers and
+      compute the lens model.</li>
+      <li><span class="ui">Save parameters</span> to reuse this calibration later, or
+      <span class="ui">Load parameters</span> to bring back a previous one.</li>
+    </ol>
+
+    <h3 id="checks">Checking the result</h3>
+    <table class="ref">
+      <tr><th>Button</th><th>Shows</th></tr>
+      <tr><td>Show reprojection errors</td><td>How well the model fits — <strong>should be below 1 pixel</strong> for a valid calibration.</td></tr>
+      <tr><td>Show camera positions</td><td>Where the camera was relative to the board in each calibration image.</td></tr>
+      <tr><td>Show lens distortion</td><td>A visualization of the detected lens distortion.</td></tr>
+    </table>
+    <figure>
+      <img src="../assets/img/camera-calibration/lens-distortion.jpg" alt="A visualization of the lens distortion: a colour map showing how far pixels are displaced, smallest in the centre and growing toward the corners, with profile curves along the edges">
+      <figcaption><span class="ui">Show lens distortion</span> — how far each pixel is displaced
+      by the lens. It's smallest at the centre and grows toward the corners, the classic radial
+      distortion pattern being corrected.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/camera-calibration/camera-positions.jpg" alt="A 3D scene showing the calibration board and the estimated camera position for each calibration image as small camera icons">
+      <figcaption><span class="ui">Show camera positions</span> — a 3D reconstruction of where
+      the camera was relative to the board in each calibration photo.</figcaption>
+    </figure>
+
+    <h3 id="applying-calib">Applying it</h3>
+    <p>Set <span class="ui">Output image size</span> — undistorting an image curves its
+    straight edges, so you choose how to handle the resulting black borders: <span class="ui">Cut
+    away black borders</span>, keep the <span class="ui">Same size as input image</span>, or
+    <span class="ui">Include black borders</span> in full. Then tick
+    <span class="ui">Enable camera calibration</span> to actually apply the undistortion to
+    your images.</p>
+
+    <h2 id="rectification">Image rectification</h2>
+    <p>Open via <span class="ui">Image settings → Camera calibration → Image rectification /
+    alignment → Camera 1</span> (you need images loaded first). Rectification aligns the image
+    with your target coordinate system by photographing the marker board <strong>positioned
+    inside the laser sheet</strong>, aligned with the plane you actually want to measure.</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/camera-calibration/panel-rectification.png" alt="PIVlab Image rectification panel">
+      <figcaption>The <strong>Image rectification</strong> panel.</figcaption>
+    </figure>
+
+    <ol class="steps">
+      <li>Click <span class="ui">Load target image</span> and select that photo.</li>
+      <li>Use <span class="ui">Show detected markers</span>, <span class="ui">Show rectified
+      board</span> and <span class="ui">Show camera position</span> to check the detection
+      before committing.</li>
+      <li>Set <span class="ui">Upscaling</span> (1× or 2×) — upscaling reduces artifacts from
+      image interpolation during rectification, at the cost of slower analysis.</li>
+      <li>Tick <span class="ui">Enable image rectification</span> to apply it.</li>
+    </ol>
+    <figure>
+      <img src="../assets/img/camera-calibration/rectified-board.jpg" alt="A calibration-target image after undistortion and rectification: originally straight edges now bow outward, showing the geometric correction that has been applied so the image plane matches the target">
+      <figcaption>A target image after undistortion and rectification. The curved outline shows
+      the geometric correction PIVlab applies so the image plane lines up with your target
+      coordinate system.</figcaption>
+    </figure>
+
+    <div class="tip">
+      <strong>Both can be used together</strong>
+      Calibration (undistortion) and rectification address different problems and can be
+      enabled at the same time: undistortion first removes lens artifacts, then rectification
+      aligns the corrected image with your coordinate system.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

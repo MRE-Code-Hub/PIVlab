@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statistics · PIVlab Manual</title>
+  <meta name="description" content="How to view mean/min/max velocity statistics, histograms and scatter plots of your PIVlab results.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Statistics</h1>
+    <p class="lead">A quick numeric and visual summary of the current frame's velocity data —
+    useful for sanity-checking results and spotting data-quality problems.</p>
+    <p>Open via <span class="ui">Statistics → Statistics</span> (<kbd>Ctrl</kbd>+<kbd>B</kbd>).</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/statistics/panel.png" alt="PIVlab Statistics panel with real velocity readouts">
+      <figcaption>The <strong>Statistics</strong> panel, showing real mean/min/max readouts.</figcaption>
+    </figure>
+
+    <h2 id="summary">At-a-glance values</h2>
+    <p>The panel displays <span class="ui">mean u</span>, <span class="ui">mean v</span>,
+    <span class="ui">max u</span>, <span class="ui">min u</span>, <span class="ui">max
+    v</span> and <span class="ui">min v</span> for the current frame, updating automatically as
+    you move between frames.</p>
+
+    <h2 id="histogram">Histogram</h2>
+    <p>Choose what to plot from <span class="ui">Histogram plot</span>:
+    <span class="ui">u velocity</span>, <span class="ui">v velocity</span>,
+    <span class="ui">velocity magnitude</span>, or <span class="ui">sub-pixels</span>. Set the
+    number of <span class="ui">bins</span> (default 100), then click
+    <span class="ui">Histogram</span>.</p>
+    <div class="tip">
+      <strong>Use the sub-pixel histogram to check for peak locking</strong>
+      A histogram of sub-pixel displacements that clusters near whole-pixel values (0, 1, 2, …)
+      instead of spreading smoothly indicates <em>peak locking</em> — a well-known PIV bias. If
+      you see this, revisit your sub-pixel estimator or image quality.
+    </div>
+
+    <h2 id="scatter">Scatter plot</h2>
+    <p>Click <span class="ui">Scatter plot u &amp; v</span> to plot every vector's u component
+    against its v component — the same kind of plot used to set
+    <a href="validation-velocity.html">velocity limits</a>, but here purely for inspection.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
