@@ -66,6 +66,7 @@ uimenu(m12,'Label','Settings','Callback',@simulate.part_img_sett_Callback,'Accel
 m13 = uimenu(MainWindow,'Label','Learn!');
 uimenu(m13,'Label','Tutorial videos','Callback',@gui.pivlabyoutube_Callback);
 uimenu(m13,'Label','Getting started manual','Callback',@gui.pivlabhelp_Callback,'Accelerator','H');
+uimenu(m13,'Label','PIVlab Manual','Callback',@gui.pivlabmanual_Callback);
 uimenu(m13,'Label','Forum','Callback',@misc.Forum_Callback);
 uimenu(m13,'Label','Interactive correlation demo','Callback',@misc.correlation_demo_Callback);
 uimenu(m13,'Label','List keyboard shortcuts','Callback',@misc.shortcuts_Callback);
