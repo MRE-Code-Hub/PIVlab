@@ -849,7 +849,7 @@ setpref('uipickfiles','figure_position',fig_pos)
         catch
             %keyboard
         end
-        warning ('on')
+        %warning ('on')
     end
 
     function clicknav(varargin)

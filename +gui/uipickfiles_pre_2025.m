@@ -792,7 +792,7 @@ setpref('uipickfiles','figure_position',fig_pos)
 					catch
 						%keyboard
 					end
-					warning ('on')
+					%warning ('on')
 				end
 			otherwise
 				set(addbut,'Enable','on')
