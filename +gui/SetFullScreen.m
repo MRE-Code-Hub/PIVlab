@@ -28,5 +28,5 @@ else
 	catch
 	end
 end
-warning on
+%warning on
 

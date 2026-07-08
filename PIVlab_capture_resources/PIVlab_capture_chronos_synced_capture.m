@@ -37,7 +37,7 @@ while elapsed_time<(nr_of_images/framerate) && getappdata(hgui,'cancel_capture')
 	%update live display
 	warning off
 	ima=(webread([cameraURL '/cgi-bin/screenCap']));
-	warning on
+	%warning on
 	ima=double(ima(:,:,1))/255*65535;
 	set(image_handle_chronos,'CData',ima);
 	sharpness_enabled = getappdata(hgui,'sharpness_enabled');

@@ -7,7 +7,7 @@ try
     delete(imaqfind); %clears all previous videoinputs
     warning off
     hwinf = imaqhwinfo;
-    warning on
+    %warning on
     warning('off','imaq:gentl:hardwareTriggerTriggerModeOff'); %trigger property of OPTRONIS cannot be set in Matlab.
     warning('off','MATLAB:JavaEDTAutoDelegation'); %strange warning
     warning('off','imaq:gentl:noSupportedPixelFormat')

@@ -13,7 +13,7 @@ end
 clear hgui deli i
 warning off
 save(fullfile(PathName,FileName), '-struct', 'app','-v7.3')% riesig aber nur das geht...
-warning on
+%warning on
 
 clahe_enable=get(handles.clahe_enable,'value');
 clahe_size=get(handles.clahe_size,'string');

@@ -2541,7 +2541,7 @@ try
     if exist('selected_com_port','var') && ~isempty(selected_com_port)
         gui.put('selected_com_port',selected_com_port);
     end
-    warning on
+    %warning on
 catch
 end
 gui.put('multitiff',0); %default for compatibility: Not a multitiff.

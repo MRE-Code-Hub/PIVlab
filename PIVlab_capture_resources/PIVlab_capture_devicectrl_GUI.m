@@ -161,7 +161,7 @@ try
 				warning off
 				serial_answer=readline(serpo);
 				serial_answer=convertStringsToChars(serial_answer);
-				warning on
+				%warning on
 				seeder1_available=strfind(serial_answer,'status_S01=');
 				if ~isempty(seeder1_available) &&  seeder1_available~=0
 					status_device=str2double(serial_answer(seeder1_available+11:end));
@@ -172,7 +172,7 @@ try
 				warning off
 				serial_answer=readline(serpo);
 				serial_answer=convertStringsToChars(serial_answer);
-				warning on
+				%warning on
 				device1_available=strfind(serial_answer,'status_D01=');
 				if ~isempty(device1_available) &&  device1_available~=0
 					status_device=str2double(serial_answer(device1_available+11:end));
@@ -183,7 +183,7 @@ try
 				warning off
 				serial_answer=readline(serpo);
 				serial_answer=convertStringsToChars(serial_answer);
-				warning on
+				%warning on
 				device2_available=strfind(serial_answer,'status_D02=');
 				if ~isempty(device2_available) &&  device2_available~=0
 					status_device=str2double(serial_answer(device2_available+11:end));
@@ -194,7 +194,7 @@ try
 				warning off
 				serial_answer=readline(serpo);
 				serial_answer=convertStringsToChars(serial_answer);
-				warning on
+				%warning on
 				flowlab_available=strfind(serial_answer,'status_FLOWLAB=');
 				if ~isempty(flowlab_available) &&  flowlab_available~=0
 					status_device=round(str2double(serial_answer(flowlab_available+15:end))*100);

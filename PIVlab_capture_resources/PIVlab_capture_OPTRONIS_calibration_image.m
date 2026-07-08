@@ -6,7 +6,7 @@ try
 	delete(imaqfind); %clears all previous videoinputs
 	warning off
 	hwinf = imaqhwinfo;
-	warning on
+	%warning on
 	%imaqreset
 catch
     gui.custom_msgbox('error',getappdata(0,'hgui'),'Error','Error: Image Acquisition Toolbox not available! This camera needs the image acquisition toolbox.','modal');

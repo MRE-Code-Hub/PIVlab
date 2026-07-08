@@ -28,7 +28,7 @@ if do_contrast==1
 	
 	warning off
 	lowhigh = stretchlim(gq,[0.1 1]); %finds limits for 10% of data and 100% of data
-	warning on
+	%warning on
 	threshold_suggestion=lowhigh(1); %the 10% limit is returned as suggestion.
 	
 	u(gq<contrast_filter_thresh)=nan; %remove vectors where image texture is low.

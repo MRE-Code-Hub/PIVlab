@@ -1,7 +1,7 @@
 function serial_answer = process_sync_reply(serpo)
 handles=gui.gethand;
 serial_answer=readline(serpo);
-warning on
+%warning on
 sync_setting=serial_answer;
 if isempty(sync_setting)
 	sync_setting='No answer from Sync';

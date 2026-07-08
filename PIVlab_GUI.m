@@ -50,7 +50,7 @@ if isempty(fh)
     try
         warning off
         load('PIVlab_settings_default.mat','build_date');
-        warning on
+        %warning on
     catch
         build_date=' ';
     end
@@ -288,7 +288,7 @@ if isempty(fh)
     try
         warning off
         imaqreset;
-        warning on
+        %warning on
         if ~exist('splash_ax','var')
             disp('-> Image Acquisition Toolbox found.')
         else

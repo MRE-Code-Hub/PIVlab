@@ -49,7 +49,7 @@ if alreadyconnected
             end
         end
         gui.toolsavailable(1)
-        warning on
+        %warning on
     catch
         disp('Error sending WhoAreYou')
         gui.toolsavailable(1)
@@ -59,7 +59,7 @@ if alreadyconnected
         pause(0.3)
         warning off
         firmware_version=readline(serpo);
-        warning on
+        %warning on
         if isempty(firmware_version)
             firmware_version='pre feb 22';
         else

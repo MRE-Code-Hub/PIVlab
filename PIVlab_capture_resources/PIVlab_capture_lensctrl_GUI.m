@@ -25,7 +25,7 @@ if isempty(fh)
 	%% Load last selected setting & setup Configurations
 	warning off
 	load ('PIVlab_capture_resources\PIVlab_capture_lensconfig.mat','lens_configurations','selected_lens_config_nr');
-	warning on
+	%warning on
 	if ~exist('selected_lens_config_nr','var')
 		selected_lens_config_nr = 2; %set default to zeiss Dimension
 	end
@@ -157,7 +157,7 @@ if alreadyconnected==1
 	writeline(serpo,'WhatIsTheAngle?');
 	warning off
 	serial_answer=readline(serpo);
-	warning on
+	%warning on
 	handles=gethand;
 	lens_available=strfind(serial_answer,'Measured_Roll:');
 	if ~isempty(lens_available) &&  lens_available~=0
@@ -199,7 +199,7 @@ if alreadyconnected==1
 	writeline(serpo,'WhatIsTheAngle?');
 	warning off
 	serial_answer=readline(serpo);
-	warning on
+	%warning on
 	handles=gethand;
 	if ~isempty (serial_answer) & strfind(serial_answer,'Measured_Roll:')==1
 		Roll=serial_answer{1}(strfind(serial_answer,'Measured_Roll:')+14:strfind(serial_answer,char(9))-1);
@@ -475,7 +475,7 @@ if do_calib==1
 			serial_answer=readline(serpo);
 			set(handles.calibrate,'Background',std_bg);
 			pause(0.25)
-			warning on
+			%warning on
 			handles=gethand;
 			if ~isempty (serial_answer) & strfind(serial_answer,'Measured_Roll:')==1
 				Roll(i)=str2double(serial_answer{1}(strfind(serial_answer,'Measured_Roll:')+14:strfind(serial_answer,char(9))-1));
@@ -496,7 +496,7 @@ if do_calib==1
 			set(handles.calibrate,'String','Calibration ok!');drawnow;pause(0.5)
 			warning off
 			load ('PIVlab_capture_resources\PIVlab_capture_lensconfig.mat','lens_configurations','selected_lens_config_nr');
-			warning on
+			%warning on
 			if ~exist('selected_lens_config_nr','var')
 				selected_lens_config_nr = 2; %set default to zeiss Dimension
 			end
