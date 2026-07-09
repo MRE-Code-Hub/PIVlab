@@ -19,6 +19,8 @@ navigation:
     url: "/"
   - title: "Downloads"
     url: "/downloads"
+  - title: "Manual"
+    url: "/manual"
   - title: "Wiki"
     url: "/wiki"
   - title: "Hardware"
