@@ -223,19 +223,24 @@
     var article = document.getElementById("doc");
     if (!article) return;
 
-    // Header / top bar
-    var header = h("header", { class: "topbar" });
-    var brand = h("a", { class: "brand", href: resolve("index.html") },
-      '<span class="brand-mark">PIV</span><span class="brand-text">lab Manual</span>');
+    // Header / top bar — a dark hero band (holds the PIVlab logo, like pivlab.de's
+    // header) above a sticky lime action bar (like pivlab.de's #banner). These are
+    // kept as separate top-level siblings of <body> (not nested in one wrapper) —
+    // a sticky element only stays stuck while its own parent is on screen, so
+    // nesting it inside a ~140px-tall wrapper would make it scroll away with it.
+    var hero = h("a", { class: "hero", href: resolve("index.html"), "aria-label": "PIVlab Manual home" },
+      '<span class="hero-title">User Manual</span>');
+    var header = h("header", { class: "action-bar" });
     var burger = h("button", { class: "burger", "aria-label": "Toggle navigation" }, "&#9776;");
     var searchWrap = h("div", { class: "search" });
     var searchInput = h("input", { type: "search", placeholder: "Search the manual…  ( / )", "aria-label": "Search" });
     var searchPanel = h("div", { class: "search-panel" });
     searchWrap.appendChild(searchInput); searchWrap.appendChild(searchPanel);
     var themeBtn = h("button", { class: "theme-toggle", "aria-label": "Toggle theme" }, "☾");
-    var ghLink = h("a", { class: "gh-link", href: "https://github.com/Shrediquette/PIVlab", target: "_blank", rel: "noopener" }, "GitHub");
-    header.appendChild(burger); header.appendChild(brand); header.appendChild(searchWrap);
-    header.appendChild(themeBtn); header.appendChild(ghLink);
+    var ghLink = h("a", { class: "gh-link", href: "https://github.com/Shrediquette/PIVlab", target: "_blank", rel: "noopener" }, "View On GitHub");
+    var siteMark = h("a", { class: "site-mark", href: "https://optolution.com", target: "_blank", rel: "noopener", title: "OPTOLUTION" }, "");
+    header.appendChild(burger); header.appendChild(ghLink); header.appendChild(searchWrap);
+    header.appendChild(themeBtn); header.appendChild(siteMark);
 
     // Layout skeleton
     var layout = h("div", { class: "layout" });
@@ -258,6 +263,7 @@
 
     document.body.insertBefore(layout, document.body.firstChild);
     document.body.insertBefore(header, document.body.firstChild);
+    document.body.insertBefore(hero, document.body.firstChild);
 
     // Behaviour
     burger.addEventListener("click", function () { sidebar.classList.toggle("open"); });

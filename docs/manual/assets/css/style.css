@@ -60,39 +60,55 @@ body {
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* ------------------------------------------------------------------ Top bar */
-.topbar {
+/* ----------------------------------------------------------------- Site header */
+/* Two-tier header, mirroring pivlab.de: a dark hero band carrying the logo
+   artwork (non-sticky, scrolls away) above a sticky lime action bar. */
+.hero {
+  display: block; position: relative; height: 84px; overflow: hidden;
+  /* Logo artwork pinned left, no-repeat; flat fill picks up exactly where it
+     ends and continues to the right edge of the bar. */
+  background-color: #515151;
+  background-image: url(../img/header-hero.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: auto 100%;
+}
+.hero:hover { text-decoration: none; }
+.hero-title {
+  position: absolute; right: 24px; bottom: 14px; font-size: 15px; font-weight: 600;
+  letter-spacing: .2px; color: rgba(255,255,255,.78); text-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+.action-bar {
   position: sticky; top: 0; z-index: 40; height: var(--header-h);
-  display: flex; align-items: center; gap: 16px; padding: 0 20px;
-  background: linear-gradient(180deg, var(--brand-dark), var(--brand-dark-2));
-  border-bottom: 3px solid var(--lime);
+  display: flex; align-items: center; gap: 14px; padding: 0 20px;
+  background: var(--lime); border-bottom: 1px solid var(--lime-dark);
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
 }
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #fff; }
-.brand:hover { text-decoration: none; }
-.brand-mark {
-  background: var(--lime); color: var(--brand-dark); font-weight: 800; letter-spacing: .5px;
-  padding: 3px 7px; border-radius: 6px; font-size: 13px;
-}
-.brand-text { font-size: 15px; color: rgba(255,255,255,.82); }
 .burger {
-  display: none; background: none; border: none; color: #fff;
+  display: none; background: none; border: none; color: var(--brand-dark);
   font-size: 22px; cursor: pointer; padding: 4px 6px;
 }
 .gh-link {
-  border: 1px solid rgba(255,255,255,.5); padding: 5px 12px; border-radius: 6px;
-  color: #fff; font-size: 13px; font-weight: 600;
+  border: 1px solid #E6E507; background: #FFE788; padding: 7px 14px; border-radius: 4px;
+  color: #333; font-size: 13px; font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 1px 1px rgba(0,0,0,.1);
 }
-.gh-link:hover { border-color: var(--lime); color: var(--lime); text-decoration: none; }
+.gh-link:hover { background: #ffeca0; text-decoration: none; }
 .theme-toggle {
-  background: none; border: 1px solid rgba(255,255,255,.5); color: #fff;
+  background: none; border: 1px solid rgba(0,0,0,.3); color: var(--brand-dark);
   width: 34px; height: 34px; border-radius: 6px; cursor: pointer; font-size: 15px;
 }
-.theme-toggle:hover { border-color: var(--lime); color: var(--lime); }
+.theme-toggle:hover { border-color: var(--brand-dark); }
+.site-mark {
+  flex: none; width: 30px; height: 30px; border-radius: 50%;
+  background: url(../img/optolution-mark.png) center / cover no-repeat;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.08);
+}
 
 /* ------------------------------------------------------------------- Search */
 .search { position: relative; margin-left: auto; width: min(360px, 40vw); }
 .search input {
-  width: 100%; padding: 8px 12px; border: 1px solid rgba(255,255,255,.45); border-radius: 8px;
+  width: 100%; padding: 8px 12px; border: 1px solid rgba(0,0,0,.3); border-radius: 8px;
   background: rgba(255,255,255,.92); color: #1c2530; font-size: 14px; font-family: inherit;
 }
 .search input::placeholder { color: #6b6752; }
@@ -291,4 +307,7 @@ table.ref td:first-child { white-space: nowrap; font-weight: 600; }
   .sidebar.open { transform: translateX(0); }
   .main { padding: 26px 20px 50px; }
   .search { width: auto; flex: 1; }
+  .hero { height: 60px; }
+  .hero-title { display: none; }
+  .site-mark { display: none; }
 }
