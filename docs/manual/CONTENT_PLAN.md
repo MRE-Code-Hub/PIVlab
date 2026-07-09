@@ -61,6 +61,19 @@ masks and Automatic masks/Expert mode correctly) untouched.
 
 The user supplied 16 clean, properly-masked **result/output** screenshots (from `~/Downloads`, `.jpg`) and I placed them on the relevant pages as full-width `<figure>`s (panels stay as the earlier `.png` captures). Going forward, **result visuals come from the user** — do not auto-generate messy ones. Images added: sessions (import dialog), validation-velocity (auto-limits scatter, vector colours), derive-spatial (magnitude overlay), streamlines, plot-appearance (colormap steps), extract-polyline (magnitude profile popup + circle series), extract-area (rectangle result), markers (measurement — replaced the plain panel.png, which is now orphaned/unused), correlation-matrices (4-pass popup), spatial-calibration (reference length), camera-calibration (charuco board, lens distortion, camera positions, rectified board). Two filename notes flagged to user: `extract_area_vorticity_circle_series.jpg` actually shows the **poly-line** panel (circle-series type) so it went on extract-polyline; and the file is `extract_area_v_component.jpg` (v, not "c").
 
+## Stale "soon" copy removed — 2026-07-09
+
+User asked to verify the homepage's "Chapters marked soon aren't written yet" line, since the
+plan had been fully complete since 2026-07-07 (see the capture.html entry below: "every P1/P2/P3
+item is now live"). Confirmed via `nav.js` that zero entries currently have `status: "soon"` —
+the only match for that string was inside the file's own header comment, not an actual nav item.
+Removed the sentence (and its `<span class="badge">soon</span>`) from `index.html`. The
+`soon`/`.badge` rendering in `app.js` (`buildSidebar()`) and its CSS (`.nav-link.soon`, `.badge`
+in `style.css`) were left in place — not dead code, just currently unused — since step 4 of "How
+to resume" above still uses `status: "soon"` as the placeholder state for any future topic added
+to `nav.js`. If a new topic is ever added, flip it to `"live"` per that workflow and this homepage
+sentence would need to be re-added at that point (it's fine to omit while the plan is 100% live).
+
 ## Style rules established on the masking page (apply to all new pages)
 
 - Task-focused, not an exhaustive parameter reference — explain what a user does and why, not every implementation detail.
