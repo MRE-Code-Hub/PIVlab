@@ -121,6 +121,9 @@ handles.loadsessionbutton = uicontrol(handles.multip01,'Style','pushbutton','Str
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
 handles.acquirebutton = uicontrol(handles.multip01,'Style','pushbutton','String','Acquire images','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @acquisition.capture_images_Callback,'TooltipString','Acquire PIV images in PIVlab');
 
+item=[0 item(2)+item(4)+margin parentitem(3) 2];
+handles.link_to_manual = uicontrol(handles.multip01,'Style','pushbutton','String','Read Manual','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @gui.pivlabmanual_Callback,'TooltipString','Open the PIVlab manual','Foregroundcolor',[0.2 0.4 1],'Fontangle','italic','Fontweight','bold');
+
 item=[0 item(2)+item(4)+margin*1.5 parentitem(3) 1];
 handles.text2 = uicontrol(handles.multip01,'Style','text','units', 'characters','Horizontalalignment', 'left','position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'String','Image list:');
 
