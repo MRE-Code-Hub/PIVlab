@@ -7,7 +7,7 @@ try
     delete(imaqfind); %clears all previous videoinputs
     warning off
     hwinf = imaqhwinfo;
-    warning on
+    %warning on
     warning('off','MATLAB:JavaEDTAutoDelegation');
     warning('off','imaq:gentl:noSupportedPixelFormat')
     imaqreset

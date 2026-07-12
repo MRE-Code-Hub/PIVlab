@@ -6,7 +6,7 @@ try
 	recycle('off');
 	delete(fullfile(userpath,'cancel_piv'));
 	gui.put('cancel',0);
-	warning on
+	%warning on
 catch ME
 	disp('There was an error deleting a temporary file.')
 	disp('Please check if this solves your problem:')
@@ -587,7 +587,7 @@ if ok==1
 		warning off
 		recycle('off');
 		delete(fullfile(userpath,'cancel_piv'))
-		warning on
+		%warning on
 	catch ME
 		disp('There was an error deleting a temporary file.')
 		disp('Please check if this solves your problem:')

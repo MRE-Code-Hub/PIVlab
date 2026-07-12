@@ -100,7 +100,7 @@ end
 
 warning off
 old_IP=load('PIVlab_settings_default.mat','Chronos_IP');
-warning on
+%warning on
 if isfield(old_IP,'Chronos_IP')
 	cameraIP=old_IP.Chronos_IP;
 	

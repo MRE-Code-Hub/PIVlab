@@ -113,9 +113,11 @@ if do_save_frames > 0
         end
         if numel(find(error_delta_t>=20)) > 0
             disp('')
-            disp('!!! WARNING: Matlab might have skipped frames !!!')
+            disp('Warning: Matlab might have skipped frames during acquisition.')
             disp('There is an issue with Matlab not being able to capture data fast enough.')
+            disp('Double check that the grabber is in a PCie Gen3 x8 slot. Slower interfaces are not supported.')
             disp('Until Mathworks found a solution, we recommend to reduce the frame rate.')
+            disp('Please check that frame pairs do not have missing images.')
             disp('')
         end
     end

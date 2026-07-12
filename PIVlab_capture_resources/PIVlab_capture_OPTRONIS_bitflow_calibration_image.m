@@ -8,7 +8,7 @@ try
     delete(imaqfind);
     warning off
     hwinf = imaqhwinfo; %#ok<NASGU>
-    warning on
+    %warning on
 catch
     gui.custom_msgbox('error',getappdata(0,'hgui'),'Error','Error: Image Acquisition Toolbox not available! This camera needs the image acquisition toolbox.','modal');
     disp('Error: Image Acquisition Toolbox not available! This camera needs the image acquisition toolbox.')

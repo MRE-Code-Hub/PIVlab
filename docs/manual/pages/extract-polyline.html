@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parameters from poly-line · PIVlab Manual</title>
+  <meta name="description" content="How to extract velocity, vorticity or other derived parameters along a poly-line or circle in PIVlab.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Parameters from poly-line</h1>
+    <p class="lead">Draw a line or a circle across your data and extract a profile of any
+    derived parameter along it — a velocity profile across a jet, or a tangential-velocity
+    profile around a vortex core, for example.</p>
+    <p>Open via <span class="ui">Extractions → Parameters from poly-line</span>
+    (<kbd>Ctrl</kbd>+<kbd>P</kbd>).</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/extract-polyline/panel.png" alt="PIVlab Extract parameters from poly-line panel">
+      <figcaption>The <strong>Extract parameters from poly-line</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="drawing">Drawing a line or circle</h2>
+    <p>Choose a <span class="ui">Type</span> first:</p>
+    <table class="ref">
+      <tr><th>Type</th><th>How to draw it</th></tr>
+      <tr><td>polyline</td><td>Left-click to add each point; right-click to finish.</td></tr>
+      <tr><td>circle</td><td>Click twice with the left mouse button: first click sets the centre, second click sets the radius.</td></tr>
+      <tr><td>circle series (tangent vel. only)</td><td>Several concentric circles at once —
+      restricted to extracting tangential velocity, useful for a velocity-vs-radius profile
+      around a vortex core.</td></tr>
+    </table>
+    <p>Click <span class="ui">Draw!</span> to start, then draw in the image. Use
+    <span class="ui">Save coords</span> / <span class="ui">Load coords</span> to reuse the same
+    line or circle across sessions.</p>
+    <figure>
+      <img src="../assets/img/extract-polyline/circle-series.jpg" alt="A circle series — many concentric circles — drawn around a vortex on the velocity field, for extracting a tangential-velocity profile versus radius">
+      <figcaption>A <span class="ui">circle series</span> centred on a vortex: many concentric
+      circles at once, for extracting a tangential-velocity profile as a function of radius.</figcaption>
+    </figure>
+
+    <h2 id="extracting">Extracting data</h2>
+    <ol class="steps">
+      <li>Choose what to extract from <span class="ui">Data to extract</span> — the same
+      derived-parameter list as <a href="derive-spatial.html">Deriving spatial parameters</a>,
+      plus <span class="ui">Tangent velocity</span> for circles.</li>
+      <li>Click <span class="ui">Extract data</span> to plot the profile along your line or circle.</li>
+      <li>Click <span class="ui">Clear data</span> to remove it and start over.</li>
+    </ol>
+    <figure>
+      <img src="../assets/img/extract-polyline/magnitude-profile.jpg" alt="A pop-up plot of velocity magnitude versus distance along a line, with the blue extraction line drawn on the vector field behind it">
+      <figcaption>Extracting <span class="ui">Magnitude</span> along a line: the blue line is
+      drawn across the flow (right), and the pop-up plots the value versus distance along it,
+      including the integral along the line.</figcaption>
+    </figure>
+
+    <h2 id="saving">Saving the extraction</h2>
+    <p>Tick <span class="ui">extract and save for all frames</span> to extract across the whole
+    session rather than just the current frame, choose a file format
+    (<span class="ui">Excel file</span> or <span class="ui">Text file</span>), then click
+    <span class="ui">Export data</span>.</p>
+
+    <div class="note">
+      <strong>Want an average over a region instead?</strong>
+      See <a href="extract-area.html">Parameters from area</a> — same idea, but for a whole
+      enclosed area rather than a line or circle.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

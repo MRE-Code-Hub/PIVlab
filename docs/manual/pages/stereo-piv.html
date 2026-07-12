@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stereo PIV settings · PIVlab Manual</title>
+  <meta name="description" content="Current status of stereo PIV support in PIVlab.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Stereo PIV settings</h1>
+    <p class="lead">Stereo PIV (two-camera, 3-component velocity measurement) is
+    <strong>not implemented yet</strong>. This page exists so the menu structure is documented
+    honestly rather than left silently unexplained.</p>
+
+    <div class="warn">
+      <strong>Not currently functional</strong>
+      <span class="ui">Analysis → Stereo PIV settings → Disparity correction</span> is present
+      in the menu but disabled, and the parent menu item currently does nothing when clicked.
+      There is no working stereo-PIV analysis path in this version.
+    </div>
+
+    <p>Some related, already-usable infrastructure exists elsewhere and is worth knowing about
+    if you're setting up a two-camera rig for future use:</p>
+    <ul>
+      <li>The <span class="ui">Stereo-PIV mode (2D3C)</span> checkbox exists in the
+      <a href="sessions.html">Input data panel</a> but is currently disabled.</li>
+      <li><a href="camera-calibration.html">Camera calibration</a> already supports a
+      <span class="ui">Scheimpflug adapter (tilted sensor model)</span> option, relevant to
+      angled stereo camera setups, and its "Camera 2" menu entries exist (though disabled today)
+      for future dual-camera support.</li>
+    </ul>
+
+    <p>If you need stereo PIV today, this isn't yet the tool for it — check the
+    <a href="https://shrediquette.github.io/PIVlab/" target="_blank" rel="noopener">PIVlab
+    website</a> for news on when this feature lands.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

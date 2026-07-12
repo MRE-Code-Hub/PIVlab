@@ -54,7 +54,7 @@ if isempty(fh)
         delete(imaqfind);
         warning off
         hwinf = imaqhwinfo; %#ok<NASGU>
-        warning on
+        %warning on
         bitmode=retr('OPTRONIS_bits');
         if isempty(bitmode) || ~isnumeric(bitmode)
             bitmode=8;

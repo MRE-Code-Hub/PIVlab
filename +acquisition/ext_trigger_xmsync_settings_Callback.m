@@ -13,10 +13,10 @@ if ~isempty(serpo)
 			%configureTerminator(serpo,'CR');
 			writeline(serpo,'TrigFreq?');
 			pause(1.25);
-			warning off
+			%warning off
 			%configureTerminator(serpo,'CR/LF');
 			serial_answer=readline(serpo);
-			warning on
+			%warning on
 			set(handles.ac_enable_ext_trigger,'String',old_label,'Enable','on');
 			selectedtriggerdelay=gui.retr('selectedtriggerdelay');
 			if isempty(selectedtriggerdelay)

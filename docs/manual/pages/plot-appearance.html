@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modifying plot appearance · PIVlab Manual</title>
+  <meta name="description" content="How to control vector scale, colors, colormaps and colorbars in PIVlab's vector plot display.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Modifying plot appearance</h1>
+    <p class="lead">Everything here is purely about <strong>display</strong> — it changes how
+    your results look on screen (and in exports), not the underlying data.</p>
+    <p>Open via <span class="ui">Plot → Modify plot appearance</span> (<kbd>Ctrl</kbd>+<kbd>M</kbd>).</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/plot-appearance/panel.png" alt="PIVlab Modify plot appearance panel">
+      <figcaption>The <strong>Modify plot appearance</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="vectors">Vector appearance</h2>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>autoscale vectors</td><td>Automatically scales vector length for readability.</td></tr>
+      <tr><td>Vector scale</td><td>Manual scale factor (default 5), used when autoscale is off.</td></tr>
+      <tr><td>Vector line width</td><td>Thickness of the drawn vectors (default 0.5).</td></tr>
+      <tr><td>plot every nth vector, n =</td><td>Shows only every nth vector — useful when the
+      field is too dense to read (a wavelet-optical-flow analysis, for example, produces one
+      vector per pixel).</td></tr>
+      <tr><td>hide vectors</td><td>Hides vectors entirely — useful when you only want to show a derived-parameter overlay.</td></tr>
+      <tr><td>uniform vector scale</td><td>Draws every vector at the same length, regardless of velocity — direction only.</td></tr>
+      <tr><td>power law vector scale</td><td>Scales vector length with a sublinear power
+      function instead of linearly — long vectors are compressed more as the exponent (default
+      0.3) gets smaller, so a few very fast vectors don't visually dominate the plot.</td></tr>
+    </table>
+
+    <h2 id="background">Background image</h2>
+    <p>The <span class="ui">Background</span> dropdown chooses what's shown behind the vectors:
+    <span class="ui">Display PIV image</span>, <span class="ui">Solid black</span>, or
+    <span class="ui">Solid white</span>. <span class="ui">Enhance PIV image display</span> (on
+    by default) improves the raw image's contrast purely for display.</p>
+
+    <h2 id="colors">Vector colors</h2>
+    <p>Four colors, each chosen from a preset list:</p>
+    <table class="ref">
+      <tr><th>Role</th><th>Default</th></tr>
+      <tr><td>Valid (1st peak)</td><td>The primary color for good vectors.</td></tr>
+      <tr><td>Valid (2nd peak)</td><td>Vectors taken from the correlation's second peak.</td></tr>
+      <tr><td>Replaced / interp.</td><td>Vectors that were rejected and filled by interpolation.</td></tr>
+      <tr><td>On derivatives</td><td>Vector color when a derived parameter (e.g. vorticity) is shown underneath.</td></tr>
+    </table>
+    <div class="note">
+      <strong>These are the colors validation uses</strong>
+      The colour legend shown on the <a href="validation-velocity.html">velocity-based</a> and
+      <a href="validation-image.html">image-based validation</a> panels reflects exactly these
+      four settings.
+    </div>
+    <p>Also here: <span class="ui">Mask transparency [%]</span> (default 50) — controls how
+    see-through the red overlay is when viewing <a href="masking.html">masks</a>.</p>
+
+    <h2 id="derived-appearance">Derived-parameter colormap</h2>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>Colormap opacity [%]</td><td>Transparency of the derived-parameter overlay (default 75).</td></tr>
+      <tr><td>Color map</td><td>Parula, HSV, Jet, HSB, Hot, Cool, Spring, Summer, Autumn, Winter, Gray, Bone, Copper, Pink, Lines, or Plasma.</td></tr>
+      <tr><td>Steps</td><td>Number of discrete colors in the map (256 down to 2).</td></tr>
+      <tr><td>Image interpolation</td><td>bilinear (default), bicubic, or nearest — how the colormap image is resampled for display.</td></tr>
+    </table>
+    <figure>
+      <img src="../assets/img/plot-appearance/colormap-steps.jpg" alt="A velocity-magnitude overlay drawn with a small number of discrete colour steps, giving banded contours instead of a smooth gradient">
+      <figcaption>The same field with a low number of colour <span class="ui">Steps</span> —
+      the map becomes banded, turning a smooth gradient into discrete contour-like levels.</figcaption>
+    </figure>
+
+    <h2 id="colorbar">Color legend</h2>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>Show colorbar</td><td>None, or a position: South/North/East/West Outside.</td></tr>
+      <tr><td>Colorbar numeric format</td><td>Compact notation, scientific notation, or fixed-decimals.</td></tr>
+    </table>
+
+    <h2 id="reference">Reference vector</h2>
+    <p>A reference vector is a fixed-length arrow drawn in a corner of the plot so viewers can
+    judge scale at a glance. Set its <span class="ui">Reference vector scale</span> (in the same
+    units as your vectors) and its position — <span class="ui">Off</span>, or one of the four
+    corners.</p>
+
+    <h2 id="apply">Applying</h2>
+    <p>Click <span class="ui">Apply</span> to refresh the display with your changes.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

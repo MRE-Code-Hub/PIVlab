@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parameters from area · PIVlab Manual</title>
+  <meta name="description" content="How to extract the average value of a derived parameter over an area in PIVlab.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Parameters from area</h1>
+    <p class="lead">Like <a href="extract-polyline.html">parameters from poly-line</a>, but
+    instead of a profile along a line, this computes a single <strong>average value</strong> of
+    a derived parameter over an enclosed area — useful for tracking a bulk quantity (e.g. mean
+    vorticity in a region) over time.</p>
+    <p>Open via <span class="ui">Extractions → Parameters from area</span>
+    (<kbd>Ctrl</kbd>+<kbd>Q</kbd>).</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/extract-area/panel.png" alt="PIVlab Extract parameters from area panel">
+      <figcaption>The <strong>Extract parameters from area</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="drawing">Drawing the area</h2>
+    <p>Choose a <span class="ui">Type</span> — <span class="ui">rectangle</span>,
+    <span class="ui">polygon</span>, <span class="ui">circle</span>, or <span class="ui">circle
+    series</span> — then click <span class="ui">Draw!</span> and draw it on the image. Use
+    <span class="ui">Save coords</span> / <span class="ui">Load coords</span> to reuse the same
+    area later.</p>
+
+    <h2 id="extracting">Extracting the average</h2>
+    <ol class="steps">
+      <li>Pick the parameter from <span class="ui">Calculate the average of</span> — the same
+      list as poly-line extraction, minus tangent velocity.</li>
+      <li>Click <span class="ui">Extract data</span>. The numeric result appears directly in the
+      <span class="ui">Results</span> box.</li>
+      <li>Click <span class="ui">Clear data</span> to remove it.</li>
+    </ol>
+    <figure>
+      <img src="../assets/img/extract-area/area-result.jpg" alt="The Extract parameters from area panel with a rectangle drawn on the field; the Results box shows the area, mean v-component and integral">
+      <figcaption>A rectangular area drawn on the field. The <span class="ui">Results</span> box
+      reports the area, the mean of the chosen parameter (here the v-component) and its integral
+      over the area.</figcaption>
+    </figure>
+
+    <h2 id="saving">Saving the extraction</h2>
+    <p>Tick <span class="ui">extract and save for all frames</span> to get the average for
+    every frame in the session (e.g. to track it over time), choose
+    <span class="ui">Excel file</span> or <span class="ui">Text file</span>, then click
+    <span class="ui">Export data</span>.</p>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

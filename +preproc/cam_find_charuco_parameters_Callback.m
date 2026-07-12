@@ -33,6 +33,8 @@ if ~isequal(filename,0)
         handles.calib_markersize.String = num2str(markerSize);
         gui.custom_msgbox('msg',getappdata(0,'hgui'),'Results from QR code',['Origin checker color: ' originCheckerColor newline 'Marker family: ' markerFamily newline 'Rows: ' int2str(patternDims(1)) newline 'Columns: ' int2str(patternDims(2)) newline 'Checker Size: ' int2str(checkerSize) newline 'Marker Size: ' int2str(markerSize)],'modal','OK','OK');
         return
+	else
+		disp('No QR code found, trying ChAruco Markers...')
     end
 
     [ids,locs,detectedFamily] = readArucoMarker(tmp_img);

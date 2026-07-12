@@ -50,7 +50,7 @@ if isempty(fh)
     try
         warning off
         load('PIVlab_settings_default.mat','build_date');
-        warning on
+        %warning on
     catch
         build_date=' ';
     end
@@ -288,7 +288,7 @@ if isempty(fh)
     try
         warning off
         imaqreset;
-        warning on
+        %warning on
         if ~exist('splash_ax','var')
             disp('-> Image Acquisition Toolbox found.')
         else
@@ -342,7 +342,8 @@ if isempty(fh)
     warning('off','all') %if the variables don't exist, an ugly warning is displayed
     load('PIVlab_settings_default.mat','homedir');
     load('PIVlab_settings_default.mat','pathname');
-    warning('on','all')
+    %warning('on','all')
+    warning('off','all')
     warning('off','serialport:serialport:ReadlineWarning')
     if ~exist('pathname','var') || ~exist('homedir','var')
         try

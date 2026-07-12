@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spatial calibration · PIVlab Manual</title>
+  <meta name="description" content="How to calibrate pixels to physical units in PIVlab: reference length, time step, axis directions and origin offset.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Spatial calibration (px → mm)</h1>
+    <p class="lead">This converts your results from pixels and frames into physical units —
+    millimeters and seconds (or velocities). It's independent of
+    <a href="camera-calibration.html">camera calibration &amp; rectification</a>, which instead
+    corrects lens distortion and image alignment.</p>
+    <p>Open via the top-level <span class="ui">Spatial calibration (px → mm)</span> menu, or
+    <kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p>
+
+    <figure class="inline-panel">
+      <img src="../assets/img/spatial-calibration/panel.png" alt="PIVlab Calibration panel">
+      <figcaption>The <strong>Calibration</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="reference-image">Optional: a dedicated calibration image</h2>
+    <p>If you photographed a ruler or a target with known dimensions separately from your PIV
+    images, click <span class="ui">Load calibration image (optional)</span> to calibrate
+    against that instead of your PIV data. <span class="ui">Enhance image contrast</span> (on
+    by default) makes the reference markings easier to see.</p>
+    <div class="note">
+      <strong>Works together with camera calibration</strong>
+      If you've enabled <a href="camera-calibration.html">camera undistortion and/or
+      rectification</a>, the same correction is applied to your calibration image too — so the
+      reference length you pick stays valid and consistent with your (corrected) PIV images.
+    </div>
+    <div class="warn">
+      <strong>The calibration image must match your setup exactly</strong>
+      The dedicated calibration image must have the same dimensions (pixel resolution) as your
+      PIV images. The ruler or target must be placed exactly in the laser sheet. Otherwise, the
+      dedicated calibration image isn't useful.
+    </div>
+
+    <h2 id="scaling">Setting the scale</h2>
+    <ol class="steps">
+      <li>Click <span class="ui">Pick reference length [px]</span> and drag a line across a
+      distance you know the real-world size of (a ruler, a known gap, etc.) — or type the pixel
+      length directly into <span class="ui">Reference length in px</span>.</li>
+      <li>Enter that distance's real-world size in <span class="ui">Real distance in
+      mm</span>.</li>
+      <li>Enter the time between your two images in <span class="ui">time step in ms</span>.</li>
+    </ol>
+    <figure>
+      <img src="../assets/img/spatial-calibration/reference-length.jpg" alt="A reference line drawn across a calibration target of known size; a label reports its length in pixels (1165.61 px) for a real distance of 120 mm">
+      <figcaption>Picking the reference length: a line drawn across a known distance on a
+      calibration target. PIVlab reports its length in pixels (here 1165.61 px), which you pair
+      with the real-world distance (120 mm) to set the scale.</figcaption>
+    </figure>
+    <div class="note">
+      <strong>Time step of 0 = displacements, not velocities</strong>
+      Entering <code>0</code> for the time step tells PIVlab you want raw
+      <strong>displacements</strong> instead of velocities — useful when the time between
+      frames isn't meaningful or known.
+    </div>
+
+    <h2 id="offsets">Setting up axis directions and origin</h2>
+    <p>By default, image data has its origin at the top left, with <em>x</em> increasing right
+    and <em>y</em> increasing downward. The <span class="ui">Setup Offsets</span> panel lets you
+    match PIVlab's coordinate system to your own:</p>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>x increases towards the (right/left)</td><td>Flips the direction of positive x.</td></tr>
+      <tr><td>y increases towards the (bottom/top)</td><td>Flips the direction of positive y — e.g. choose "top" for a conventional bottom-left-origin coordinate system.</td></tr>
+      <tr><td>Set x &amp; y offsets</td><td>Click a point in the calibration image and enter the physical (x, y) coordinate it represents, moving the origin there.</td></tr>
+    </table>
+
+    <h2 id="apply">Applying the calibration</h2>
+    <p>Once everything is set, click <span class="ui">Apply calibration</span> to convert the
+    whole session's results — not just the current frame. Click <span class="ui">Clear
+    calibration</span> to revert to raw pixels/frames.</p>
+
+    <div class="tip">
+      <strong>Calibrate early</strong>
+      Where practical, calibrate before running heavy <a href="validation-velocity.html">
+      validation</a>. Velocity-limit thresholds are much easier to set and interpret once you're
+      looking at physical units (mm/s) rather than raw pixels/frame.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

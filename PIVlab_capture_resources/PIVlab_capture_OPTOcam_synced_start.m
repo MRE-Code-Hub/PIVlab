@@ -11,7 +11,7 @@ try
     delete(imaqfind); %clears all previous videoinputs
     warning off
     hwinf = imaqhwinfo;
-    warning on
+    %warning on
     %imaqreset
 catch
     imaq_error=1;

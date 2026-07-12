@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Velocity-based validation · PIVlab Manual</title>
+  <meta name="description" content="How to remove spurious vectors in PIVlab using velocity limits, statistical filters, and manual rejection.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Velocity-based validation</h1>
+    <p class="lead">After an analysis, some vectors will be wrong — spurious correlations,
+    noise, or outliers. This panel finds and removes them using statistical filters, a
+    velocity-space limit you draw yourself, and manual clicking, then optionally fills the gaps
+    by interpolation.</p>
+    <p>Open via <span class="ui">Validation → Velocity based validation</span> (<kbd>Ctrl+V</kbd>).</p>
+
+    <div class="tip">
+      <strong>A sensible order</strong>
+      Try <span class="ui">Velocity limits</span> first to catch the big, obvious outliers, then
+      enable the <span class="ui">Standard deviation</span> and <span class="ui">Local
+      median</span> filters. Reach for <a href="validation-image.html">image-based
+      validation</a> only if problems remain after that.
+    </div>
+
+    <figure>
+      <img src="../assets/img/validation-velocity/panel.png" alt="PIVlab Vector validation panel with real analysis results">
+      <figcaption>The <strong>Vector validation</strong> panel, showing real results (VDP 100% here since the demo data is clean).</figcaption>
+    </figure>
+
+    <h2 id="limits">Velocity limits</h2>
+    <p>Click <span class="ui">Rectangle</span>, <span class="ui">Freehand</span> or
+    <span class="ui">Auto</span> to open a scatter plot of every vector's <em>u</em> vs.
+    <em>v</em> component (not its position in the image — its value in velocity space). Valid
+    vectors cluster together; outliers sit far from the cluster.</p>
+    <table class="ref">
+      <tr><th>Button</th><th>How you define the limit</th></tr>
+      <tr><td>Rectangle</td><td>Draw a rectangular window around the allowed velocities.</td></tr>
+      <tr><td>Freehand</td><td>Freely draw any shape around the allowed velocities.</td></tr>
+      <tr><td>Auto</td><td>PIVlab automatically draws a shape around the main cluster.</td></tr>
+    </table>
+    <p>Any vector falling outside the shape you defined is treated as invalid. The
+    <span class="ui">display all frames in scatterplot</span> checkbox (on by default) pools
+    every frame's vectors into one scatter plot, which usually gives a clearer picture of the
+    true cluster than a single frame would. Click <span class="ui">Clear all velocity
+    limits</span> to remove the limit and start over.</p>
+    <figure>
+      <img src="../assets/img/validation-velocity/auto-limits.jpg" alt="Velocity scatter plot of u vs. v, with a green dashed shape drawn around the main cluster; outliers outside it are red">
+      <figcaption>The velocity scatter plot with an <span class="ui">Auto</span> limit (green
+      dashed). Green points are inside the limit and kept; red points fall outside and are
+      rejected as outliers.</figcaption>
+    </figure>
+
+    <h2 id="statistical">Statistical filters</h2>
+    <table class="ref">
+      <tr><th>Filter</th><th>Parameter</th><th>What it does</th></tr>
+      <tr>
+        <td>Standard deviation filter</td>
+        <td>Threshold [n × stdev] (default 4.7)</td>
+        <td>Removes vectors outside the mean velocity ± n times the standard deviation.</td>
+      </tr>
+      <tr>
+        <td>Local median filter</td>
+        <td>Threshold (default 3)</td>
+        <td>The normalized local median test (Westerweel &amp; Scarano, 2005) — compares each
+        vector to its immediate neighbours rather than the whole field, catching localized
+        outliers a global filter would miss.</td>
+      </tr>
+      <tr>
+        <td>Magnitude notch filter</td>
+        <td>vL / vH (default −1 / 1)</td>
+        <td>Discards velocities that fall <em>inside</em> the range from vL to vH — the
+        opposite of the other filters, useful for rejecting a specific unwanted velocity band
+        (e.g. near-zero noise).</td>
+      </tr>
+    </table>
+    <p>Both the standard-deviation and local-median filters are enabled by default; the notch
+    filter is off by default.</p>
+
+    <h2 id="manual">Manually rejecting vectors</h2>
+    <p>Click <span class="ui">Manually reject vector</span>, then click the <strong>base</strong>
+    of any vector in the plot to discard it individually — useful for the odd bad vector the
+    automatic filters don't catch.</p>
+
+    <h2 id="interpolate">Filling the gaps</h2>
+    <p><span class="ui">Interpolate missing data</span> (on by default) fills rejected/missing
+    vectors by interpolating from their neighbours. Interpolated vectors are drawn in
+    <strong>orange</strong> in the plot, so you can always tell real data from filled-in data.</p>
+    <div class="warn">
+      <strong>Interpolated vectors are not measurements</strong>
+      An orange vector is a filled-in estimate, not something PIVlab actually measured. A few
+      scattered interpolated vectors are normal and fine. A lot of them is a warning sign — it
+      usually means poor image quality or unsuitable settings somewhere upstream, not something
+      to overlook just because the vector field looks visually complete. See
+      <a href="best-practices.html#troubleshooting">Troubleshooting by symptom</a> if you're
+      seeing large interpolated regions.
+    </div>
+
+    <h2 id="tuning">Tuning strategy: isolate, then combine</h2>
+    <p>With several filters available, it's easy to end up with a combination that "looks right"
+    without actually knowing which filter is doing what. A more reliable approach:</p>
+    <ol class="steps">
+      <li>Tune <strong>one filter at a time</strong> — disable the others while you do.</li>
+      <li>Check that this filter, on its own, only removes vectors that are actually bad. If it's
+      also eating good vectors, its threshold is too aggressive.</li>
+      <li>Step through a few <strong>different frames</strong> while checking — a threshold tuned
+      on one frame doesn't always hold up across the rest of your dataset.</li>
+      <li>Once each filter is individually tuned, enable them all together.</li>
+    </ol>
+    <div class="tip">
+      <strong>A good sign</strong>
+      If the filters still work well once combined, that's a strong indication they're catching
+      almost all the erroneous vectors in your data.
+    </div>
+
+    <h2 id="apply">Applying and undoing</h2>
+    <ol class="steps">
+      <li>Set up your limits and filters (see <a href="#tuning">Tuning strategy</a> above).</li>
+      <li>Click <span class="ui">Apply to current frame</span> to test on one frame, or
+      <span class="ui">Apply to all frames</span> to validate the whole session.</li>
+      <li>Click <span class="ui">Undo all validations (all frames)</span> to remove every
+      filter's effect and start over.</li>
+    </ol>
+
+    <h2 id="reading">Reading the result</h2>
+    <p>After validating, the panel shows the <strong>Valid detection probability
+    (VDP)</strong> — the percentage of vectors that passed validation unmodified. As a rule of
+    thumb, a VDP above 90% <em>in the area you actually care about</em> is fine — don't worry
+    about a lower overall VDP if it's being dragged down by a region outside your area of
+    interest (e.g. a masked object or the image border). The vector plot uses a color code:</p>
+    <table class="ref">
+      <tr><th>Color</th><th>Meaning</th></tr>
+      <tr><td>Green</td><td>Valid vectors (1st correlation peak)</td></tr>
+      <tr><td>Cyan</td><td>Valid vectors (2nd correlation peak)</td></tr>
+      <tr><td>Orange</td><td>Rejected / interpolated</td></tr>
+    </table>
+    <figure>
+      <img src="../assets/img/validation-velocity/vector-colors.jpg" alt="Vector field colour-coded by type: mostly green valid vectors, a few orange rejected/interpolated ones and cyan second-peak vectors, with the masked object shown in red">
+      <figcaption>The validated vector field colour-coded by type — green (valid), orange
+      (rejected / interpolated) and cyan (2nd peak). The red region is a
+      <a href="masking.html">mask</a>.</figcaption>
+    </figure>
+    <div class="tip">
+      <strong>Colors are configurable</strong>
+      These three colors can be changed in <a href="plot-appearance.html">Modify plot
+      appearance</a> — the swatches in this panel update to match whatever you choose there.
+    </div>
+
+    <div class="note">
+      <strong>Also see image-based validation</strong>
+      <a href="validation-image.html">Image-based validation</a> rejects vectors using the
+      underlying image quality (contrast, glare, correlation) instead of the velocity value —
+      independent of these filters, and worth combining with them.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deriving spatial parameters · PIVlab Manual</title>
+  <meta name="description" content="How to display vorticity, divergence, shear, Q criterion and other derived quantities in PIVlab, plus smoothing and background-flow subtraction.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Deriving spatial parameters / modifying data</h1>
+    <p class="lead">Beyond raw velocity vectors, PIVlab can compute and display a range of
+    derived flow quantities, smooth your data, and subtract a background flow — all without
+    re-running the PIV analysis.</p>
+    <p>Open via <span class="ui">Plot → Spatial: Derive parameters / modify data</span>
+    (<kbd>Ctrl</kbd>+<kbd>D</kbd>).</p>
+
+    <figure>
+      <img src="../assets/img/derive-spatial/panel.png" alt="PIVlab Derive Parameters panel">
+      <figcaption>The <strong>Derive Parameters</strong> panel.</figcaption>
+    </figure>
+
+    <h2 id="parameter">Choosing what to display</h2>
+    <p>The <span class="ui">Display Parameter</span> dropdown selects what's shown as a
+    colour-coded overlay on the vector plot:</p>
+    <table class="ref">
+      <tr><th>Parameter</th><th>Notes</th></tr>
+      <tr><td>Vectors</td><td>Raw velocity vectors (the default).</td></tr>
+      <tr><td>Vorticity</td><td>Local rotation of the flow.</td></tr>
+      <tr><td>Magnitude</td><td>Speed, regardless of direction.</td></tr>
+      <tr><td>u component / v component</td><td>Horizontal / vertical velocity only.</td></tr>
+      <tr><td>Divergence</td><td>Net outflow/inflow at each point.</td></tr>
+      <tr><td>Q criterion</td><td>A common vortex-identification measure.</td></tr>
+      <tr><td>Shear rate</td><td>Magnitude of the rate-of-strain tensor.</td></tr>
+      <tr><td>Simple strain rate</td><td>A simpler strain-rate estimate.</td></tr>
+      <tr><td>Line integral convolution (LIC)</td><td>A texture-based visualization of flow direction. Reveals streak-like structure; see the resolution slider below.</td></tr>
+      <tr><td>Vector direction</td><td>Angle in degrees.</td></tr>
+      <tr><td>Correlation coefficient</td><td>Quality of the underlying correlation.</td></tr>
+      <tr><td>Uncertainty</td><td>Only available if you enabled uncertainty estimation in PIV settings.</td></tr>
+    </table>
+    <p>Units shown in the dropdown adapt automatically: pixels/frame if uncalibrated,
+    meters/frame if calibrated with a zero time step (displacements only), or meters/second
+    once fully calibrated.</p>
+    <figure>
+      <img src="../assets/img/derive-spatial/magnitude-result.jpg" alt="Velocity magnitude shown as a colour overlay on the vector field, with a colour bar labelled Magnitude in m/s and the masked object in red">
+      <figcaption>Velocity <span class="ui">Magnitude</span> displayed as a colour overlay with
+      the vectors on top and a labelled colour bar. The colour map, opacity and colour bar are
+      all configurable in <a href="plot-appearance.html">Modify plot appearance</a>.</figcaption>
+    </figure>
+    <p>When <span class="ui">Line integral convolution (LIC)</span> is selected, a
+    <span class="ui">LIC resolution</span> slider appears — higher values look more detailed
+    but take longer to compute.</p>
+
+    <h2 id="smoothing">Data smoothing</h2>
+    <table class="ref">
+      <tr><th>Mode</th><th>Effect</th></tr>
+      <tr><td>None</td><td>No smoothing (default).</td></tr>
+      <tr><td>2D</td><td>Spatial smoothing within each frame, using Damien Garcia's <code>smoothn</code>. Controlled by <span class="ui">Smoothing parameter</span> (default 0.2; larger = smoother, typical range 0.1–1).</td></tr>
+      <tr><td>time (moving average)</td><td>A moving average across neighbouring frames. <span class="ui">Temporal window (± frames)</span> sets how many frames on each side to include, combined with more weight given to closer frames.</td></tr>
+      <tr><td>2D + time</td><td>Both, spatial smoothing first, then temporal.</td></tr>
+    </table>
+
+    <h2 id="subtract">Subtracting a background flow</h2>
+    <p>To reveal flow structure relative to a moving reference frame (e.g. removing a
+    convection velocity), subtract a constant velocity from every vector:</p>
+    <ul>
+      <li>Type a value directly into <span class="ui">u:</span> or <span class="ui">v:</span> to subtract a fixed velocity.</li>
+      <li>Or click <span class="ui">mean u</span> / <span class="ui">mean v</span> to subtract
+      the field's own average automatically.</li>
+    </ul>
+    <div class="note">
+      <strong>A separate, temporary highpass is also available</strong>
+      <span class="ui">Highpass vector field</span> (with a <span class="ui">Strength</span>
+      slider) removes a <em>non-uniform</em> background flow for display purposes — unlike the
+      subtract-flow fields above, this modified data is <strong>not saved</strong>, only shown.
+    </div>
+
+    <h2 id="colormap">Colormap and display</h2>
+    <table class="ref">
+      <tr><th>Control</th><th>Effect</th></tr>
+      <tr><td>autoscale</td><td>Stretches the colour map to each frame's own min/max. Turn this
+      <strong>off</strong> when rendering a video, so the color scale stays consistent across
+      frames.</td></tr>
+      <tr><td>min / max</td><td>Manual colour-map bounds, editable once autoscale is off.</td></tr>
+      <tr><td>Extrapolate border</td><td>Fills the border region using spring inpainting instead
+      of the mean value — slower, but smoother-looking.</td></tr>
+    </table>
+
+    <h2 id="apply">Applying</h2>
+    <p>Click <span class="ui">Apply to current frame</span> to preview on the current frame, or
+    <span class="ui">Apply to all frames</span> to compute the selected parameter and settings
+    across the whole session.</p>
+
+    <div class="note">
+      <strong>Combining data across frames instead?</strong>
+      See <a href="derive-temporal.html">Deriving temporal parameters</a> — mean, sum, standard
+      deviation and turbulent kinetic energy across a whole time-resolved sequence.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

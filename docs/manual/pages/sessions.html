@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessions · PIVlab Manual</title>
+  <meta name="description" content="How PIVlab handles images, sessions and settings — importing image sequences, and the difference between saving a session and saving settings.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Sessions: images, settings and saved work</h1>
+    <p class="lead">Before anything else in PIVlab, you need images loaded. This page covers
+    importing an image sequence, and — because it trips people up — the difference between a
+    <strong>session</strong> (everything: images, masks, results) and <strong>settings</strong>
+    (just your configuration, reusable on a different dataset).</p>
+
+    <div class="split">
+      <div>
+        <h2 id="new">Starting a new session</h2>
+        <p>Choose <span class="ui">File → New session</span> (<kbd>Ctrl+N</kbd>), or click the
+        first icon in <span class="ui">Main tasks quick access</span>. This opens the
+        <span class="ui">Input data</span> panel shown here, with three ways to get images in:
+        <span class="ui">Import images</span> (from disk), <span class="ui">Load session</span>
+        (resume earlier work — see below), and <span class="ui">Acquire images</span> (capture
+        directly from a connected camera).</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/sessions/input-data-panel.png" alt="PIVlab Input data panel with a loaded image list">
+        <figcaption>The <strong>Input data</strong> panel, with four Kármán-vortex image pairs loaded.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="importing">Importing images</h2>
+    <p>Click <span class="ui">Import images</span> to open the image-import dialog shown below.
+    Browse to your folder (a <span class="ui">Regular Expression Filter</span> field narrows
+    down large folders), select the files you want, and choose an <strong>image sequencing
+    style</strong> — this tells PIVlab how to pair up your files into frames:</p>
+    <figure>
+      <img src="../assets/img/sessions/image-import-dialog.jpg" alt="PIVlab image import dialog: sequencing style, folder browser, and the list of images selected for import">
+      <figcaption>The image import dialog. Pick a sequencing style (left), select files and click
+      <span class="ui">Add</span> to move them into the <span class="ui">Images selected for
+      import</span> list, then <span class="ui">Import</span>.</figcaption>
+    </figure>
+    <table class="ref">
+      <tr><th>Style</th><th>Pairing</th><th>Use it for</th></tr>
+      <tr>
+        <td>Time resolved</td>
+        <td><code>[A+B], [B+C], [C+D], …</code></td>
+        <td>A continuous recording where every image is reused as both the second half of one
+        pair and the first half of the next — gives one vector field per consecutive frame step.</td>
+      </tr>
+      <tr>
+        <td>Pairwise</td>
+        <td><code>[A+B], [C+D], [E+F], …</code></td>
+        <td>Discrete double-frame/double-exposure pairs, each captured with its own short time
+        separation, with no overlap between pairs.</td>
+      </tr>
+      <tr>
+        <td>Reference</td>
+        <td><code>[A+B], [A+C], [A+D], …</code></td>
+        <td>Comparing every image against one fixed reference frame — e.g. measuring growing
+        displacement relative to a baseline.</td>
+      </tr>
+    </table>
+
+    <ol class="steps">
+      <li>Select the sequencing style that matches how your images were captured.</li>
+      <li>Select the image files in the folder browser and click <span class="ui">Add</span> to
+      move them into the <span class="ui">Images selected for import</span> list on the right.
+      Use <span class="ui">Remove</span>, the move-up/move-down buttons, or
+      <span class="ui">Show full paths</span> / <span class="ui">Remove duplicates</span> to
+      clean up the list.</li>
+      <li>Click <span class="ui">Import</span> to load them (or <span class="ui">Cancel</span>
+      to back out). At least two images — one pair — are required.</li>
+    </ol>
+
+    <div class="tip">
+      <strong>PIVlab will double-check your naming</strong>
+      If your filenames end in “A” and “B” but you left the style on <span class="ui">Time
+      resolved</span>, PIVlab detects the mismatch and offers to switch to
+      <span class="ui">Pairwise</span> for you — a common mix-up worth knowing about rather
+      than dismissing without reading.
+    </div>
+
+    <div class="note">
+      <strong>Odd number of images</strong>
+      If your selection results in an odd number of images, the last one is silently dropped so
+      every image can form a complete pair. If that's unexpected, double-check your file
+      selection.
+    </div>
+
+    <h2 id="imagelist">The image list and moving between frames</h2>
+    <p>Loaded frames appear in the <span class="ui">Image list</span>, each entry prefixed
+    <span class="ui">A:</span> or <span class="ui">B:</span> for the first/second image of the
+    pair. To move through frames, use the slider in the <span class="ui">Tools</span> panel at
+    the top of the screen (tooltip: “Step through your frames here”), and
+    <span class="ui">Toggle</span> to flip between the A and B image of the current frame.</p>
+
+    <p>Select one or more entries in the image list and click <span class="ui">Remove
+    images</span> to drop them again. At least one pair must remain.</p>
+
+    <div class="warn">
+      <strong>Removing images clears your results</strong>
+      Removing images from the list also clears any analysis results, derived parameters and
+      manual vector deletions for the whole session — not just for the removed frames. Do this
+      before analysing, or be ready to re-run <span class="ui">ANALYZE!</span> afterwards. If
+      removing leaves an odd number of images, PIVlab highlights the list red and asks you to
+      remove one more.
+    </div>
+
+    <h2 id="vs">Sessions vs. settings — what's the difference?</h2>
+    <p>PIVlab has two, easily confused, kinds of saved file. Knowing which one you want avoids
+    a lot of head-scratching:</p>
+    <table class="ref">
+      <tr><th></th><th>Session</th><th>Settings</th></tr>
+      <tr>
+        <td>Menu path</td>
+        <td>File → Load/Save → <em>…PIVlab session</em></td>
+        <td>File → Load/Save → <em>…PIVlab settings</em></td>
+      </tr>
+      <tr>
+        <td>Contains</td>
+        <td>Everything: image references, masks, ROI, calibration, analysis results, and all settings.</td>
+        <td>Only the configuration — algorithm choice, filter thresholds, colours, calibration
+        setup, etc. No images and no results.</td>
+      </tr>
+      <tr>
+        <td>Use it to</td>
+        <td>Pause and resume the exact same project, or hand off a finished analysis to
+        someone else.</td>
+        <td>Reuse a processing pipeline you've tuned on a different dataset, or share a
+        configuration without sending any data.</td>
+      </tr>
+      <tr>
+        <td>Default file name</td>
+        <td><code>PIVlab_session.mat</code></td>
+        <td><code>PIVlab_set_&lt;username&gt;.mat</code></td>
+      </tr>
+    </table>
+
+    <h2 id="session-saveload">Saving and loading a session</h2>
+    <ol class="steps">
+      <li>Save: <span class="ui">File → Save → Save PIVlab session</span> (or the
+      <span class="ui">Load session</span> button's counterpart in the menu). Choose a location;
+      the default name is <code>PIVlab_session.mat</code>.</li>
+      <li>Load: click <span class="ui">Load session</span> in the <span class="ui">Input
+      data</span> panel, or <span class="ui">File → Load → Load PIVlab session</span>. This
+      restores images, masks, results and settings exactly as they were.</li>
+    </ol>
+    <div class="note">
+      <strong>Sessions saved with an older PIVlab version</strong>
+      PIVlab warns you if a session file was created by an older release, since the interface
+      may have changed since then and some display issues can result.
+    </div>
+
+    <h2 id="settings-saveload">Saving and loading settings only</h2>
+    <ol class="steps">
+      <li>Save: <span class="ui">File → Save → Save current PIVlab settings</span>. Choose a
+      location; the default name includes your username, e.g.
+      <code>PIVlab_set_yourname.mat</code>.</li>
+      <li>Load: <span class="ui">File → Load → Import PIVlab settings</span>. This rebuilds the
+      interface to match the saved configuration, but does not touch your currently loaded
+      images or results.</li>
+    </ol>
+
+    <div class="tip">
+      <strong>PIVlab already remembers a few defaults</strong>
+      PIVlab loads <code>PIVlab_settings_default.mat</code> automatically every time it starts,
+      and a handful of individual choices (e.g. Basic/Advanced mode, the last sequencing style
+      you used) are quietly remembered there as you work. That's not the same as saving your
+      whole current configuration, though — use <span class="ui">Save/Load PIVlab
+      settings</span> whenever you want a <em>complete, named, reusable</em> configuration you
+      can switch between or share.
+    </div>
+
+    <div class="note">
+      <strong>Related, but covered elsewhere</strong>
+      <span class="ui">Acquire images</span> (live camera capture) and
+      <span class="ui">Stereo-PIV mode</span> are more specialized topics with their own pages.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -72,9 +72,9 @@ if strcmp(camera_type,'pco_panda') || strcmp(camera_type,'pco_edge26') || strcmp
             displaysize_x=floor(get(target_axis,'XLim'));
             displaysize_y=floor(get(target_axis,'YLim'));
             ac_ROI_general=[];
-            warning off
+            %warning off
             load('PIVlab_settings_default.mat','ac_ROI_general');
-            warning on
+            %warning on
 
             bla=findobj(target_axis,'type','image');
             current_image_size=size(bla.CData);

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Region of interest (ROI) · PIVlab Manual</title>
+  <meta name="description" content="How to set a region of interest in PIVlab to restrict analysis to part of the image, and how it differs from masking.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Region of interest (ROI)</h1>
+    <p class="lead">A region of interest (ROI) restricts the entire analysis to a single
+    rectangular area of the image — everything outside it is cropped away before any
+    processing happens. It's the simplest way to speed up an analysis or ignore irrelevant
+    parts of a large image.</p>
+
+    <div class="split">
+      <div>
+        <h2 id="opening">Opening the panel</h2>
+        <p>Choose <span class="ui">Image settings → Define region of interest (ROI)</span>
+        (<kbd>Ctrl+E</kbd>). The panel shows a status readout (<span class="ui">ROI
+        inactive</span> / <span class="ui">ROI active</span>), draw/clear buttons, and four
+        numeric fields for exact placement.</p>
+        <p>If you don't set a ROI, the whole image is analysed — fine for most cases.</p>
+      </div>
+      <figure class="inline-panel">
+        <img src="../assets/img/roi/panel.png" alt="PIVlab Region of interest panel showing an active ROI">
+        <figcaption>The <strong>Region of interest</strong> panel with an active ROI.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="drawing">Setting a ROI</h2>
+    <ol class="steps">
+      <li>Click <span class="ui">Select ROI</span>. A green, editable rectangle appears on the image.</li>
+      <li><strong>Drag it into place</strong> and resize it by its corner/edge handles. A live
+      label shows the current <code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>
+      as you drag.</li>
+      <li>Alternatively (or for pixel-exact placement), type values directly into the
+      <span class="ui">x:</span>, <span class="ui">y:</span>, <span class="ui">width:</span> and
+      <span class="ui">height:</span> fields.</li>
+      <li>Click <span class="ui">Clear ROI</span> to remove it and analyse the full image again.</li>
+    </ol>
+
+    <figure>
+      <img src="../assets/img/roi/rectangle-on-image.png" alt="A green ROI rectangle drawn over part of the Karman-vortex example image">
+      <figcaption>An active ROI (green, dashed). Only the area inside it will be processed —
+      note it doesn't need to exclude the rod; that's what masking is for (see below).</figcaption>
+    </figure>
+
+    <div class="note">
+      <strong>One ROI for the whole session</strong>
+      Unlike masks, there is only ever <em>one</em> ROI, and it's rectangular. It applies to
+      every frame in the session — you can't set a different ROI per frame.
+    </div>
+
+    <h2 id="vs-masking">ROI vs. masking — which should I use?</h2>
+    <p>Both restrict what gets analysed, but they work very differently, and knowing the
+    difference saves confusion:</p>
+    <table class="ref">
+      <tr><th></th><th>Region of interest</th><th>Masking</th></tr>
+      <tr>
+        <td>Shape</td>
+        <td>One rectangle only</td>
+        <td>Any shape, any number of them (freehand, circle, rectangle, polygon, automatic)</td>
+      </tr>
+      <tr>
+        <td>Per frame?</td>
+        <td>No — one ROI for the whole session</td>
+        <td>Yes — masks are per-frame (though easy to copy to many frames)</td>
+      </tr>
+      <tr>
+        <td>How it works</td>
+        <td>Crops the image <em>before</em> any processing — pixels outside it are never
+        touched, which is also faster</td>
+        <td>Processes the whole image, then sets the masked pixels' results to <code>NaN</code>
+        afterwards</td>
+      </tr>
+      <tr>
+        <td>Use it for</td>
+        <td>Cutting a large image down to the area you actually care about (e.g. ignoring wide
+        borders or an unused part of the field of view)</td>
+        <td>Excluding specific obstacles, reflections or invalid regions — including holes
+        <em>inside</em> the area you keep (see the masking page's overlapping-masks recipe)</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      <strong>They combine</strong>
+      A ROI and masks are independent and can be used together: crop the image to the relevant
+      area with a ROI, then use masks to exclude specific objects within it.
+    </div>
+
+    <div class="note">
+      <strong>Use it to cut away the unused parts, not the flow</strong>
+      A ROI is a good way to speed up analysis on a large image with wide unused borders or an
+      irrelevant part of the field of view — but don't crop away flow structure you actually
+      need. If you're unsure whether a region matters, leave it in and use a
+      <a href="masking.html">mask</a> instead if it turns out to be a problem.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

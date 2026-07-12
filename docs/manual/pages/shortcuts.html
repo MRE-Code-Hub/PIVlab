@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keyboard shortcuts · PIVlab Manual</title>
+  <meta name="description" content="Full reference of PIVlab's keyboard shortcuts for jumping directly to each panel.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <article id="doc">
+    <h1 id="top">Keyboard shortcuts</h1>
+    <p class="lead">Every shortcut jumps straight to a panel — the same panel you'd reach by
+    clicking the matching menu item. There's no need to memorize menu paths once you know
+    these.</p>
+
+    <table class="ref">
+      <tr><th>Shortcut</th><th>Opens</th></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>N</kbd></td><td>New session / load image data</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>Region of interest (ROI)</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>I</kbd></td><td>Image pre-processing</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>PIV settings</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Analyze (current frame / all frames)</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Velocity-based vector validation</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Spatial calibration (px → mm)</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Derive parameters / modify data</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>M</kbd></td><td>Modify plot appearance</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>T</kbd></td><td>Measure distance and angle / markers</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Extract parameters from poly-line</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Q</kbd></td><td>Extract parameters from area</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>B</kbd></td><td>Statistics</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>Synthetic particle image generation</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>H</kbd></td><td>Getting-started manual</td></tr>
+    </table>
+
+    <div class="note">
+      <strong>Masking has no shortcut</strong>
+      PIVlab's printable shortcuts card (<span class="ui">Learn! → List keyboard
+      shortcuts</span>) lists <kbd>Ctrl</kbd>+<kbd>E</kbd> as covering both "region of interest"
+      and "mask" — that's left over from when the two lived in one panel. In the current
+      version, <kbd>Ctrl</kbd>+<kbd>E</kbd> opens only the <a href="roi.html">ROI panel</a>;
+      masking has moved to its own panel, reachable via
+      <span class="ui">Image settings → Define masks</span> or the quick-access toolbar icon,
+      with no dedicated keyboard shortcut.
+    </div>
+
+    <p>Everything not listed above (loading/saving sessions, camera calibration, exports,
+    stereo settings, streamlines, correlation matrices, and so on) is reached through the menu
+    only.</p>
+
+    <div class="tip">
+      <strong>Printable copy</strong>
+      <span class="ui">Learn! → List keyboard shortcuts</span> opens a one-page PDF version of
+      this list you can print or pin next to your desk.
+    </div>
+  </article>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

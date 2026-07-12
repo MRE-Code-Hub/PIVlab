@@ -13,6 +13,8 @@
 **   **
 **PIVlab comes with it's own unique hardware: Pulsed lasers, LEDs, synchronizers and cameras are available here: [Optolution.com](https://www.optolution.com/en/products/particle-image-velocimetry-piv/)**
 **   **
+Manual of the PIVlab Software:
+https://www.pivlab.de/manual/
 
 Video tutorial 1/3: Quickstart guide
 https://youtube.com/watch?v=g2hcTRAzBvY
