@@ -104,6 +104,8 @@ end
             set(handles.infotext,'Backgroundcolor',[0.75 0.75 0]);
             set(handles.infotext,'foregroundColor','k');
             pause(0.25)
+            %% When using tycmd, not manual "bootloader" command is required. Tycmd does this for us.     
+            %% flash firmware
             command = [fullfile(tempfilepath,'tycmd.exe') ' upload ' firmware_path];
             [~,cmdout] = system(command);
             if ~isempty(cmdout) && contains(cmdout,'Uploading...') && contains(cmdout,'Sending reset command (with RTC)')
@@ -116,6 +118,36 @@ end
                 set(handles.infotext,'foregroundColor','k');
                 gui.custom_msgbox('error',getappdata(0,'hgui'),'Error',cmdout,'modal');
             end
+        end
+         %% Add firmware readout and display version in command window
+        try
+        if contains(ser_info,'COM')
+            disp('-----')
+            pause(1)
+            serpo=serialport(ser_info,9600,"Timeout",2);
+            configureTerminator(serpo,"CR/LF")
+            serpo.writeline('WhoAreYou?');
+            pause(0.1)
+            reply=serpo.readline;
+            if isempty(reply)
+            else
+                disp(['Synchronizer ID: ' (reply{1})])
+                pause(0.1)
+            end            
+            serpo.writeline('WhichFirmWare?');
+            pause(0.1)
+            reply=serpo.readline;
+            if isempty(reply)
+            else
+                versi=strsplit(reply,'oltSync:');
+                disp(['Active firmware: ' (versi{2})])
+            end
+            serpo.flush
+            serpo.delete
+            clear serpo
+            disp('-----')
+        end
+        catch 
         end
     end
     function put(name, what)
