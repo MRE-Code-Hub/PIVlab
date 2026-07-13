@@ -72,7 +72,7 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 				maptoget=plot.rescale_maps_nan(maptoget,0,currentframe);
 				[cx, cy, c] = improfile(maptoget,extraction_coordinates_x,extraction_coordinates_y,round(nrpoints),'bicubic');
 				distance=linspace(0,length,size(c,1))';
-			case 12 %tangent
+			case {12,13} %tangent, normal
 				if ~strcmp(extract_type,'extract_circle_series')
 					if size(resultslist,1)>6 %filtered exists
 						if size(resultslist,1)>10 && numel(resultslist{10,currentframe}) > 0 %smoothed exists
@@ -113,25 +113,53 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 					deltay=zeros(1,size(cx,2)-1);
 					laenge=zeros(1,size(cx,2)-1);
 					alpha=zeros(1,size(cx,2)-1);
-					sinalpha=zeros(1,size(cx,2)-1);
-					cosalpha=zeros(1,size(cx,2)-1);
-					for i=2:size(cx,2)
-						deltax(1,i)=cx(1,i)-cx(1,i-1);
-						deltay(1,i)=cy(1,i)-cy(1,i-1);
-						laenge(1,i)=sqrt(deltax(1,i)*deltax(1,i)+deltay(1,i)*deltay(1,i));
-						alpha(1,i)=(acos(deltax(1,i)/laenge(1,i)));
-						if deltay(1,i) < 0
-							sinalpha(1,i)=sin(alpha(1,i));
-						else
-							sinalpha(1,i)=sin(alpha(1,i))*-1;
-						end
-						cosalpha(1,i)=cos(alpha(1,i));
-					end
-					sinalpha(1,1)=sinalpha(1,2);
-					cosalpha(1,1)=cosalpha(1,2);
-					cu=cu.*cosalpha';
-					cv=cv.*sinalpha';
-					c=cu-cv;
+                    % choice bifurcation (Kozlov N.) -->
+                    if extractwhat==12 % tangent
+					    sinalpha=zeros(1,size(cx,2)-1);
+					    cosalpha=zeros(1,size(cx,2)-1);
+					    for i=2:size(cx,2)
+						    deltax(1,i)=cx(1,i)-cx(1,i-1);
+						    deltay(1,i)=cy(1,i)-cy(1,i-1);
+						    laenge(1,i)=sqrt(deltax(1,i)*deltax(1,i)+deltay(1,i)*deltay(1,i));
+						    alpha(1,i)=(acos(deltax(1,i)/laenge(1,i)));
+						    if deltay(1,i) < 0
+							    sinalpha(1,i)=sin(alpha(1,i));
+						    else
+							    sinalpha(1,i)=sin(alpha(1,i))*-1;
+						    end
+						    cosalpha(1,i)=cos(alpha(1,i));
+					    end
+					    sinalpha(1,1)=sinalpha(1,2);
+					    cosalpha(1,1)=cosalpha(1,2);
+					    cu=cu.*cosalpha';
+					    cv=cv.*sinalpha';
+					    c=cu-cv;
+                    elseif extractwhat==13 % normal
+                        % second choice (Kozlov N.) -->
+                        beta=zeros(1,size(cx,2)-1);
+                        sinbeta=zeros(1,size(cx,2)-1);
+				        cosbeta=zeros(1,size(cx,2)-1);
+				        for i=2:size(cx,2)
+					        deltax(1,i)=cx(1,i)-cx(1,i-1);
+					        deltay(1,i)=cy(1,i)-cy(1,i-1);
+                            laenge(1,i)=sqrt(deltax(1,i)^2+deltay(1,i)^2);
+                            if deltay(1,i) >= 0
+                                alpha(1,i)=acos(deltax(1,i)/laenge(1,i));
+                            else
+                                alpha(1,i)=2*pi-acos(deltax(1,i)/laenge(1,i));
+                            end
+                            beta(1,i)=alpha(1,i)+pi/2;
+                            sinbeta(1,i)=sin(beta(1,i));
+                            cosbeta(1,i)=cos(beta(1,i));
+				        end
+				        sinbeta(1,1)=sinbeta(1,2);
+				        cosbeta(1,1)=cosbeta(1,2);
+				        cu=cu.*cosbeta';
+				        cv=cv.*sinbeta';
+				        c=cu+cv;
+                        % <--
+                    end
+                    % <--
 					cx=cx';
 					cy=cy';
 					distance=linspace(0,length,size(cu,1))';

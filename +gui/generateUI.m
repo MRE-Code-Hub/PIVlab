@@ -2040,7 +2040,7 @@ handles.tkemaker = uicontrol(handles.multip22,'Style','pushbutton','String','Cal
 item=[0 item(2)+item(4)+margin parentitem(3) 2];
 handles.remove_temporal_frame = uicontrol(handles.multip22,'Style','pushbutton','String','Remove current','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',@plot.remove_temporal_frame_Callback,'TooltipString','Remove the currently displayed frame');
 
-% Periodic menu -->
+% Periodic menu (Kozlov N.) -->
 item=[0 item(2)+item(4)+margin*1.25 parentitem(3) 2];
 handles.text_osc = uicontrol(handles.multip22,'Style','text', ...
     'String','Periodic (harmonic) flow','Units','characters', 'HorizontalAlignment','left', ...
