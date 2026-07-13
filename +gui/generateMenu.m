@@ -50,7 +50,7 @@ m8 = uimenu(MainWindow,'Label','Spatial calibration (px → mm)');
 uimenu(m8,'Label','Calibrate using current or external image','Callback',@calibrate.cal_actual_Callback,'Accelerator','Z');
 m9 = uimenu(MainWindow,'Label','Plot');
 uimenu(m9,'Label','Spatial: Derive parameters / modify data','Callback',@plot.derivs_Callback,'Accelerator','D');
-uimenu(m9,'Label','Temporal: Derive parameters','Callback',@plot.temporal_derivs_Callback);
+uimenu(m9,'Label','Temporal: Derive parameters','Callback',@plot.temporal_derivs_Callback,'Accelerator','R');
 uimenu(m9,'Label','Modify plot appearance','Callback',@plot.modif_plot_Callback,'Accelerator','M');
 uimenu(m9,'Label','Streamlines','Callback',@plot.streamlines_Callback);
 uimenu(m9,'Label','Markers / distance / angle','Callback',@extract.dist_angle_Callback,'Accelerator','T');
