@@ -148,6 +148,10 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
                             else
                                 alpha(1,i)=2*pi-acos(deltax(1,i)/laenge(1,i));
                             end
+                            % With this definition of beta, the positive 
+                            % sign of normal velocity coincides with the 
+                            % positive y-direction, as selected in the
+                            % calibration menu: by default - downwards.
                             beta(1,i)=alpha(1,i)+pi/2;
                             sinbeta(1,i)=sin(beta(1,i));
                             cosbeta(1,i)=cos(beta(1,i));
