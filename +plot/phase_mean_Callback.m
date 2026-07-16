@@ -25,7 +25,7 @@ else
 end
 
 n=get(handles.frames_per_period,'string');
-n_phases=eval(n);
+n_phases=str2double(n);
 % fprintf('%s %d %s\n',"Let's do it", n_phases, "times.") % DEBUG
 
 % comm_str=strcat('[1:',num2str(n_phases),':',num2str(n_fields));
