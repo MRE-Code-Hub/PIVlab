@@ -12,12 +12,15 @@ end
 str = strrep(get(handles.selectedFramesMean,'string'),'-',':');
 endinside=strfind(str, 'end');
 if ~isempty(endinside)
-	str = strrep(get(handles.selectedFramesMean,'string'),'end',num2str(max(find(ismean==0))));
+	str = strrep(get(handles.selectedFramesMean,'string'),'end',num2str(find(ismean==0,1,'last')));
 end
 strnum=str2num(str);
 % <--
 
-if ismean(max(strnum))
+if isempty(strnum)
+    errordlg("No frames selected. Please enter a valid frame selection.","Selection error")
+    return
+elseif ismean(max(strnum))
     errordlg("Do not include mean fields in the selection","Selection error")
     return
 else
@@ -26,6 +29,10 @@ end
 
 n=get(handles.frames_per_period,'string');
 n_phases=str2double(n);
+if isnan(n_phases) || n_phases < 1 || mod(n_phases,1) ~= 0
+    errordlg("Frames per period must be a positive whole number.","Invalid input")
+    return
+end
 % fprintf('%s %d %s\n',"Let's do it", n_phases, "times.") % DEBUG
 
 % comm_str=strcat('[1:',num2str(n_phases),':',num2str(n_fields));

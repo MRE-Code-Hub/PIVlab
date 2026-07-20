@@ -84,6 +84,14 @@ text83
 highpass_strength
 extrapolate_border
 
+# ── multip22  Derive temporal parameters ────────────────────
+summaker
+stdmaker
+tkemaker
+text_osc
+frames_per_period
+phase_meanmaker
+
 # ── multip09  Modify plot appearance ────────────────────────
 uniform_vector_scale
 power_vector_scale

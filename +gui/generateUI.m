@@ -1164,24 +1164,7 @@ handles.apply_deriv = uicontrol(handles.multip08,'Style','pushbutton','String','
 
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
 handles.apply_deriv_all = uicontrol(handles.multip08,'Style','pushbutton','String','Apply to all frames','Units','characters', 'HorizontalAlignment','left','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',@plot.apply_deriv_all_Callback, 'Tag','apply_deriv_all','TooltipString','Apply settings to all frames');
-%{
-item=[0 item(2)+item(4)+margin/3*2 parentitem(3) 7];
-handles.uipanel43 = uipanel(handles.multip08, 'Units','characters', 'Position', [item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'title','Calculate mean / sum','fontweight','bold');
 
-parentitem=get(handles.uipanel43, 'Position');
-item=[0 0 0 0];
-item=[0 item(2)+item(4) parentitem(3)/2 2];
-handles.text153 = uicontrol(handles.uipanel43,'Style','text','String','Frames to calc mean / sum:','Units','characters', 'HorizontalAlignment','left','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)]);
-
-item=[parentitem(3)/2 item(2) parentitem(3)/2 2];
-handles.selectedFramesMean = uicontrol(handles.uipanel43,'Style','edit','String','1:end','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','selectedFramesMean','TooltipString','Select which frames to include for calculating the mean velocity. E.g. "1,3,4,8:10". For multiple averages (e.g. phase average) enter rows: "[1:10:end;2:10:end;3:10:end]" -> one averaged frame per row.');
-
-item=[0 item(2)+item(4)+margin/4 parentitem(3)/2 2];
-handles.meanmaker = uicontrol(handles.uipanel43,'Style','pushbutton','String','Calc. mean','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@temporal_operation_Callback, 1},'TooltipString','Calculate mean velocities and append an extra frame with the results');
-
-item=[parentitem(3)/2 item(2) parentitem(3)/2 2];
-handles.summaker = uicontrol(handles.uipanel43,'Style','pushbutton','String','Calc. sum','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@temporal_operation_Callback, 0},'TooltipString','Calculate sum of displacements and append an extra frame with the results');
-%}
 %% Multip09
 handles.multip09 = uipanel(MainWindow, 'Units','characters', 'Position', [0+margin Figure_Size(4)-panelheightpanels-margin panelwidth panelheightpanels],'title','Modify plot appearance (CTRL+M)', 'Tag','multip09','fontweight','bold');
 parentitem=get(handles.multip09, 'Position');
@@ -2029,24 +2012,23 @@ item=[0 item(2)+item(4)+margin/2 parentitem(3) 2];
 handles.meanmaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate mean','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 1},'TooltipString','Calculate mean velocities and append an extra frame with the results');
 
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
-handles.summaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate sum','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 0},'TooltipString','Calculate sum of displacements and append an extra frame with the results');
+handles.summaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate sum','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 0},'Tag','summaker','TooltipString','Calculate sum of displacements and append an extra frame with the results');
 
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
-handles.stdmaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate stdev','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 2},'TooltipString','Calculate standard deviation of displacements and append an extra frame with the results');
+handles.stdmaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate stdev','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 2},'Tag','stdmaker','TooltipString','Calculate standard deviation of displacements and append an extra frame with the results');
 
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
-handles.tkemaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate TKE','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 3},'TooltipString','Calculate turbulent kinetic energy and append an extra frame with the results');
+handles.tkemaker = uicontrol(handles.multip22,'Style','pushbutton','String','Calculate TKE','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',{@plot.temporal_operation_Callback, 3},'Tag','tkemaker','TooltipString','Calculate turbulent kinetic energy and append an extra frame with the results');
 
 item=[0 item(2)+item(4)+margin parentitem(3) 2];
 handles.remove_temporal_frame = uicontrol(handles.multip22,'Style','pushbutton','String','Remove current','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback',@plot.remove_temporal_frame_Callback,'TooltipString','Remove the currently displayed frame');
 
 % Periodic menu (Kozlov N.) -->
-item=[0 item(2)+item(4)+margin*1.25 parentitem(3) 2];
+item=[0 item(2)+item(4)+margin*2 parentitem(3) 2];
 handles.text_osc = uicontrol(handles.multip22,'Style','text', ...
-    'String','Periodic (harmonic) flow','Units','characters', 'HorizontalAlignment','left', ...
-    'FontSize',11,'FontAngle','italic',...
+    'String','Periodic (harmonic) flow:','Units','characters', 'HorizontalAlignment','left', ...
     'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','text_osc');
-item=[0 item(2)+item(4)+margin/8 parentitem(3)/3 2];
+item=[0 item(2)+item(4) parentitem(3)/3 2];
 handles.frames_per_period = uicontrol(handles.multip22,'Style','edit', ...
     'String','0','Units','characters', ...
     'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)], ...
