@@ -1227,7 +1227,12 @@ color_names = colors_cell(:,1)';
 item=[0 item(2)+item(4)+margin/4 parentitem(3)/2 1.5];
 uicontrol(handles.uipanel37,'Style','text','String','Valid (1st peak)','HorizontalAlignment','left','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)]);
 item=[parentitem(3)/2 item(2) parentitem(3)/2 1.5];
-handles.valid_color = uicontrol(handles.uipanel37,'Style','popupmenu','String',color_names,'Value',1,'Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','valid_color');
+% Only the "valid" vectors offer magnitude coloring. Keeping this entry out of
+% the other three popups (in particular deriv_color) is what guarantees that
+% magnitude-colored vectors can never appear on top of a scalar background,
+% where they would fight the overlay for the colormap and the colorbar.
+valid_color_names = [color_names {'Magnitude'}];
+handles.valid_color = uicontrol(handles.uipanel37,'Style','popupmenu','String',valid_color_names,'Value',1,'Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','valid_color');
 
 item=[0 item(2)+item(4)+margin/8 parentitem(3)/2 1.5];
 uicontrol(handles.uipanel37,'Style','text','String','Valid (2nd peak)','HorizontalAlignment','left','Units','characters','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)]);

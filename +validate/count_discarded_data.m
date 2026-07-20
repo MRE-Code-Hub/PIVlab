@@ -51,7 +51,16 @@ if isfield(handles,'veccolor_valid_swatch') || isfield(handles,'veccolor_valid_s
 			numel(derived{displaywhat-1,(currentframe+1)/2}) > 0
 		validcolor = colors_cell{get(handles.deriv_color,  'Value'), 2};
 	else
-		validcolor = colors_cell{get(handles.valid_color,  'Value'), 2};
+		valid_color_idx = get(handles.valid_color,'Value');
+		if valid_color_idx > size(colors_cell,1)
+			% "Magnitude" mode: the vectors span a whole colormap, which a
+			% single-color swatch cannot show. Use the middle of that colormap
+			% as a representative sample.
+			vec_cmap = plot.vector_colormap(handles, 64);
+			validcolor = vec_cmap(max(1,round(size(vec_cmap,1)/2)), :);
+		else
+			validcolor = colors_cell{valid_color_idx, 2};
+		end
 	end
 	interpcolor     = colors_cell{get(handles.interp_color,     'Value'), 2};
 	secondpeakcolor = colors_cell{get(handles.secondpeak_color, 'Value'), 2};

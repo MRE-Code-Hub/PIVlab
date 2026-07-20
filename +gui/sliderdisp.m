@@ -19,7 +19,16 @@ if capturing==0
         vectorcolor = colors_cell{get(handles.deriv_color, 'Value'), 2};
     else
         colors_cell = gui.vec_preset_colors();
-        vectorcolor = colors_cell{get(handles.valid_color, 'Value'), 2};
+        valid_color_idx = get(handles.valid_color, 'Value');
+        if valid_color_idx > size(colors_cell,1)
+            % Entry past the preset colors is "Magnitude": color each vector by
+            % its velocity magnitude. plot.vectors detects this by type.
+            % Deliberately only offered for valid_color, never deriv_color, so
+            % it can never compete with the scalar overlay's colormap.
+            vectorcolor = 'magnitude';
+        else
+            vectorcolor = colors_cell{valid_color_idx, 2};
+        end
     end
     delete(findobj(target_axis,'tag', 'derivhint'));
     if size(filepath,1)>0

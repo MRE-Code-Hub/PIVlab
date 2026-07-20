@@ -452,6 +452,8 @@ image2 = preproc.PIVlab_preproc( ...
             else
                 delete (findobj(getappdata(0,'hgui'),'type', 'quiver'))
             end
+            %magnitude-colored vectors are line objects, not quivers
+            delete (findobj(getappdata(0,'hgui'),'Tag', 'pivlab_vector'))
             hold on;
             vecscale=str2double(get(handles.vectorscale,'string'));
             %Problem: wenn colorbar an, zï¿½hlt das auch als aexes...
@@ -630,6 +632,8 @@ image2 = preproc.PIVlab_preproc( ...
                     else
                         delete (findobj(getappdata(0,'hgui'),'type', 'quiver'))
                     end
+                    %magnitude-colored vectors are line objects, not quivers
+                    delete (findobj(getappdata(0,'hgui'),'Tag', 'pivlab_vector'))
                     hold on;
                     vecscale=str2double(get(handles.vectorscale,'string'));
                     %Problem: wenn colorbar an, zï¿½hlt das auch als aexes...
