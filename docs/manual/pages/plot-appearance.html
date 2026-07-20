@@ -29,7 +29,8 @@
       field is too dense to read (a wavelet-optical-flow analysis, for example, produces one
       vector per pixel).</td></tr>
       <tr><td>hide vectors</td><td>Hides vectors entirely — useful when you only want to show a derived-parameter overlay.</td></tr>
-      <tr><td>uniform vector scale</td><td>Draws every vector at the same length, regardless of velocity — direction only.</td></tr>
+      <tr><td>uniform vector scale</td><td>Draws every vector at the same length, regardless of
+      velocity — direction only. Pairs well with <a href="#magnitude">magnitude coloring</a>.</td></tr>
       <tr><td>power law vector scale</td><td>Scales vector length with a sublinear power
       function instead of linearly — long vectors are compressed more as the exponent (default
       0.3) gets smaller, so a few very fast vectors don't visually dominate the plot.</td></tr>
@@ -45,7 +46,8 @@
     <p>Four colors, each chosen from a preset list:</p>
     <table class="ref">
       <tr><th>Role</th><th>Default</th></tr>
-      <tr><td>Valid (1st peak)</td><td>The primary color for good vectors.</td></tr>
+      <tr><td>Valid (1st peak)</td><td>The primary color for good vectors. Can also be set to
+      <span class="ui">Magnitude</span> — see <a href="#magnitude">below</a>.</td></tr>
       <tr><td>Valid (2nd peak)</td><td>Vectors taken from the correlation's second peak.</td></tr>
       <tr><td>Replaced / interp.</td><td>Vectors that were rejected and filled by interpolation.</td></tr>
       <tr><td>On derivatives</td><td>Vector color when a derived parameter (e.g. vorticity) is shown underneath.</td></tr>
@@ -56,6 +58,37 @@
       <a href="validation-image.html">image-based validation</a> panels reflects exactly these
       four settings.
     </div>
+
+    <h2 id="magnitude">Coloring vectors by velocity magnitude</h2>
+    <p>Setting <span class="ui">Valid (1st peak)</span> to <span class="ui">Magnitude</span>
+    colors each arrow by its own velocity, using the
+    <a href="#derived-appearance"><span class="ui">Color map</span></a> chosen further down the
+    panel. A colorbar appears if <a href="#colorbar"><span class="ui">Show colorbar</span></a>
+    is set to a position, labelled in m/s if the data is
+    <a href="spatial-calibration.html">calibrated</a>, otherwise px/frame.</p>
+
+    <figure>
+      <img src="../assets/img/plot-appearance/vector-magnitude.jpg" alt="Side-by-side comparison of a vortex-pair vector field: the left panel draws every arrow in flat green, the right panel colors each arrow by its velocity magnitude with a colorbar">
+      <figcaption>A flat vector color (left) and <span class="ui">Magnitude</span> coloring (right).</figcaption>
+    </figure>
+
+    <p>It combines well with <span class="ui">uniform vector scale</span>: length then shows
+    direction, color shows speed.</p>
+
+    <figure>
+      <img src="../assets/img/plot-appearance/vector-magnitude-uniform.jpg" alt="The same vortex-pair field drawn with uniform vector scale so all arrows are equal length, with color still encoding velocity magnitude">
+      <figcaption><span class="ui">uniform vector scale</span> combined with
+      <span class="ui">Magnitude</span>.</figcaption>
+    </figure>
+
+    <ul>
+      <li>All vectors are colored — 2nd-peak and interpolated included. Switch back to a flat
+      color when you need to see which vectors were replaced.</li>
+      <li>Not available over a derived parameter: the vector color then comes from
+      <span class="ui">On derivatives</span>, which has no <span class="ui">Magnitude</span> entry.</li>
+      <li>The color range is re-fitted to each frame, so a color does not mean the same speed in
+      two different frames — read the colorbar when comparing.</li>
+    </ul>
     <p>Also here: <span class="ui">Mask transparency [%]</span> (default 50) — controls how
     see-through the red overlay is when viewing <a href="masking.html">masks</a>.</p>
 

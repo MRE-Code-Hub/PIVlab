@@ -357,6 +357,12 @@ window.MANUAL_SEARCH = [
     text: "vector colors valid second peak replaced interpolated derivatives mask transparency"
   },
   {
+    title: "Coloring vectors by velocity magnitude",
+    href: "pages/plot-appearance.html", hash: "magnitude",
+    section: "Plot & post-processing",
+    text: "magnitude colored vectors colour by speed velocity magnitude colormap colorbar rainbow arrows uniform vector scale combine calibrated m/s px/frame"
+  },
+  {
     title: "Derived-parameter colormap",
     href: "pages/plot-appearance.html", hash: "derived-appearance",
     section: "Plot & post-processing",
