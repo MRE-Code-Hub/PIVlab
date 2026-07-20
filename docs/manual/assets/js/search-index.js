@@ -387,6 +387,12 @@ window.MANUAL_SEARCH = [
     text: "poly-line polyline circle circle series tangent velocity draw save coords load coords"
   },
   {
+    title: "Tangent and normal velocity along a line",
+    href: "pages/extract-polyline.html", hash: "extracting",
+    section: "Extractions",
+    text: "tangent velocity normal velocity component parallel perpendicular line circle flux flow rate across control surface vortex swirl"
+  },
+  {
     title: "Extracting the average over an area",
     href: "pages/extract-area.html", hash: "extracting",
     section: "Extractions",
@@ -409,6 +415,12 @@ window.MANUAL_SEARCH = [
     href: "pages/derive-temporal.html", hash: "selecting",
     section: "Plot & post-processing",
     text: "frames to process phase average append replace mean sum stdev tke turbulent kinetic energy"
+  },
+  {
+    title: "Phase average of periodic (harmonic) flow",
+    href: "pages/derive-temporal.html", hash: "phase-average",
+    section: "Plot & post-processing",
+    text: "phase mean periodic harmonic flow frames per period oscillation cycle flapping wing pulsating jet calculate phase mean"
   },
   {
     title: "Drawing streamlines, rakes and streamslices",

@@ -44,10 +44,22 @@
     <ol class="steps">
       <li>Choose what to extract from <span class="ui">Data to extract</span> — the same
       derived-parameter list as <a href="derive-spatial.html">Deriving spatial parameters</a>,
-      plus <span class="ui">Tangent velocity</span> for circles.</li>
+      plus <span class="ui">Tangent velocity</span> and <span class="ui">Normal velocity</span>,
+      which project the velocity onto the direction along or across your line or circle.</li>
       <li>Click <span class="ui">Extract data</span> to plot the profile along your line or circle.</li>
       <li>Click <span class="ui">Clear data</span> to remove it and start over.</li>
     </ol>
+
+    <div class="note">
+      <strong>Tangent vs. normal velocity.</strong>
+      <span class="ui">Tangent velocity</span> is the velocity component parallel to the line
+      (or circle) — useful for the swirling velocity around a vortex core, for example.
+      <span class="ui">Normal velocity</span> is the component perpendicular to the line —
+      handy for the flow rate crossing a line, such as flux through a control surface. A positive
+      normal velocity points in the positive <em>y</em>-direction as set in the
+      <a href="spatial-calibration.html">spatial calibration</a> (downwards by default). Both work on a polyline
+      or a single circle; a <span class="ui">circle series</span> supports tangent velocity only.
+    </div>
     <figure>
       <img src="../assets/img/extract-polyline/magnitude-profile.jpg" alt="A pop-up plot of velocity magnitude versus distance along a line, with the blue extraction line drawn on the vector field behind it">
       <figcaption>Extracting <span class="ui">Magnitude</span> along a line: the blue line is

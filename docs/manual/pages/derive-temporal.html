@@ -13,7 +13,8 @@
     <p class="lead">Where <a href="derive-spatial.html">spatial</a> derivation works within one
     frame, this combines data <strong>across frames</strong> — averaging a whole time-resolved
     sequence into one representative result, or computing turbulence statistics.</p>
-    <p>Open via <span class="ui">Plot → Temporal: Derive parameters</span> (no keyboard shortcut).</p>
+    <p>Open via <span class="ui">Plot → Temporal: Derive parameters</span>
+    (<kbd>Ctrl</kbd>+<kbd>R</kbd>).</p>
 
     <figure class="inline-panel">
       <img src="../assets/img/derive-temporal/panel.png" alt="PIVlab Derive Temporal Parameters panel">
@@ -39,6 +40,28 @@
     </table>
     <p>Each button appends one new result frame. Click <span class="ui">Remove current</span>
     to delete the currently displayed (appended) frame if you don't want to keep it.</p>
+
+    <h2 id="phase-average">Phase average of periodic flow</h2>
+    <p>For a <strong>periodic (harmonic) flow</strong> — a flapping wing, a pulsating jet, a
+    rotating machine — the <span class="ui">Periodic (harmonic) flow</span> section builds a
+    phase average automatically, so you don't have to write out the multi-row frame ranges
+    by hand.</p>
+    <ol class="steps">
+      <li>Set <span class="ui">Frames to process</span> to the frames covering the cycles you
+      want to average (e.g. <code>1:end</code>).</li>
+      <li>Enter the number of frames that make up <strong>one period</strong> in
+      <span class="ui">Periodic (harmonic) flow</span>.</li>
+      <li>Click <span class="ui">Calculate phase mean</span>.</li>
+    </ol>
+    <p>PIVlab groups every <em>n</em>-th frame together (frame 1, 1+<em>n</em>, 1+2<em>n</em>, …
+    for the first phase, and so on) and appends <strong>one averaged frame per phase</strong> —
+    a single representative period of the flow. It is the equivalent of entering
+    <code>[1:n:end; 2:n:end; … ; n:n:end]</code> in <span class="ui">Frames to process</span> and
+    calculating the mean, done in one click.</p>
+    <div class="note">
+      Do not include already-averaged frames in the selection, and make sure the frame count is a
+      positive whole number — PIVlab warns you if either is wrong.
+    </div>
   </article>
 
   <script src="../assets/js/nav.js"></script>
