@@ -658,9 +658,9 @@ if compute_uncertainty
     % Replace NaN vectors (failed correlations) with zero before spline deformation;
     % NaN propagates through spline and renders the whole deformed image invalid.
     utable_u = utable;
-    misc.inpaint_nans(utable_u);
+	utable_u = misc.inpaint_nans(utable_u);
     vtable_u = vtable;
-    misc.inpaint_nans(vtable_u);
+    vtable_u = misc.inpaint_nans(vtable_u);
 
     U_u  = padarray(utable_u, [1,1], 'replicate');
     V_u  = padarray(vtable_u, [1,1], 'replicate');
