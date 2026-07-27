@@ -118,8 +118,11 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 					    sinalpha=zeros(1,size(cx,2)-1);
 					    cosalpha=zeros(1,size(cx,2)-1);
 					    for i=2:size(cx,2)
-						    deltax(1,i)=cx(1,i)-cx(1,i-1);
-						    deltay(1,i)=cy(1,i)-cy(1,i-1);
+						    % express polyline tangent in the same calibrated frame as
+						    % the velocity, so the sign is correct when x or y is
+						    % calibrated to increase left/up (calu/calv < 0). (bug fix)
+						    deltax(1,i)=(cx(1,i)-cx(1,i-1))*sign(calu);
+						    deltay(1,i)=(cy(1,i)-cy(1,i-1))*sign(calv);
 						    laenge(1,i)=sqrt(deltax(1,i)*deltax(1,i)+deltay(1,i)*deltay(1,i));
 						    alpha(1,i)=(acos(deltax(1,i)/laenge(1,i)));
 						    if deltay(1,i) < 0
@@ -140,8 +143,11 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
                         sinbeta=zeros(1,size(cx,2)-1);
 				        cosbeta=zeros(1,size(cx,2)-1);
 				        for i=2:size(cx,2)
-					        deltax(1,i)=cx(1,i)-cx(1,i-1);
-					        deltay(1,i)=cy(1,i)-cy(1,i-1);
+					        % express polyline tangent in the same calibrated frame as
+					        % the velocity, so the sign is correct when x or y is
+					        % calibrated to increase left/up (calu/calv < 0). (bug fix)
+					        deltax(1,i)=(cx(1,i)-cx(1,i-1))*sign(calu);
+					        deltay(1,i)=(cy(1,i)-cy(1,i-1))*sign(calv);
                             laenge(1,i)=sqrt(deltax(1,i)^2+deltay(1,i)^2);
                             if deltay(1,i) >= 0
                                 alpha(1,i)=acos(deltax(1,i)/laenge(1,i));
@@ -250,8 +256,11 @@ if size(resultslist,2)>=currentframe && numel(resultslist{1,currentframe})>0
 					cosalpha=zeros(1,size(cx,2)-1);
 					for m=1:numel(length)
 						for i=2:size(cx,2)
-							deltax(m,i)=cx(m,i)-cx(m,i-1);
-							deltay(m,i)=cy(m,i)-cy(m,i-1);
+							% express arc tangent in the same calibrated frame as the
+							% velocity, so the sign is correct when x or y is calibrated
+							% to increase left/up (calu/calv < 0). (bug fix)
+							deltax(m,i)=(cx(m,i)-cx(m,i-1))*sign(calu);
+							deltay(m,i)=(cy(m,i)-cy(m,i-1))*sign(calv);
 							laenge(m,i)=sqrt(deltax(m,i)*deltax(m,i)+deltay(m,i)*deltay(m,i));
 							alpha(m,i)=(acos(deltax(m,i)/laenge(m,i)));
 							if deltay(m,i) < 0
