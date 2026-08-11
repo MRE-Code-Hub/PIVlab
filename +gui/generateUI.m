@@ -2212,8 +2212,11 @@ handles.ac_power = uicontrol(handles.uipanelac_laser,'Style','edit','String','10
 item=[0 item(2)+item(4)+margin*0.1 parentitem(3) 1];
 handles.ac_pulselengthtxt = uicontrol(handles.uipanelac_laser,'Style','text','units','characters','HorizontalAlignment','left','position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'String','Pulse length: 0 µs','tag','ac_pulselengthtxt');
 
-item=[0 item(2)+item(4)+margin*0.2 parentitem(3) 1.1];
+item=[0 item(2)+item(4)+margin*0.2 parentitem(3)/2 1.1];
 handles.ac_enable_straddling_figure = uicontrol(handles.uipanelac_laser,'Style','checkbox','String','Timing graph','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','ac_enable_straddling_figure','TooltipString','Show a graph with the timing of camera and laser pulses','Callback', @acquisition.sync_settings_Callback);
+
+item=[parentitem(3)/2 item(2) parentitem(3)/2 1.1];
+handles.ac_low_energy_mode = uicontrol(handles.uipanelac_laser,'Style','checkbox','String','Low energy mode','Units','characters', 'Fontunits','points','Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Tag','ac_low_energy_mode','Value',0,'TooltipString','Pulse the laser at 50 Hz, lowest power, for alignment. Synchronized PIV capture is disabled while active.','Callback', @acquisition.low_energy_mode_Callback);
 
 item=[0 item(2)+item(4)+margin*0.2 parentitem(3)/4*2 2];
 handles.ac_laserstatus = uicontrol(handles.uipanelac_laser,'Style','edit','units','characters','HorizontalAlignment','center','position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'String','N/A','tag','ac_laserstatus','FontName','FixedWidth','BackgroundColor',[1 0 0],'Foregroundcolor',[0 0 0],'Enable','inactive','Fontweight','bold','TooltipString','Status of the laser');
