@@ -107,8 +107,8 @@ if alreadyconnected
             [seq_ok, seq_msg] = acquisition.validate_oltsync_sequence(frame_time, pin_string);
             if ~seq_ok
                 set(handles.ac_laserstatus,'BackgroundColor',[1 1 0]); %yellow=warning
-                set(handles.ac_laserstatus,'String','!Sequence!');
-                set(handles.ac_msgbox,'Visible','on','String',seq_msg);drawnow;
+                set(handles.ac_laserstatus,'String','!Sequence!');drawnow;
+                gui.custom_msgbox('error',getappdata(0,'hgui'),'Invalid laser sequence',seq_msg,'modal');
                 serial_answer='Sequence:Error';
                 return
             end
