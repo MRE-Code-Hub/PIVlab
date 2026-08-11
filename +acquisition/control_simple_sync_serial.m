@@ -104,11 +104,12 @@ if alreadyconnected
             end
 
             % validate the sequence locally before sending (mirrors firmware)
-            [seq_ok, seq_msg] = acquisition.validate_oltsync_sequence(frame_time, pin_string);
+            [seq_ok, seq_msg, seq_detail] = acquisition.validate_oltsync_sequence(frame_time, pin_string);
             if ~seq_ok
                 set(handles.ac_laserstatus,'BackgroundColor',[1 1 0]); %yellow=warning
                 set(handles.ac_laserstatus,'String','!Sequence!');drawnow;
-                gui.custom_msgbox('error',getappdata(0,'hgui'),'Invalid laser sequence',seq_msg,'modal');
+                disp(['Invalid oltSync sequence: ' seq_detail]); %technical reason for debugging
+                gui.custom_msgbox('error',getappdata(0,'hgui'),'Laser timing problem',seq_msg,'modal');
                 serial_answer='Sequence:Error';
                 return
             end

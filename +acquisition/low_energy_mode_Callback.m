@@ -1,6 +1,6 @@
 function low_energy_mode_Callback(~,~,~)
 %LOW_ENERGY_MODE_CALLBACK Toggle the low energy / alignment mode.
-%   Low energy mode pulses the laser at a fixed 50 Hz with the shortest valid
+%   Low energy mode pulses the laser at a fixed 100 Hz with the shortest valid
 %   pulse (1 us) for beam alignment. In this mode the laser is decoupled from
 %   the camera, so synchronized PIV capture is impossible: the whole "Capture
 %   PIV images" panel and the synchronizer inputs are greyed out as a clear
