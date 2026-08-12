@@ -112,8 +112,8 @@ handles.stereocheckbox = uicontrol(handles.multip01,'Style','checkbox','Value',0
 item=[0 item(2)+item(4) parentitem(3) 2];
 handles.loadimgsbutton = uicontrol(handles.multip01,'Style','pushbutton','String','Import images','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', {@import.loadimgsbutton_Callback,1,[]},'TooltipString','Load image data');
 
-%item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
-%handles.loadvideobutton = uicontrol(handles.multip01,'Style','pushbutton','String','Import video','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @import.loadvideobutton_Callback,'TooltipString','Load video file');
+item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
+handles.loadvideobutton = uicontrol(handles.multip01,'Style','pushbutton','String','Convert + import video','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @import.convertvideobutton_Callback,'TooltipString','Convert a video to lossless image files, then load them (time-resolved)');
 
 item=[0 item(2)+item(4)+margin/4 parentitem(3) 2];
 handles.loadsessionbutton = uicontrol(handles.multip01,'Style','pushbutton','String','Load session','Units','characters', 'Fontunits','points','Fontsize',12,'Position',[item(1)+margin parentitem(4)-item(4)-margin-item(2) item(3)-margin*2 item(4)],'Callback', @import.load_session_Callback,'TooltipString','Load previously saved session file');
