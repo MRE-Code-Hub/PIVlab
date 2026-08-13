@@ -61,6 +61,47 @@ masks and Automatic masks/Expert mode correctly) untouched.
 
 The user supplied 16 clean, properly-masked **result/output** screenshots (from `~/Downloads`, `.jpg`) and I placed them on the relevant pages as full-width `<figure>`s (panels stay as the earlier `.png` captures). Going forward, **result visuals come from the user** — do not auto-generate messy ones. Images added: sessions (import dialog), validation-velocity (auto-limits scatter, vector colours), derive-spatial (magnitude overlay), streamlines, plot-appearance (colormap steps), extract-polyline (magnitude profile popup + circle series), extract-area (rectangle result), markers (measurement — replaced the plain panel.png, which is now orphaned/unused), correlation-matrices (4-pass popup), spatial-calibration (reference length), camera-calibration (charuco board, lens distortion, camera positions, rectified board). Two filename notes flagged to user: `extract_area_vorticity_circle_series.jpg` actually shows the **poly-line** panel (circle-series type) so it went on extract-polyline; and the file is `extract_area_v_component.jpg` (v, not "c").
 
+## Equations added to derive-spatial.html — 2026-07-09
+
+User asked for the equation behind every derived parameter, with an explicit "double check
+against the code, triple check the equation is correct". New `#equations` section on
+`pages/derive-spatial.html` with three `<h3>`s (velocity-based / gradient-based / carried over
+from the analysis), plus a new `.eq` + `.eq-where` CSS component in `style.css` (mono, scrolls
+inside its own box so the long Q-criterion line never widens the page). **No math library** —
+the manual stays dependency-free and `file://`-openable, so equations are plain HTML + Unicode
+with `<em>` variables, matching the `<em>n</em>` convention already in `derive-temporal.html`.
+
+**Verification actually performed** (repeat this if any equation is ever edited): every formula
+was read from `+plot/{derivative_calc,qcrit,shear,strain,LIC}.m`, then the MATLAB built-ins were
+read from `C:\Program Files\MATLAB\R2026a\toolbox\matlab\graphics\graphics\specgraph\{curl,divergence}.m`
+rather than trusted from memory, then each was checked against the standard fluid-mechanics
+definition.
+
+Findings worth not re-deriving:
+
+- **`curl` returns `curlz = ∂v/∂x − ∂u/∂y`, which IS the vorticity** (`curl.m:27-33`). The
+  *second* output `cav` is the half-value angular velocity. A claim that `curlz = 2ω` is wrong.
+  PIVlab's `-curl(...)` (`derivative_calc.m:121`) cancels the downward image y-axis, so the
+  documented `ω = ∂v/∂x − ∂u/∂y` with positive = counter-clockwise on screen is correct.
+  **Do not "fix" this sign.**
+- `qcrit.m` was confirmed algebraically identical to the standard `Q = ½(‖Ω‖² − ‖S‖²)`.
+- Vector direction: default axes are x→right, y→bottom (`generateUI.m:1051,1057`), so 0°=right,
+  +90°=down, ±180°=left, −90°=up — angles increase *clockwise on screen*, and this inverts if
+  the user selects "y increases towards the top".
+- Correlation coefficient is computed **only on the final pass, from already-deformed windows**
+  (`piv_FFTmulti.m:345-348`) — it measures how well the windows match *after* being deformed by
+  the measured displacement, not raw image similarity.
+- Uncertainty = particle-image disparity, Sciacchitano/Wieneke/Scarano 2013 (full citation in the
+  source comment at `piv_FFTmulti.m:644-651`); its dual meaning (real uncertainty vs. sub-window
+  velocity non-uniformity) came from `:637-643` and is documented as a callout.
+- LIC credit is in-code at `LIC.m:30-37` (Nima Bigdely Shamlo, Matlab VFV Toolbox 1.0, SDSU).
+
+**Do not run `tools/build_search_index.mjs`** to update the index for this page. That script
+regenerates mechanical `text` keywords from the slugified heading only, which would discard the
+much richer hand-curated keywords the committed `search-index.js` contains (it was tried here and
+reverted — it rewrote 816 lines and degraded search). Add records **by hand** in the existing
+style instead; four were added for the new sections.
+
 ## Stale "soon" copy removed — 2026-07-09
 
 User asked to verify the homepage's "Chapters marked soon aren't written yet" line, since the
